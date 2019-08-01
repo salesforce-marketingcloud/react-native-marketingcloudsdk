@@ -1,0 +1,31 @@
+{
+  "name": "react-native-marketing-cloud-sdk",
+  "version": "1.0.0",
+  "description": "TODO",
+  "main": "lib/index.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/author/repo.git"
+  },
+  "homepage": "https://github.com/author/repo#readme",
+  "keywords": [
+    "react-native-component",
+    "react-native",
+    "ios",
+    "android",
+    "salesforce",
+    "mobilepush",
+    "marketingcloud",
+    "marketingcloudsdk"
+
+  ],
+  "author": "Salesforce Marketing Cloud",
+  "license": "BSD-3-Clause",
+  "peerDependencies": {
+    "react-native": ">=0.60"
+  }
+}
