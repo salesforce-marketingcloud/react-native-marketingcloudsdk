@@ -11,7 +11,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - MarketingCloudSDK (6.3.3)
+  - MarketingCloudSDK (6.3.4)
   - React (0.60.0):
     - React-Core (= 0.60.0)
     - React-DevSupport (= 0.60.0)
@@ -82,7 +82,7 @@ PODS:
   - React-RCTWebSocket (0.60.0):
     - React-Core (= 0.60.0)
     - React-fishhook (= 0.60.0)
-  - RNMarketingCloudSdk (1.0.0):
+  - RNMarketingCloudSdk (6.4.0):
     - MarketingCloudSDK (~> 6.3)
     - React
   - yoga (0.60.0.React)
@@ -109,7 +109,7 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
-  - RNMarketingCloudSdk (from `../node_modules/react-native-marketing-cloud-sdk`)
+  - RNMarketingCloudSdk (from `../node_modules/react-native-marketingcloudsdk`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -161,7 +161,7 @@ EXTERNAL SOURCES:
   React-RCTWebSocket:
     :path: "../node_modules/react-native/Libraries/WebSocket"
   RNMarketingCloudSdk:
-    :path: "../node_modules/react-native-marketing-cloud-sdk"
+    :path: "../node_modules/react-native-marketingcloudsdk"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -170,7 +170,7 @@ SPEC CHECKSUMS:
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  MarketingCloudSDK: 16f5ed35b96237698a977f86911881c932efec4d
+  MarketingCloudSDK: 7db3486920319aa9f643b6b4c826f7075e55fcae
   React: 4b3c068e793e96672dcd186a2b572fac43e4b031
   React-Core: 3dc86b22920597f813c62a96db3165950b64826b
   React-cxxreact: 0dacb291e59b81e7c3f22a2118bee853ba8a60d2
@@ -189,7 +189,7 @@ SPEC CHECKSUMS:
   React-RCTText: 685fca2e13b024271048e7e247ef24476f28a41e
   React-RCTVibration: 4ee1cf208ab17a50fafb1c16ffe28fe594a64e4f
   React-RCTWebSocket: fca087d583724aa0e5fef7d911f0f2a28d0f2736
-  RNMarketingCloudSdk: ca97bf2a859aa716e1a7dbb6919436d9a3dfc258
+  RNMarketingCloudSdk: 38c37a8709d198d71f25ef4623663894cefcd8e0
   yoga: 616fde658be980aa60a2158835170f3f9c2d04b4
 
 PODFILE CHECKSUM: 71af8ce61487504ef012db924937962b60a1c82a

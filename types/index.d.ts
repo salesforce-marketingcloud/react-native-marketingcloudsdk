@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-export class MCReactPlugin {
+export class MCReactModule {
     static isPushEnabled(): Promise<boolean>;
     static enablePush(): void;
     static disablePush(): void;
@@ -45,4 +45,4 @@ export class MCReactPlugin {
     static enableVerboseLogging(): void;
     static disableVerboseLogging(): void;
     static logSdkState(): void;
-  }
+}

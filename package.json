@@ -1,5 +1,5 @@
 {
-  "name": "react-native-marketing-cloud-sdk",
+  "name": "react-native-marketingcloudsdk",
   "version": "6.4.0",
   "description": "A React Native component to access the native Salesforce Marketing Cloud MobilePush SDKs",
   "author": "Salesforce Marketing Cloud",
@@ -23,13 +23,14 @@
   ],
   "scripts": {
     "test": "npm run eslint",
+    "gen-docs": "jsdoc2md --template jsdoc2md/TEMPLATE.md lib/*.js > README.md",
     "eslint": "node node_modules/eslint/bin/eslint lib",
-    "format": "clang-format -i -style=file android/src/main/java/com/salesforce/marketingcloud/reactnative/RNMarketingCloudSdk.java android/src/main/java/com/salesforce/marketingcloud/reactnative/RNMarketingCloudSdkModule.java ios/RNMarketingCloudSdk.h ios/RNMarketingCloudSdk.m lib/index.js"
+    "format": "clang-format -i -style=file android/src/main/java/com/salesforce/marketingcloud/reactnative/RNMarketingCloudSdk.java android/src/main/java/com/salesforce/marketingcloud/reactnative/RNMarketingCloudSdkModule.java ios/RNMarketingCloudSdk.h ios/RNMarketingCloudSdk.m lib/index.js",
+    "test:android": "cd android && ./gradlew test"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run format && npm test",
-      "pre-push": ""
+      "pre-commit": "npm run format && npm test && npm run gen-docs && git add README.md"
     }
   },
   "peerDependencies": {
