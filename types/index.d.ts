@@ -30,19 +30,19 @@
  */
 
 export class MCReactPlugin {
-    isPushEnabled(): Promise<boolean>;
-    enablePush(): void;
-    disablePush(): void;
-    getSystemToken(): Promise<string>;
-    getAttributes(): Promise<Map<string, string>>;
-    setAttribute(key: string, value: string): void;
-    clearAttribute(key: string): void;
-    addTag(tag: string): void;
-    removeTag(tag: string): void;
-    getTags(): Promise<Array<string>>;
-    setContactKey(contactKey: string): void;
-    getContactKey(): Promise<string>;
-    enableVerboseLogging(): void;
-    disableVerboseLogging(): void;
-    logSdkState(): void;
+    static isPushEnabled(): Promise<boolean>;
+    static enablePush(): void;
+    static disablePush(): void;
+    static getSystemToken(): Promise<string>;
+    static getAttributes(): Promise<Map<string, string>>;
+    static setAttribute(key: string, value: string): void;
+    static clearAttribute(key: string): void;
+    static addTag(tag: string): void;
+    static removeTag(tag: string): void;
+    static getTags(): Promise<Array<string>>;
+    static setContactKey(contactKey: string): void;
+    static getContactKey(): Promise<string>;
+    static enableVerboseLogging(): void;
+    static disableVerboseLogging(): void;
+    static logSdkState(): void;
   }
