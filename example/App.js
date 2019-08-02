@@ -53,11 +53,8 @@ class RegistrationComponent extends Component {
     }
 
     setContactKey() {
-        MCReactPlugin.setContactKey(this.state.contactKeyEdit).then(result => {
-            if (result) {
-                this.updateContactKey();
-            }
-        });
+        MCReactPlugin.setContactKey(this.state.contactKeyEdit);
+        this.updateContactKey();
     }
 
     async updateContactKey() {
@@ -68,19 +65,13 @@ class RegistrationComponent extends Component {
     }
 
     setAttribute() {
-        MCReactPlugin.setAttribute(this.state.attrKeyEdit, this.state.attrValEdit).then(result => {
-            if (result) {
-                this.updateAttributes();
-            }
-        });
+        MCReactPlugin.setAttribute(this.state.attrKeyEdit, this.state.attrValEdit);
+        this.updateAttributes();
     }
 
     clearAttribute() {
-        MCReactPlugin.clearAttribute(this.state.attrKeyEdit).then(result => {
-            if (result) {
-                this.updateAttributes();
-            }
-        });
+        MCReactPlugin.clearAttribute(this.state.attrKeyEdit);
+        this.updateAttributes();
     }
 
     async updateAttributes() {
@@ -91,19 +82,15 @@ class RegistrationComponent extends Component {
     }
 
     removeTag() {
-        MCReactPlugin.removeTag(this.state.tagEdit).then(result => {
-            if (result) {
-                this.updateTags();
-            }
-        });
+        MCReactPlugin.removeTag(this.state.tagEdit);
+        this.updateTags();
+
     }
 
     addTag() {
-        MCReactPlugin.addTag(this.state.tagEdit).then(result => {
-            if (result) {
-                this.updateTags();
-            }
-        });
+        MCReactPlugin.addTag(this.state.tagEdit);
+        this.updateTags();
+
     }
 
     async updateTags() {
@@ -140,7 +127,7 @@ class RegistrationComponent extends Component {
                 </View>
                 <Text style={styles.body}>{JSON.stringify(this.state.attributes, undefined, 2)}</Text>
 
-                <Text style={styles.smallHeading}>Tags </Text>
+                <Text style={styles.smallHeading}>Tags</Text>
                 <TextInput style={styles.input}
                            onChangeText={value => this.setState({tagEdit: value})}/>
                 <View style={[styles.horizontalContainer, {justifyContent: 'flex-end'}]}>

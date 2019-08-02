@@ -26,6 +26,8 @@
 package com.salesforce.marketingcloud.reactnative;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
@@ -41,10 +43,11 @@ import com.salesforce.marketingcloud.MarketingCloudSdk;
 import java.util.Map;
 import java.util.Set;
 
-@SuppressWarnings("unused")
+import javax.annotation.Nonnull;
+
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
 
-    @SuppressWarnings("WeakerAccess")
     public RNMarketingCloudSdkModule(ReactApplicationContext reactContext) {
         super(reactContext);
     }
@@ -56,41 +59,39 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void isPushEnabled(Promise promise) {
-        handleAction(new Action(promise) {
+        handleAction(new PromiseAction(promise) {
             @Override
-            void execute(MarketingCloudSdk sdk, Promise promise) {
+            void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
                 promise.resolve(sdk.getPushMessageManager().isPushEnabled());
             }
         });
     }
 
     @ReactMethod
-    public void enablePush(Promise promise) {
-        handleAction(new Action(promise) {
+    public void enablePush() {
+        handleAction(new Action() {
             @Override
-            void execute(MarketingCloudSdk sdk, Promise promise) {
+            void execute(MarketingCloudSdk sdk) {
                 sdk.getPushMessageManager().enablePush();
-                promise.resolve(true);
             }
         });
     }
 
     @ReactMethod
-    public void disablePush(Promise promise) {
-        handleAction(new Action(promise) {
+    public void disablePush() {
+        handleAction(new Action() {
             @Override
-            void execute(MarketingCloudSdk sdk, Promise promise) {
+            void execute(MarketingCloudSdk sdk) {
                 sdk.getPushMessageManager().disablePush();
-                promise.resolve(true);
             }
         });
     }
 
     @ReactMethod
     public void getSystemToken(Promise promise) {
-        handleAction(new Action(promise) {
+        handleAction(new PromiseAction(promise) {
             @Override
-            void execute(MarketingCloudSdk sdk, Promise promise) {
+            void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
                 promise.resolve(sdk.getPushMessageManager().getPushToken());
             }
         });
@@ -98,9 +99,9 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getAttributes(Promise promise) {
-        handleAction(new Action(promise) {
+        handleAction(new PromiseAction(promise) {
             @Override
-            void execute(MarketingCloudSdk sdk, Promise promise) {
+            void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
                 Map<String, String> attributes = sdk.getRegistrationManager().getAttributes();
                 WritableMap writableMap = Arguments.createMap();
                 if (!attributes.isEmpty()) {
@@ -114,50 +115,50 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setAttribute(final String key, final String value, Promise promise) {
-        handleAction(new Action(promise) {
+    public void setAttribute(final String key, final String value) {
+        handleAction(new Action() {
             @Override
-            void execute(MarketingCloudSdk sdk, Promise promise) {
-                promise.resolve(sdk.getRegistrationManager().edit().setAttribute(key, value).commit());
+            void execute(MarketingCloudSdk sdk) {
+                sdk.getRegistrationManager().edit().setAttribute(key, value).commit();
             }
         });
     }
 
     @ReactMethod
-    public void clearAttribute(final String key, Promise promise) {
-        handleAction(new Action(promise) {
+    public void clearAttribute(final String key) {
+        handleAction(new Action() {
             @Override
-            void execute(MarketingCloudSdk sdk, Promise promise) {
-                promise.resolve(sdk.getRegistrationManager().edit().clearAttribute(key).commit());
+            void execute(MarketingCloudSdk sdk) {
+                sdk.getRegistrationManager().edit().clearAttribute(key).commit();
             }
         });
     }
 
     @ReactMethod
-    public void addTag(final String tag, Promise promise) {
-        handleAction(new Action(promise) {
+    public void addTag(final String tag) {
+        handleAction(new Action() {
             @Override
-            void execute(MarketingCloudSdk sdk, Promise promise) {
-                promise.resolve(sdk.getRegistrationManager().edit().addTag(tag).commit());
+            void execute(MarketingCloudSdk sdk) {
+                sdk.getRegistrationManager().edit().addTag(tag).commit();
             }
         });
     }
 
     @ReactMethod
-    public void removeTag(final String tag, Promise promise) {
-        handleAction(new Action(promise) {
+    public void removeTag(final String tag) {
+        handleAction(new Action() {
             @Override
-            void execute(MarketingCloudSdk sdk, Promise promise) {
-                promise.resolve(sdk.getRegistrationManager().edit().removeTag(tag).commit());
+            void execute(MarketingCloudSdk sdk) {
+                sdk.getRegistrationManager().edit().removeTag(tag).commit();
             }
         });
     }
 
     @ReactMethod
     public void getTags(Promise promise) {
-        handleAction(new Action(promise) {
+        handleAction(new PromiseAction(promise) {
             @Override
-            void execute(MarketingCloudSdk sdk, Promise promise) {
+            void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
                 Set<String> tags = sdk.getRegistrationManager().getTags();
                 WritableArray array = Arguments.createArray();
                 if (!tags.isEmpty()) {
@@ -171,20 +172,20 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setContactKey(final String contactKey, Promise promise) {
-        handleAction(new Action(promise) {
+    public void setContactKey(final String contactKey) {
+        handleAction(new Action() {
             @Override
-            void execute(MarketingCloudSdk sdk, Promise promise) {
-                promise.resolve(sdk.getRegistrationManager().edit().setContactKey(contactKey).commit());
+            void execute(MarketingCloudSdk sdk) {
+                sdk.getRegistrationManager().edit().setContactKey(contactKey).commit();
             }
         });
     }
 
     @ReactMethod
     public void getContactKey(final Promise promise) {
-        handleAction(new Action(promise) {
+        handleAction(new PromiseAction(promise) {
             @Override
-            void execute(MarketingCloudSdk sdk, Promise promise) {
+            void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
                 promise.resolve(sdk.getRegistrationManager().getContactKey());
             }
         });
@@ -202,12 +203,11 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void logSdkState(Promise p) {
-        handleAction(new Action(p) {
+    public void logSdkState() {
+        handleAction(new Action() {
             @Override
-            void execute(MarketingCloudSdk sdk, Promise promise) {
+            void execute(MarketingCloudSdk sdk) {
                 log("MCSDK STATE", sdk.getSdkState().toString());
-                promise.resolve(true);
             }
         });
     }
@@ -239,21 +239,30 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
     }
 
     abstract class Action {
+        abstract void execute(MarketingCloudSdk sdk);
+
+        void err() {
+        }
+    }
+
+    abstract class PromiseAction extends Action {
 
         private final Promise promise;
 
-        Action(Promise promise) {
+        PromiseAction(@Nonnull Promise promise) {
             this.promise = promise;
         }
 
+        @Override
+        final void execute(MarketingCloudSdk sdk) {
+            execute(sdk, promise);
+        }
+
+        @Override
         void err() {
             promise.reject("MCSDK-INIT", "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
         }
 
-        void execute(MarketingCloudSdk sdk) {
-            execute(sdk, promise);
-        }
-
-        abstract void execute(MarketingCloudSdk sdk, Promise promise);
+        abstract void execute(MarketingCloudSdk sdk, @NonNull Promise promise);
     }
 }

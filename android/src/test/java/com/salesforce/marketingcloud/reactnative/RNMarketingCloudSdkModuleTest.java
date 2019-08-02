@@ -119,11 +119,10 @@ public class RNMarketingCloudSdkModuleTest {
         ShadowMarketingCloudSdk.isReady(true);
 
         // WHEN
-        reactModule.enablePush(promise);
+        reactModule.enablePush();
 
         // THEN
         verify(pushMessageManager).enablePush();
-        verify(promise).resolve(true);
     }
 
     @Test
@@ -132,11 +131,10 @@ public class RNMarketingCloudSdkModuleTest {
         ShadowMarketingCloudSdk.isReady(true);
 
         // WHEN
-        reactModule.disablePush(promise);
+        reactModule.disablePush();
 
         // THEN
         verify(pushMessageManager).disablePush();
-        verify(promise).resolve(true);
     }
 
     @Test
@@ -179,13 +177,12 @@ public class RNMarketingCloudSdkModuleTest {
         when(registrationEditor.commit()).thenReturn(true);
 
         // WHEN
-        reactModule.setAttribute("Name", "Tester", promise);
+        reactModule.setAttribute("Name", "Tester");
 
         // THEN
         InOrder order = inOrder(registrationEditor);
         order.verify(registrationEditor).setAttribute("Name", "Tester");
         order.verify(registrationEditor).commit();
-        verify(promise).resolve(true);
     }
 
     @Test
@@ -195,13 +192,12 @@ public class RNMarketingCloudSdkModuleTest {
         when(registrationEditor.commit()).thenReturn(true);
 
         // WHEN
-        reactModule.clearAttribute("Name", promise);
+        reactModule.clearAttribute("Name");
 
         // THEN
         InOrder order = inOrder(registrationEditor);
         order.verify(registrationEditor).clearAttribute("Name");
         order.verify(registrationEditor).commit();
-        verify(promise).resolve(true);
     }
 
     @Test
@@ -211,13 +207,12 @@ public class RNMarketingCloudSdkModuleTest {
         when(registrationEditor.commit()).thenReturn(true);
 
         // WHEN
-        reactModule.addTag("Testing", promise);
+        reactModule.addTag("Testing");
 
         // THEN
         InOrder order = inOrder(registrationEditor);
         order.verify(registrationEditor).addTag("Testing");
         order.verify(registrationEditor).commit();
-        verify(promise).resolve(true);
     }
 
     @Test
@@ -227,13 +222,12 @@ public class RNMarketingCloudSdkModuleTest {
         when(registrationEditor.commit()).thenReturn(true);
 
         // WHEN
-        reactModule.removeTag("Testing", promise);
+        reactModule.removeTag("Testing");
 
         // THEN
         InOrder order = inOrder(registrationEditor);
         order.verify(registrationEditor).removeTag("Testing");
         order.verify(registrationEditor).commit();
-        verify(promise).resolve(true);
     }
 
     @Test
@@ -262,13 +256,12 @@ public class RNMarketingCloudSdkModuleTest {
         when(registrationEditor.commit()).thenReturn(true);
 
         // WHEN
-        reactModule.setContactKey("test@salesforce.com", promise);
+        reactModule.setContactKey("test@salesforce.com");
 
         // THEN
         InOrder order = inOrder(registrationEditor);
         order.verify(registrationEditor).setContactKey("test@salesforce.com");
         order.verify(registrationEditor).commit();
-        verify(promise).resolve(true);
     }
 
     @Test
@@ -319,10 +312,9 @@ public class RNMarketingCloudSdkModuleTest {
         when(sdk.getSdkState()).thenReturn(state);
 
         // WHEN
-        reactModule.logSdkState(promise);
+        reactModule.logSdkState();
 
         // THEN
-        verify(promise).resolve(true);
         List<LogItem> logs = ShadowLog.getLogsForTag("MCSDK STATE");
         assertEquals(1, logs.size());
     }

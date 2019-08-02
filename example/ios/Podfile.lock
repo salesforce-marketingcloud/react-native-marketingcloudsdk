@@ -83,7 +83,7 @@ PODS:
     - React-Core (= 0.60.0)
     - React-fishhook (= 0.60.0)
   - RNMarketingCloudSdk (1.0.0):
-    - MarketingCloudSDK (~> 6.2)
+    - MarketingCloudSDK (~> 6.3)
     - React
   - yoga (0.60.0.React)
 
@@ -189,9 +189,9 @@ SPEC CHECKSUMS:
   React-RCTText: 685fca2e13b024271048e7e247ef24476f28a41e
   React-RCTVibration: 4ee1cf208ab17a50fafb1c16ffe28fe594a64e4f
   React-RCTWebSocket: fca087d583724aa0e5fef7d911f0f2a28d0f2736
-  RNMarketingCloudSdk: 5f9767d1b3ecf4fade94f2cce256d792805df256
+  RNMarketingCloudSdk: ca97bf2a859aa716e1a7dbb6919436d9a3dfc258
   yoga: 616fde658be980aa60a2158835170f3f9c2d04b4
 
-PODFILE CHECKSUM: b40fc6ebd50e2d2e9fdc4572990595640d4e284a
+PODFILE CHECKSUM: 71af8ce61487504ef012db924937962b60a1c82a
 
-COCOAPODS: 1.7.1
+COCOAPODS: 1.7.5
