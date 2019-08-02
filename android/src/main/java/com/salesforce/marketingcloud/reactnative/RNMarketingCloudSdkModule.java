@@ -47,7 +47,6 @@ import javax.annotation.Nonnull;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
-
     public RNMarketingCloudSdkModule(ReactApplicationContext reactContext) {
         super(reactContext);
     }
@@ -241,12 +240,10 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
     abstract class Action {
         abstract void execute(MarketingCloudSdk sdk);
 
-        void err() {
-        }
+        void err() {}
     }
 
     abstract class PromiseAction extends Action {
-
         private final Promise promise;
 
         PromiseAction(@Nonnull Promise promise) {
@@ -260,7 +257,8 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
 
         @Override
         void err() {
-            promise.reject("MCSDK-INIT", "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
+            promise.reject("MCSDK-INIT",
+                "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
         }
 
         abstract void execute(MarketingCloudSdk sdk, @NonNull Promise promise);
