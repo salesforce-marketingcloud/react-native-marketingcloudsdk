@@ -23,6 +23,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url "https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/repository" }
         mavenLocal()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm

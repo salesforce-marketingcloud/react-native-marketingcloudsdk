@@ -1,0 +1,11 @@
+root: true
+extends: semistandard
+rules:
+  indent: ["error", 4, { "SwitchCase": 1}]
+  switchcase: 0
+  camelcase: off
+  padded-blocks: off
+  operator-linebreak: off
+  no-throw-literal: off
+  space-before-function-paren: off
+  object-curly-spacing: 0

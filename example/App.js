@@ -16,7 +16,7 @@ import {
   View,
 } from "react-native";
 
-import MCReactPlugin from 'react-native-marketing-cloud-sdk';
+import MCReactModule from 'react-native-marketingcloudsdk';
 
 class RegistrationComponent extends Component {
     constructor(props) {
@@ -42,9 +42,9 @@ class RegistrationComponent extends Component {
     }
 
     async updateRegistrationData() {
-        let contactKey = await MCReactPlugin.getContactKey();
-        let attrs = await MCReactPlugin.getAttributes();
-        let tags = await MCReactPlugin.getTags();
+        let contactKey = await MCReactModule.getContactKey();
+        let attrs = await MCReactModule.getAttributes();
+        let tags = await MCReactModule.getTags();
         this.setState({
             contactKey: contactKey,
             attributes: attrs,
@@ -53,61 +53,48 @@ class RegistrationComponent extends Component {
     }
 
     setContactKey() {
-        MCReactPlugin.setContactKey(this.state.contactKeyEdit).then(result => {
-            if (result) {
-                this.updateContactKey();
-            }
-        });
+        MCReactModule.setContactKey(this.state.contactKeyEdit);
+        this.updateContactKey();
     }
 
     async updateContactKey() {
-        let contactKey = await MCReactPlugin.getContactKey();
+        let contactKey = await MCReactModule.getContactKey();
         this.setState({
             contactKey: contactKey,
         });
     }
 
     setAttribute() {
-        MCReactPlugin.setAttribute(this.state.attrKeyEdit, this.state.attrValEdit).then(result => {
-            if (result) {
-                this.updateAttributes();
-            }
-        });
+        MCReactModule.setAttribute(this.state.attrKeyEdit, this.state.attrValEdit);
+        this.updateAttributes();
     }
 
     clearAttribute() {
-        MCReactPlugin.clearAttribute(this.state.attrKeyEdit).then(result => {
-            if (result) {
-                this.updateAttributes();
-            }
-        });
+        MCReactModule.clearAttribute(this.state.attrKeyEdit);
+        this.updateAttributes();
     }
 
     async updateAttributes() {
-        let attrs = await MCReactPlugin.getAttributes();
+        let attrs = await MCReactModule.getAttributes();
         this.setState({
             attributes: attrs,
         });
     }
 
     removeTag() {
-        MCReactPlugin.removeTag(this.state.tagEdit).then(result => {
-            if (result) {
-                this.updateTags();
-            }
-        });
+        MCReactModule.removeTag(this.state.tagEdit);
+        this.updateTags();
+
     }
 
     addTag() {
-        MCReactPlugin.addTag(this.state.tagEdit).then(result => {
-            if (result) {
-                this.updateTags();
-            }
-        });
+        MCReactModule.addTag(this.state.tagEdit);
+        this.updateTags();
+
     }
 
     async updateTags() {
-        let tags = await MCReactPlugin.getTags();
+        let tags = await MCReactModule.getTags();
         this.setState({
             tags: tags,
         });
@@ -140,7 +127,7 @@ class RegistrationComponent extends Component {
                 </View>
                 <Text style={styles.body}>{JSON.stringify(this.state.attributes, undefined, 2)}</Text>
 
-                <Text style={styles.smallHeading}>Tags </Text>
+                <Text style={styles.smallHeading}>Tags</Text>
                 <TextInput style={styles.input}
                            onChangeText={value => this.setState({tagEdit: value})}/>
                 <View style={[styles.horizontalContainer, {justifyContent: 'flex-end'}]}>
@@ -175,9 +162,9 @@ class PushComponent extends Component {
     togglePush() {
         let togglePromise;
         if (this.state.pushEnabled) {
-            togglePromise = MCReactPlugin.disablePush();
+            togglePromise = MCReactModule.disablePush();
         } else {
-            togglePromise = MCReactPlugin.enablePush();
+            togglePromise = MCReactModule.enablePush();
         }
         togglePromise.then(result => {
                 if (result) {
@@ -188,8 +175,8 @@ class PushComponent extends Component {
     }
 
     async updatePushData() {
-        let enabled = await MCReactPlugin.isPushEnabled();
-        let token = await MCReactPlugin.getSystemToken();
+        let enabled = await MCReactModule.isPushEnabled();
+        let token = await MCReactModule.getSystemToken();
         this.setState({
             pushEnabled: enabled,
             pushToken: token
@@ -221,15 +208,15 @@ class LoggingComponent extends Component {
     }
 
      static enableLogging() {
-        MCReactPlugin.enableVerboseLogging();
+        MCReactModule.enableVerboseLogging();
     }
 
      static disableLogging() {
-        MCReactPlugin.disableVerboseLogging();
+        MCReactModule.disableVerboseLogging();
     }
 
      static printSdkState() {
-        MCReactPlugin.logSdkState();
+        MCReactModule.logSdkState();
     }
 
     render() {

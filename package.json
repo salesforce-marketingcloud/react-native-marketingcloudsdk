@@ -1,17 +1,16 @@
 {
-  "name": "react-native-marketing-cloud-sdk",
-  "version": "1.0.0",
-  "description": "TODO",
+  "name": "react-native-marketingcloudsdk",
+  "version": "6.4.0",
+  "description": "A React Native component to access the native Salesforce Marketing Cloud MobilePush SDKs",
+  "author": "Salesforce Marketing Cloud",
+  "license": "BSD-3-Clause",
   "main": "lib/index.js",
   "types": "types/index.d.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/author/repo.git"
+    "url": "git+https://github.com/salesforce-marketingcloud/react-native-marketingcloudsdk.git"
   },
-  "homepage": "https://github.com/author/repo#readme",
+  "homepage": "https://github.com/salesforce-marketingcloud/react-native-marketingcloudsdk",
   "keywords": [
     "react-native-component",
     "react-native",
@@ -21,11 +20,32 @@
     "mobilepush",
     "marketingcloud",
     "marketingcloudsdk"
-
   ],
-  "author": "Salesforce Marketing Cloud",
-  "license": "BSD-3-Clause",
+  "scripts": {
+    "test": "npm run eslint",
+    "gen-docs": "jsdoc2md --template jsdoc2md/TEMPLATE.md lib/*.js > README.md",
+    "eslint": "node node_modules/eslint/bin/eslint lib",
+    "format": "clang-format -i -style=file android/src/main/java/com/salesforce/marketingcloud/reactnative/RNMarketingCloudSdk.java android/src/main/java/com/salesforce/marketingcloud/reactnative/RNMarketingCloudSdkModule.java ios/RNMarketingCloudSdk.h ios/RNMarketingCloudSdk.m lib/index.js",
+    "test:android": "cd android && ./gradlew test"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format && npm test && npm run gen-docs && git add README.md"
+    }
+  },
   "peerDependencies": {
     "react-native": ">=0.60"
+  },
+  "devDependencies": {
+    "clang-format": "^1.2.4",
+    "eslint": "^6.1.0",
+    "eslint-config-semistandard": "^14.0.0",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "husky": "^3.0.2",
+    "jsdoc-to-markdown": "^5.0.0"
   }
 }

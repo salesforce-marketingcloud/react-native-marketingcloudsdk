@@ -28,7 +28,6 @@ target 'example' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'RNMarketingCloudSdk', :path => '../node_modules/react-native-marketing-cloud-sdk'
 
   target 'exampleTests' do
     inherit! :search_paths
