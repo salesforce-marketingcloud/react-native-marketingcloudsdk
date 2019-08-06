@@ -87,7 +87,7 @@ pod install
 
 #### 2. Configure the SDK in your AppDelegate.m class
 
-```
+```objc
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
@@ -109,7 +109,7 @@ pod install
 
 #### 3. Enable Push
 
-// TODO - Requires iOS docs update.
+Follow [these instructions](./ios_push.md) to enable push for iOS.
 
 ## API Reference <a name="reference"></a>
 
