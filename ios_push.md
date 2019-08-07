@@ -98,15 +98,7 @@
         - (void)application:(UIApplication *)application
             didReceiveRemoteNotification:(NSDictionary *)userInfo
                   fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-            UNMutableNotificationContent *theSilentPushContent =
-                [[UNMutableNotificationContent alloc] init];
-            theSilentPushContent.userInfo = userInfo;
-            UNNotificationRequest *theSilentPushRequest =
-                [UNNotificationRequest requestWithIdentifier:[NSUUID UUID].UUIDString
-                                                     content:theSilentPushContent
-                                                     trigger:nil];
-
-            [[MarketingCloudSDK sharedInstance] sfmc_setNotificationRequest:theSilentPushRequest];
+            [[MarketingCloudSDK sharedInstance] sfmc_setNotificationUserInfo:userInfo];
 
             completionHandler(UIBackgroundFetchResultNewData);
         }
