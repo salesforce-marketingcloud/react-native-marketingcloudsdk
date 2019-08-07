@@ -22,7 +22,6 @@
     [mcsdkBuilder sfmc_setAccessToken:@"{MC_ACCESS_TOKEN}"];
     [mcsdkBuilder sfmc_setAnalyticsEnabled:@(YES)];
     [mcsdkBuilder sfmc_setMarketingCloudServerUrl:@"{MC_APP_SERVER_URL}"];
-    [mcsdkBuilder sfmc_build];
 
     NSError *error = nil;
     BOOL success =
