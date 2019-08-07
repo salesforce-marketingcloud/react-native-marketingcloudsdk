@@ -87,7 +87,7 @@ pod install
 
 #### 2. Configure the SDK in your AppDelegate.m class
 
-```
+```objc
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
@@ -96,7 +96,6 @@ pod install
     [mcsdkBuilder sfmc_setAccessToken:@"{MC_ACCESS_TOKEN}"];
     [mcsdkBuilder sfmc_setAnalyticsEnabled:@(YES)];
     [mcsdkBuilder sfmc_setMarketingCloudServerUrl:@"{MC_APP_SERVER_URL}"];
-    [mcsdkBuilder sfmc_build];
 
     NSError *error = nil;
     BOOL success =
@@ -109,7 +108,7 @@ pod install
 
 #### 3. Enable Push
 
-// TODO - Requires iOS docs update.
+Follow [these instructions](./ios_push.md) to enable push for iOS.
 
 ## API Reference <a name="reference"></a>
 
