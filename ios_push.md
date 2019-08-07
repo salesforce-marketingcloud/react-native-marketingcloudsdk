@@ -6,7 +6,7 @@
 
 1. Set your AppDelegate class to adhere to the `UNUserNotificationCenterDelegate` protocol.
 
-        @interface AppDelegate : UIResponder <UIApplicationDelegate RCTBridgeDelegate, UNUserNotificationCenterDelegate>
+        @interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate, UNUserNotificationCenterDelegate>
 
 2.  Extend the SDK configuration code outlined in [Configure the SDK](./README.md#2-configure-the-sdk-in-your-appdelegatem-class) to add support for push registration.
 
