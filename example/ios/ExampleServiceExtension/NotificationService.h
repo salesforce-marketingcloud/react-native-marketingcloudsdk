@@ -1,4 +1,4 @@
-// AppDelegate.h
+// NotificationService.h
 //
 // Copyright (c) 2019 Salesforce, Inc
 //
@@ -26,13 +26,8 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 
-#import <React/RCTBridgeDelegate.h>
-#import <UIKit/UIKit.h>
 #import <UserNotifications/UserNotifications.h>
 
-@interface AppDelegate
-    : UIResponder <UIApplicationDelegate, RCTBridgeDelegate, UNUserNotificationCenterDelegate>
-
-@property(nonatomic, strong) UIWindow *window;
+@interface NotificationService : UNNotificationServiceExtension
 
 @end
