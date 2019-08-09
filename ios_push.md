@@ -107,7 +107,7 @@
     ```
 
 3. **Enable Rich Notifications:** Rich notifications include images, videos, titles and subtitles from the MobilePush app, and mutable content. Mutable content can include personalization in the title, subtitle, or body of your message. 
-    1. In xCode, click **File**
+    1. In Xcode, click **File**
     2. Click **New**
     3. Click **Target**
     4. Select Notification Service Extension
