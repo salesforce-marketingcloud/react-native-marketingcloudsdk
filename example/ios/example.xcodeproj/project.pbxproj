@@ -12,6 +12,8 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		3A89799E22FD985A00C35519 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A89799D22FD985A00C35519 /* NotificationService.m */; };
+		3A8979A222FD985A00C35519 /* ExampleServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3A89799A22FD985A00C35519 /* ExampleServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		534FF958DAB4D74BBE22DF73 /* libPods-exampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1B7DD055055A0AB2384DA37 /* libPods-exampleTests.a */; };
 		97D30E91ED264BDF7213E6EF /* libPods-example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EA0B795838BBE24C194E84C /* libPods-example.a */; };
 /* End PBXBuildFile section */
@@ -24,7 +26,28 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = example;
 		};
+		3A8979A022FD985A00C35519 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3A89799922FD985A00C35519;
+			remoteInfo = ExampleServiceExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3A8979A622FD985B00C35519 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3A8979A222FD985A00C35519 /* ExampleServiceExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0026C2C2DE45C5DB759A2513 /* Pods-example-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-example-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-example-tvOSTests/Pods-example-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -43,6 +66,10 @@
 		1DEEAF8047B260E14755F319 /* Pods-exampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-exampleTests.release.xcconfig"; path = "Target Support Files/Pods-exampleTests/Pods-exampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		2B6A3D42BE4E0563D90248BD /* libPods-example-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-example-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EA0B795838BBE24C194E84C /* libPods-example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A89799A22FD985A00C35519 /* ExampleServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ExampleServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A89799C22FD985A00C35519 /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
+		3A89799D22FD985A00C35519 /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
+		3A89799F22FD985A00C35519 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48A1D9F4D30A76E158FB3FFF /* Pods-example-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-example-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-example-tvOSTests/Pods-example-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		4F00A7752109D1954567E138 /* Pods-exampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-exampleTests.debug.xcconfig"; path = "Target Support Files/Pods-exampleTests/Pods-exampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		73A35717FA1674A26756D338 /* Pods-example-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-example-tvOS.release.xcconfig"; path = "Target Support Files/Pods-example-tvOS/Pods-example-tvOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -69,6 +96,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				97D30E91ED264BDF7213E6EF /* libPods-example.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A89799722FD985A00C35519 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +154,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3A89799B22FD985A00C35519 /* ExampleServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				3A89799C22FD985A00C35519 /* NotificationService.h */,
+				3A89799D22FD985A00C35519 /* NotificationService.m */,
+				3A89799F22FD985A00C35519 /* Info.plist */,
+			);
+			path = ExampleServiceExtension;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +177,7 @@
 				13B07FAE1A68108700A75B9A /* example */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* exampleTests */,
+				3A89799B22FD985A00C35519 /* ExampleServiceExtension */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				CD4A305FD71B9C1BE3BBEFCE /* Pods */,
@@ -147,6 +192,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* example.app */,
 				00E356EE1AD99517003FC87E /* exampleTests.xctest */,
+				3A89799A22FD985A00C35519 /* ExampleServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -199,15 +245,34 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				10609A99153445AAB5C4A410 /* [CP] Copy Pods Resources */,
+				3A8979A622FD985B00C35519 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3A8979A122FD985A00C35519 /* PBXTargetDependency */,
 			);
 			name = example;
 			productName = example;
 			productReference = 13B07F961A680F5B00A75B9A /* example.app */;
 			productType = "com.apple.product-type.application";
+		};
+		3A89799922FD985A00C35519 /* ExampleServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A8979A522FD985B00C35519 /* Build configuration list for PBXNativeTarget "ExampleServiceExtension" */;
+			buildPhases = (
+				3A89799622FD985A00C35519 /* Sources */,
+				3A89799722FD985A00C35519 /* Frameworks */,
+				3A89799822FD985A00C35519 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ExampleServiceExtension;
+			productName = ExampleServiceExtension;
+			productReference = 3A89799A22FD985A00C35519 /* ExampleServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -232,6 +297,11 @@
 							};
 						};
 					};
+					3A89799922FD985A00C35519 = {
+						CreatedOnToolsVersion = 10.3;
+						DevelopmentTeam = RNQ52E7G3P;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "example" */;
@@ -250,6 +320,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* example */,
 				00E356ED1AD99517003FC87E /* exampleTests */,
+				3A89799922FD985A00C35519 /* ExampleServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -268,6 +339,13 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A89799822FD985A00C35519 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,6 +467,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3A89799622FD985A00C35519 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A89799E22FD985A00C35519 /* NotificationService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -396,6 +482,11 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* example */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+		3A8979A122FD985A00C35519 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3A89799922FD985A00C35519 /* ExampleServiceExtension */;
+			targetProxy = 3A8979A022FD985A00C35519 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -501,6 +592,58 @@
 				PRODUCT_NAME = example;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		3A8979A322FD985B00C35519 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = RNQ52E7G3P;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = ExampleServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.exacttarget.reactnative.tester.ExampleServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3A8979A422FD985B00C35519 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = RNQ52E7G3P;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = ExampleServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.exacttarget.reactnative.tester.ExampleServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -620,6 +763,15 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3A8979A522FD985B00C35519 /* Build configuration list for PBXNativeTarget "ExampleServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A8979A322FD985B00C35519 /* Debug */,
+				3A8979A422FD985B00C35519 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
