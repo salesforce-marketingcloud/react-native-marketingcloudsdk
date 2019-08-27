@@ -1,6 +1,6 @@
 {
   "name": "react-native-marketingcloudsdk",
-  "version": "6.4.0",
+  "version": "6.3.0",
   "description": "A React Native component to access the native Salesforce Marketing Cloud MobilePush SDKs",
   "author": "Salesforce Marketing Cloud",
   "license": "BSD-3-Clause",
