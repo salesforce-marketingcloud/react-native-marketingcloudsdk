@@ -81,6 +81,7 @@ import android.util.Log;
 import com.salesforce.marketingcloud.MarketingCloudConfig;
 import com.salesforce.marketingcloud.MarketingCloudSdk;
 import com.salesforce.marketingcloud.notifications.NotificationCustomizationOptions;
+import com.salesforce.marketingcloud.reactnative.RNMarketingCloudSdk;
 ```
 
 ```java
