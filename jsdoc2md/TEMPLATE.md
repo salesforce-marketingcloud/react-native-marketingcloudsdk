@@ -165,3 +165,10 @@ Follow [these instructions](./ios_push.md) to enable push for iOS.
 {{>members~}}
 {{/class}}
 
+### Javascript
+
+Import the SKD in your js file:
+
+```javascript
+import MCReactModule from 'react-native-marketingcloudsdk'
+```
