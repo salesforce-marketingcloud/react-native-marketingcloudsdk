@@ -118,12 +118,21 @@ public void onCreate() {
 
 #### 1. Install pod for Marketing Cloud SDK
 
+Add the SDK in ios/Pod.file
+```shell
+pod 'RNMarketingCloudSdk', :path => '../node_modules/react-native-marketingcloudsdk'
+```
+In terminal run the following command:
 ```shell
 cd ios
 pod install
 ```
 
 #### 2. Configure the SDK in your AppDelegate.m class
+
+```objc
+#import <MarketingCloudSDK/MarketingCloudSDK.h>
+````
 
 ```objc
 - (BOOL)application:(UIApplication *)application
@@ -155,3 +164,4 @@ Follow [these instructions](./ios_push.md) to enable push for iOS.
 {{>member-index~}}
 {{>members~}}
 {{/class}}
+
