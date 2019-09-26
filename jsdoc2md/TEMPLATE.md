@@ -157,14 +157,6 @@ pod install
 
 Follow [these instructions](./ios_push.md) to enable push for iOS.
 
-## API Reference <a name="reference"></a>
-
-{{#class name="MCReactModule"}}
-{{>body~}}
-{{>member-index~}}
-{{>members~}}
-{{/class}}
-
 ### Javascript
 
 Import the SKD in your js file:
@@ -172,3 +164,11 @@ Import the SKD in your js file:
 ```javascript
 import MCReactModule from 'react-native-marketingcloudsdk'
 ```
+
+## API Reference <a name="reference"></a>
+
+{{#class name="MCReactModule"}}
+{{>body~}}
+{{>member-index~}}
+{{>members~}}
+{{/class}}
