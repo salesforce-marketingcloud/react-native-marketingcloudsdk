@@ -105,7 +105,7 @@ public void onCreate() {
                     .setAccessToken("{MC_ACCESS_TOKEN}")
                     .setSenderId("{FCM_SENDER_ID_FOR_MC_APP}")
                     .setMarketingCloudServerUrl("{MC_APP_SERVER_URL}")
-                    .setNotificationCustomizationOptions(NotificationCustomizationOptions.create(R.drawable.ic_notification))
+                    .setNotificationCustomizationOptions(NotificationCustomizationOptions.create(R.drawable.ic_notification)) // folder where is your notification icon
                     .setAnalyticsEnabled(true)
                     .build(this),
             initializationStatus -> Log.e("INIT", initializationStatus.toString()));
@@ -118,7 +118,7 @@ public void onCreate() {
 
 #### 1. Install pod for Marketing Cloud SDK
 
-Add the SDK in ios/Pod.file
+Add the SDK in ios/Podfile
 ```shell
 pod 'RNMarketingCloudSdk', :path => '../node_modules/react-native-marketingcloudsdk'
 ```
