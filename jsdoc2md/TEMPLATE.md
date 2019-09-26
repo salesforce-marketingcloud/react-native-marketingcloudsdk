@@ -28,6 +28,24 @@ allprojects {
 }
 ```
 
+`android/settings.gradle`
+```java
+// ...
+// Add the following lines:
+include ':react-native-marketingcloudsdk'
+project(':react-native-marketingcloudsdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-marketingcloudsdk/android')
+```
+
+`android/app/build.gradle`
+```java
+// ...
+dependencies {
+  // ...
+  // Add the following line:
+  implementation project(':react-native-marketingcloudsdk')
+}
+```
+
 #### 2. Provide FCM credentials
 
 1. To enable push support for the Android platform you will need to include the google-services.json file.  Download the file from your Firebase console and place it into the `android/app` directory
@@ -55,6 +73,26 @@ apply plugin: 'com.google.gms.google-services
 ```
 
 #### 3. Configure the SDK in your MainApplication.java class
+
+```java
+// ...
+// Add the following lines:
+import android.util.Log;
+import com.salesforce.marketingcloud.MarketingCloudConfig;
+import com.salesforce.marketingcloud.MarketingCloudSdk;
+import com.salesforce.marketingcloud.notifications.NotificationCustomizationOptions;
+```
+
+```java
+@Override
+protected List<ReactPackage> getPackages() {
+  return Arrays.asList(
+    // ...
+    // Add the following line:
+    new RNMarketingCloudSdk()
+  );
+}
+```
 
 ```java
 @Override
