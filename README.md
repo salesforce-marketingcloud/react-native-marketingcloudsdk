@@ -135,7 +135,7 @@ pod install
 #import <MarketingCloudSDK/MarketingCloudSDK.h>
 ````
 
-```objc
+```c
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
@@ -150,8 +150,112 @@ pod install
         [[MarketingCloudSDK sharedInstance] sfmc_configureWithDictionary:[mcsdkBuilder sfmc_build]
                                                                    error:&error];
 
+    if (success == YES) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          if (@available(iOS 10, *)) {
+            // set the UNUserNotificationCenter delegate - the delegate must be set here in
+            // didFinishLaunchingWithOptions
+            [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+            [[UIApplication sharedApplication] registerForRemoteNotifications];
+
+            [[UNUserNotificationCenter currentNotificationCenter]
+                        requestAuthorizationWithOptions:UNAuthorizationOptionAlert |
+                                                        UNAuthorizationOptionSound |
+                                                        UNAuthorizationOptionBadge
+            completionHandler:^(BOOL granted, NSError *_Nullable error) {
+              if (error == nil) {
+                  if (granted == YES) {
+                      dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                      });
+                  }
+              }
+            }];
+          } 
+          else {
+            #if __IPHONE_OS_VERSION_MIN_REQUIRED < 100000
+                    UIUserNotificationSettings *settings = [UIUserNotificationSettings
+                        settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound |
+                                          UIUserNotificationTypeAlert
+                              categories:nil];
+                    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+            #endif
+                    [[UIApplication sharedApplication] registerForRemoteNotifications];
+                }
+            });
+      }
+      else {
+        //  MarketingCloudSDK sfmc_configure failed
+        os_log_debug(OS_LOG_DEFAULT, "MarketingCloudSDK sfmc_configure failed with error = %@",
+                    error);
+      }
+
     // ... The rest of the didFinishLaunchingWithOptions method  
 }
+
+// Marketing Cloud
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [[MarketingCloudSDK sharedInstance] sfmc_setDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+  os_log_debug(OS_LOG_DEFAULT, "didFailToRegisterForRemoteNotificationsWithError = %@", error);
+}
+
+
+// The method will be called on the delegate when the user responded to the notification by opening
+// the application, dismissing the notification or choosing a UNNotificationAction. The delegate
+// must be set before the application returns from applicationDidFinishLaunching:.
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response
+             withCompletionHandler:(void (^)(void))completionHandler {
+    // tell the MarketingCloudSDK about the notification
+    [[MarketingCloudSDK sharedInstance] sfmc_setNotificationRequest:response.notification.request];
+
+    if (completionHandler != nil) {
+        completionHandler();
+    }
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:
+             (void (^)(UNNotificationPresentationOptions options))completionHandler {
+    NSLog(@"User Info : %@", notification.request.content.userInfo);
+    completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert |
+                      UNAuthorizationOptionBadge);
+  
+}
+
+// This method is REQUIRED for correct functionality of the SDK.
+// This method will be called on the delegate when the application receives a silent push
+- (void)application:(UIApplication *)application
+    didReceiveRemoteNotification:(NSDictionary *)userInfo
+          fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    UNMutableNotificationContent *theSilentPushContent =
+        [[UNMutableNotificationContent alloc] init];
+    theSilentPushContent.userInfo = userInfo;
+    UNNotificationRequest *theSilentPushRequest =
+        [UNNotificationRequest requestWithIdentifier:[NSUUID UUID].UUIDString
+                                             content:theSilentPushContent
+                                             trigger:nil];
+
+    [[MarketingCloudSDK sharedInstance] sfmc_setNotificationRequest:theSilentPushRequest];
+
+    completionHandler(UIBackgroundFetchResultNewData);
+  
+}
+
+```
+
+#### 2.1. Configure the SDK in your AppDelegate.h class
+
+```objc
+#import <UserNotifications/UserNotifications.h>
+```
+
+```objc
+// Add UNUserNotificationCenterDelegate
+@interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate, UNUserNotificationCenterDelegate>
 ```
 
 #### 3. Enable Push
