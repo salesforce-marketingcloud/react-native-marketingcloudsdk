@@ -51,7 +51,7 @@ buildscript {
 `android/app/build.gradle`
 ```groovy
 // Add the following line to the bottom of the file:
-apply plugin: 'com.google.gms.google-services
+apply plugin: 'com.google.gms.google-services'
 ```
 
 #### 3. Configure the SDK in your MainApplication.java class
