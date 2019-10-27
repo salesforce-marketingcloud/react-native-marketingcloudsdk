@@ -14,6 +14,12 @@ Release notes for the plugin can be found [here](CHANGELOG.md)
 npm install react-native-marketingcloudsdk --save
 ```
 
+#### 2. Using React Native Link
+
+```shell
+react-native link react-native-marketingcloudsdk
+```
+
 ### Android Setup
 
 #### 1. Add Marketing Cloud SDK repository
