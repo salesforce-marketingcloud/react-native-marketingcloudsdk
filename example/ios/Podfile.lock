@@ -11,7 +11,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - MarketingCloudSDK (6.3.4)
+  - MarketingCloudSDK (7.0.0)
   - React (0.60.0):
     - React-Core (= 0.60.0)
     - React-DevSupport (= 0.60.0)
@@ -82,8 +82,8 @@ PODS:
   - React-RCTWebSocket (0.60.0):
     - React-Core (= 0.60.0)
     - React-fishhook (= 0.60.0)
-  - RNMarketingCloudSdk (6.4.0):
-    - MarketingCloudSDK (~> 6.3)
+  - RNMarketingCloudSdk (7.0.0):
+    - MarketingCloudSDK (~> 7.0)
     - React
   - yoga (0.60.0.React)
 
