@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+### Version 7.1.0
+
+* Using the 7.1.x versions of the Android and iOS Marketing Cloud SDK.
+
 ### Version 7.0.0
 
 * Using the 7.0.x versions of the Android and iOS Marketing Cloud SDK.
