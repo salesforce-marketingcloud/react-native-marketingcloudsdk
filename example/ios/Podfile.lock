@@ -11,7 +11,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - MarketingCloudSDK (6.3.4)
+  - MarketingCloudSDK (7.0.1)
   - React (0.60.0):
     - React-Core (= 0.60.0)
     - React-DevSupport (= 0.60.0)
@@ -82,8 +82,8 @@ PODS:
   - React-RCTWebSocket (0.60.0):
     - React-Core (= 0.60.0)
     - React-fishhook (= 0.60.0)
-  - RNMarketingCloudSdk (6.4.0):
-    - MarketingCloudSDK (~> 6.3)
+  - RNMarketingCloudSdk (7.0.0):
+    - MarketingCloudSDK (~> 7.0)
     - React
   - yoga (0.60.0.React)
 
@@ -113,7 +113,7 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - boost-for-react-native
     - MarketingCloudSDK
 
@@ -170,7 +170,7 @@ SPEC CHECKSUMS:
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  MarketingCloudSDK: 7db3486920319aa9f643b6b4c826f7075e55fcae
+  MarketingCloudSDK: cbd23ea0fb5576a71b54137652051e23e1892f2c
   React: 4b3c068e793e96672dcd186a2b572fac43e4b031
   React-Core: 3dc86b22920597f813c62a96db3165950b64826b
   React-cxxreact: 0dacb291e59b81e7c3f22a2118bee853ba8a60d2
@@ -189,9 +189,9 @@ SPEC CHECKSUMS:
   React-RCTText: 685fca2e13b024271048e7e247ef24476f28a41e
   React-RCTVibration: 4ee1cf208ab17a50fafb1c16ffe28fe594a64e4f
   React-RCTWebSocket: fca087d583724aa0e5fef7d911f0f2a28d0f2736
-  RNMarketingCloudSdk: 38c37a8709d198d71f25ef4623663894cefcd8e0
+  RNMarketingCloudSdk: bcaa68b1acc90e3ba64baa4981dbe9db5de42156
   yoga: 616fde658be980aa60a2158835170f3f9c2d04b4
 
-PODFILE CHECKSUM: 71af8ce61487504ef012db924937962b60a1c82a
+PODFILE CHECKSUM: ca8767c442c617f9f5e1f3c0cd4a30b606bb3751
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4
