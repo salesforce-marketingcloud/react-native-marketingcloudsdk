@@ -1,3 +1,4 @@
+
 # Salesforce Marketing Cloud React Native 
 
 Use this module to implement the Marketing Cloud MobilePush SDK for your [iOS](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/) and [Android](http://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/) applications.
@@ -17,8 +18,7 @@ npm install react-native-marketingcloudsdk --save
 ### Android Setup
 
 #### 1. Add Marketing Cloud SDK repository
-
-`android/build.gradle`
+1. `android/build.gradle`
 ```groovy
 allprojects {
     repositories {
@@ -27,6 +27,14 @@ allprojects {
     }
 }
 ```
+2. `android/app/build.gradle`
+```groovy
+dependencies {
+  //... Other dependencies
+  implementation 'com.salesforce.marketingcloud:marketingcloudsdk:{currentVersion}'
+}
+```
+*Replace {currentVersion} with 7.1.0 to use the latest SDK version.*
 
 #### 2. Provide FCM credentials
 
