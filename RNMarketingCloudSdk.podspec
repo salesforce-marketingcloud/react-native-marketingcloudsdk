@@ -15,6 +15,6 @@ Pod::Spec.new do |s|
   s.requires_arc     = true
 
   s.dependency       'React'
-  s.dependency       'MarketingCloudSDK', '~> 7.2'
+  s.dependency       'MarketingCloudSDK', '~> 7.3'
   s.static_framework = true
 end
