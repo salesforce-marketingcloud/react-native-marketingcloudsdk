@@ -25,11 +25,9 @@
  */
 package com.salesforce.marketingcloud.reactnative;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import android.util.Log;
-
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -39,10 +37,8 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.salesforce.marketingcloud.MCLogListener;
 import com.salesforce.marketingcloud.MarketingCloudSdk;
-
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.Nonnull;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
