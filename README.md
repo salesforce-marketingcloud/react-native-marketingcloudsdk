@@ -1,5 +1,12 @@
 # Salesforce Marketing Cloud React Native 
 
+---
+
+### 3rd Party Product Language Disclaimers
+Where possible, we changed noninclusive terms to align with our company value of Equality. We retained noninclusive terms to document a third-party system, but we encourage the developer community to embrace more inclusive language. We can update the term when it’s no longer required for technical accuracy.
+
+---
+
 Use this module to implement the Marketing Cloud MobilePush SDK for your [iOS](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/) and [Android](http://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/) applications.
 
 ## Release Notes
