@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-export class MCReactModule {
+export default class MCReactModule {
     static isPushEnabled(): Promise<boolean>;
     static enablePush(): void;
     static disablePush(): void;
