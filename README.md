@@ -49,11 +49,19 @@ buildscript {
   }
 }
 ```
-3. Apply the plugin
-`android/app/build.gradle`
+3. Update the `android/app/build.gradle`
 ```groovy
 // Add the following line to the bottom of the file:
 apply plugin: 'com.google.gms.google-services
+```
+
+```groovy
+dependencies {
+  // other dependencies ...
+  
+  // Add the ConstraintLayout dependency
+  implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+}
 ```
 
 #### 3. Configure the SDK in your MainApplication.java class
