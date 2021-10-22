@@ -160,18 +160,12 @@ class PushComponent extends Component {
     }
 
     togglePush() {
-        let togglePromise;
         if (this.state.pushEnabled) {
-            togglePromise = MCReactModule.disablePush();
+            MCReactModule.disablePush();
         } else {
-            togglePromise = MCReactModule.enablePush();
+            MCReactModule.enablePush();
         }
-        togglePromise.then(result => {
-                if (result) {
-                    this.updatePushData()
-                }
-            }
-        );
+        this.updatePushData()
     }
 
     async updatePushData() {

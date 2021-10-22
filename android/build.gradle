@@ -16,11 +16,11 @@ def safeExtGet(prop, fallback) {
 }
 
 android {
-    compileSdkVersion safeExtGet('compileSdkVersion', 28)
+    compileSdkVersion safeExtGet('compileSdkVersion', 30)
 
     defaultConfig {
         minSdkVersion safeExtGet('minSdkVersion', 21)
-        targetSdkVersion safeExtGet('targetSdkVersion', 28)
+        targetSdkVersion safeExtGet('targetSdkVersion', 30)
     }
     lintOptions {
         abortOnError false
@@ -40,7 +40,7 @@ repositories {
 
 dependencies {
     api "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
-    api "com.salesforce.marketingcloud:marketingcloudsdk:${safeExtGet('marketingCloudVersion', '7.4.+')}"
+    api "com.salesforce.marketingcloud:marketingcloudsdk:${safeExtGet('marketingCloudVersion', '7.4.2')}"
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:4.3'
     testImplementation 'org.mockito:mockito-core:2.28.2'
