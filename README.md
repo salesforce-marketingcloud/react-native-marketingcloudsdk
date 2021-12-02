@@ -8,6 +8,8 @@ Release notes for the plugin can be found [here](CHANGELOG.md)
 
 ## Installation
 
+* Plugin has a version dependency on React Native v0.60+
+
 #### 1. Add plugin to your application via [npm](https://www.npmjs.com/package/react-native-marketingcloudsdk)
 
 ```shell
@@ -324,3 +326,6 @@ Android and Xcode/Console.app for iOS).  This content can help diagnose most iss
 the SDK and will be requested by the Marketing Cloud support team.
 
 **Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+
+### 3rd Party Product Language Disclaimers
+Where possible, we changed noninclusive terms to align with our company value of Equality. We retained noninclusive terms to document a third-party system, but we encourage the developer community to embrace more inclusive language. We can update the term when it’s no longer required for technical accuracy.
