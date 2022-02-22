@@ -152,6 +152,18 @@ public class RNMarketingCloudSdkModuleTest {
     }
 
     @Test
+    public void setPushToken() {
+        // GIVEN
+        ShadowMarketingCloudSdk.isReady(true);
+
+        // WHEN
+        reactModule.setPushToken("new-token");
+
+        // THEN
+        verify(pushMessageManager).setPushToken("new-token");
+    }
+
+    @Test
     public void getAttributes() {
         // GIVEN
         ShadowMarketingCloudSdk.isReady(true);

@@ -121,6 +121,7 @@ Follow [these instructions](./ios_push.md) to enable push for iOS.
     * [.enablePush()](#MCReactModule.enablePush)
     * [.disablePush()](#MCReactModule.disablePush)
     * [.getSystemToken()](#MCReactModule.getSystemToken) ⇒ <code>Promise.&lt;?string&gt;</code>
+    * [.setPushToken(token)](#MCReactModule.setPushToken)
     * [.getAttributes()](#MCReactModule.getAttributes) ⇒ <code>Promise.&lt;Object.&lt;string, string&gt;&gt;</code>
     * [.setAttribute(key, value)](#MCReactModule.setAttribute)
     * [.clearAttribute(key)](#MCReactModule.clearAttribute)
@@ -181,6 +182,23 @@ the device.
 
 - [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/messages/push/PushMessageManager.html#getPushToken())
 - [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledoc/Classes/MarketingCloudSDK.html#//api/name/sfmc_deviceToken)
+
+<a name="MCReactModule.setPushToken"></a>
+
+### MCReactModule.setPushToken(token)
+Set the Firebase or APN token used by the Marketing Cloud to send push messages to
+the device.
+
+**Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/7.4/com.salesforce.marketingcloud.messages.push/-push-message-manager/set-push-token.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledoc/Classes/MarketingCloudSDK.html#/c:objc(cs)MarketingCloudSDK(im)sfmc_setDeviceToken:)
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| token | <code>string</code> | The Firebase or APN token to be used by Marketing Cloud |
 
 <a name="MCReactModule.getAttributes"></a>
 
@@ -326,9 +344,6 @@ Android and Xcode/Console.app for iOS).  This content can help diagnose most iss
 the SDK and will be requested by the Marketing Cloud support team.
 
 **Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
-
-
----
 
 ### 3rd Party Product Language Disclaimers
 Where possible, we changed noninclusive terms to align with our company value of Equality. We retained noninclusive terms to document a third-party system, but we encourage the developer community to embrace more inclusive language. We can update the term when it’s no longer required for technical accuracy.
