@@ -14,6 +14,7 @@ import {
   TextInput,
   Button,
   View,
+  ToastAndroid,
 } from "react-native";
 
 import MCReactModule from 'react-native-marketingcloudsdk';
@@ -199,6 +200,7 @@ class LoggingComponent extends Component {
         LoggingComponent.enableLogging = LoggingComponent.enableLogging.bind(this);
         LoggingComponent.disableLogging = LoggingComponent.disableLogging.bind(this);
         LoggingComponent.printSdkState = LoggingComponent.printSdkState.bind(this);
+        LoggingComponent.printSdkState = LoggingComponent.track.bind(this);
     }
 
      static enableLogging() {
@@ -211,6 +213,11 @@ class LoggingComponent extends Component {
 
      static printSdkState() {
         MCReactModule.logSdkState();
+    }
+
+    static track() {
+        MCReactModule.track("ReactEvent", "some attributes");
+        ToastAndroid.show("ReactEvent Tracked", ToastAndroid.SHORT);
     }
 
     render() {
@@ -227,6 +234,10 @@ class LoggingComponent extends Component {
                 <Button
                     title="Print SdkState"
                     onPress={LoggingComponent.printSdkState}/>
+                <View height={4}/>
+                <Button
+                    title="Track"
+                    onPress={LoggingComponent.track}/>
             </View>
         );
     }

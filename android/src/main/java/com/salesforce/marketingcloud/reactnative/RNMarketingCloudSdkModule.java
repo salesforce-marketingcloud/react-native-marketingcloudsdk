@@ -37,7 +37,9 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.salesforce.marketingcloud.MCLogListener;
 import com.salesforce.marketingcloud.MarketingCloudSdk;
+import com.salesforce.marketingcloud.events.EventManager;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Set;
 import javax.annotation.Nonnull;
 
@@ -203,6 +205,18 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
             @Override
             void execute(MarketingCloudSdk sdk) {
                 log("MCSDK STATE", sdk.getSdkState().toString());
+            }
+        });
+    }
+
+    @ReactMethod
+    public void track(final String name, final String attributes) {
+        handleAction(new Action() {
+            @Override
+            void execute(MarketingCloudSdk sdk) {
+                HashMap<String, Object> attr = new HashMap<>();
+                attr.put("someKey", attributes);
+                sdk.getEventManager().track(EventManager.customEvent(name, attr));
             }
         });
     }
