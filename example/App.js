@@ -203,20 +203,24 @@ class LoggingComponent extends Component {
         LoggingComponent.printSdkState = LoggingComponent.track.bind(this);
     }
 
-     static enableLogging() {
+    static enableLogging() {
         MCReactModule.enableVerboseLogging();
     }
 
-     static disableLogging() {
+    static disableLogging() {
         MCReactModule.disableVerboseLogging();
     }
 
-     static printSdkState() {
+    static printSdkState() {
         MCReactModule.logSdkState();
     }
 
     static track() {
-        MCReactModule.track("ReactEvent", "some attributes");
+        var attributesMap = {};
+        attributesMap["price"] = 2.99;
+        attributesMap["product"] = 'Product 1';
+        attributesMap["isCashPaymentAvailable"] = true;
+        MCReactModule.track("ReactEvent", attributesMap);
         ToastAndroid.show("ReactEvent Tracked", ToastAndroid.SHORT);
     }
 

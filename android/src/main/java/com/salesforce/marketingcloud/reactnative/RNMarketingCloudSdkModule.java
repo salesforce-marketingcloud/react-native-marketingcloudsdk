@@ -34,6 +34,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.salesforce.marketingcloud.MCLogListener;
 import com.salesforce.marketingcloud.MarketingCloudSdk;
@@ -210,12 +211,12 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void track(final String name, final String attributes) {
+    public void track(final String name, final ReadableMap attributes) {
         handleAction(new Action() {
             @Override
             void execute(MarketingCloudSdk sdk) {
                 HashMap<String, Object> attr = new HashMap<>();
-                attr.put("someKey", attributes);
+                attr.put("someKey", attributes.toHashMap());
                 sdk.getEventManager().track(EventManager.customEvent(name, attr));
             }
         });
