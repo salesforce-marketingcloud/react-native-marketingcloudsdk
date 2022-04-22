@@ -258,49 +258,6 @@ class LoggingComponent extends Component {
     }
 }
 
-class InboxMessagesViewComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            inboxAllMessages: '',
-        };
-    }
-
-
-    async componentDidMount(): void {
-        this.getAllIBMessages();
-    }
-
-    async getAllIBMessages() {
-        let allMsgs = await MCReactModule.getAllInboxMessages()
-        console.log('Item: %o', allMsgs);
-        let str=''
-        for (const [key, val] of Object.entries(allMsgs[0])) {
-            console.log("key:", key);
-            console.log("type of value:",typeof val);
-            console.log("value:", val);
-            str += `${key}:${val}\n`;
-            //console.log("str:", str)
-        }
-
-        this.setState({
-            inboxAllMessages: allMsgs,
-        });
-    }
-
-
-    render() {
-        return (
-            <View style={styles.verticalContainer}>
-                <Text style={styles.heading}>Inbox All Messages</Text>
-                <View style={{flexDirection: "row"}}>
-                    <Text style={styles.body}>{JSON.stringify(this.state.inboxAllMessages, undefined, 2)}</Text>
-                </View>
-            </View>
-        );
-    }
-}
-
 type Props = {};
 export default class App extends Component<Props> {
     constructor(props) {
