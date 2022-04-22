@@ -15,9 +15,11 @@ import {
   Button,
   View,
   ToastAndroid,
+  Alert,
+  Platform
 } from "react-native";
 
-import MCReactModule from 'react-native-marketingcloudsdk';
+import MCReactModule from "react-native-marketingcloudsdk";
 
 class RegistrationComponent extends Component {
     constructor(props) {
@@ -200,8 +202,17 @@ class LoggingComponent extends Component {
         LoggingComponent.enableLogging = LoggingComponent.enableLogging.bind(this);
         LoggingComponent.disableLogging = LoggingComponent.disableLogging.bind(this);
         LoggingComponent.printSdkState = LoggingComponent.printSdkState.bind(this);
-        LoggingComponent.printSdkState = LoggingComponent.track.bind(this);
+        LoggingComponent.track = LoggingComponent.track.bind(this);
     }
+
+
+     static notifyMessage(msg) {
+        if (Platform.OS === 'android') {
+          ToastAndroid.show(msg, ToastAndroid.SHORT);
+        } else {
+          Alert.alert(msg);
+        }
+      }
 
     static enableLogging() {
         MCReactModule.enableVerboseLogging();
@@ -221,7 +232,7 @@ class LoggingComponent extends Component {
         attributesMap["product"] = 'Product 1';
         attributesMap["isCashPaymentAvailable"] = true;
         MCReactModule.track("ReactEvent", attributesMap);
-        ToastAndroid.show("ReactEvent Tracked", ToastAndroid.SHORT);
+        LoggingComponent.notifyMessage("ReactEvent Tracked");
     }
 
     render() {
@@ -242,6 +253,49 @@ class LoggingComponent extends Component {
                 <Button
                     title="Track"
                     onPress={LoggingComponent.track}/>
+            </View>
+        );
+    }
+}
+
+class InboxMessagesViewComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            inboxAllMessages: '',
+        };
+    }
+
+
+    async componentDidMount(): void {
+        this.getAllIBMessages();
+    }
+
+    async getAllIBMessages() {
+        let allMsgs = await MCReactModule.getAllInboxMessages()
+        console.log('Item: %o', allMsgs);
+        let str=''
+        for (const [key, val] of Object.entries(allMsgs[0])) {
+            console.log("key:", key);
+            console.log("type of value:",typeof val);
+            console.log("value:", val);
+            str += `${key}:${val}\n`;
+            //console.log("str:", str)
+        }
+
+        this.setState({
+            inboxAllMessages: allMsgs,
+        });
+    }
+
+
+    render() {
+        return (
+            <View style={styles.verticalContainer}>
+                <Text style={styles.heading}>Inbox All Messages</Text>
+                <View style={{flexDirection: "row"}}>
+                    <Text style={styles.body}>{JSON.stringify(this.state.inboxAllMessages, undefined, 2)}</Text>
+                </View>
             </View>
         );
     }

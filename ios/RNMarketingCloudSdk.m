@@ -128,4 +128,8 @@ RCT_EXPORT_METHOD(logSdkState) {
     [self splitLog:[[MarketingCloudSDK sharedInstance] sfmc_getSDKState]];
 }
 
+RCT_EXPORT_METHOD(track: (NSString* _Nonnull)name withAttributes: (NSDictionary *_Nonnull) attributes) {
+  [[MarketingCloudSDK sharedInstance] sfmc_track:[SFMCEvent customEventWithName:name withAttributes:attributes]];
+}
+
 @end

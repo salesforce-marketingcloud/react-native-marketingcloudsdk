@@ -330,8 +330,7 @@ the SDK and will be requested by the Marketing Cloud support team.
 <a name="MCReactModule.track"></a>
 
 ### MCReactModule.track()
-This method helps to track events, which could result in actions such as an InApp Message
-being displayed.
+This method helps to track events, which could result in actions such as an InApp Message being displayed.
 
 **Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
 
