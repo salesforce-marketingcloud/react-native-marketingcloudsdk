@@ -58,6 +58,7 @@ class RegistrationComponent extends Component {
     setContactKey() {
         MCReactModule.setContactKey(this.state.contactKeyEdit);
         this.updateContactKey();
+        LoggingComponent.notifyMessage("ContactKey Set");
     }
 
     async updateContactKey() {
@@ -70,11 +71,13 @@ class RegistrationComponent extends Component {
     setAttribute() {
         MCReactModule.setAttribute(this.state.attrKeyEdit, this.state.attrValEdit);
         this.updateAttributes();
+        LoggingComponent.notifyMessage("Attribute Set");
     }
 
     clearAttribute() {
         MCReactModule.clearAttribute(this.state.attrKeyEdit);
         this.updateAttributes();
+        LoggingComponent.notifyMessage("Attribute Cleared");
     }
 
     async updateAttributes() {
@@ -87,13 +90,13 @@ class RegistrationComponent extends Component {
     removeTag() {
         MCReactModule.removeTag(this.state.tagEdit);
         this.updateTags();
-
+        LoggingComponent.notifyMessage("Tag Removed");
     }
 
     addTag() {
         MCReactModule.addTag(this.state.tagEdit);
         this.updateTags();
-
+        LoggingComponent.notifyMessage("Tag Added");
     }
 
     async updateTags() {
@@ -165,8 +168,10 @@ class PushComponent extends Component {
     togglePush() {
         if (this.state.pushEnabled) {
             MCReactModule.disablePush();
+            LoggingComponent.notifyMessage("Push Disabled");
         } else {
             MCReactModule.enablePush();
+            LoggingComponent.notifyMessage("Push Enabled");
         }
         this.updatePushData()
     }
@@ -216,23 +221,22 @@ class LoggingComponent extends Component {
 
     static enableLogging() {
         MCReactModule.enableVerboseLogging();
+        LoggingComponent.notifyMessage("Logging Enabled");
     }
 
     static disableLogging() {
         MCReactModule.disableVerboseLogging();
+        LoggingComponent.notifyMessage("Logging Disabled");
     }
 
     static printSdkState() {
         MCReactModule.logSdkState();
+        LoggingComponent.notifyMessage("Check Platform Logs for Output");
     }
 
     static track() {
-        var attributesMap = {};
-        attributesMap["price"] = 2.99;
-        attributesMap["product"] = 'Product 1';
-        attributesMap["isCashPaymentAvailable"] = true;
-        MCReactModule.track("ReactEvent", attributesMap);
-        LoggingComponent.notifyMessage("ReactEvent Tracked");
+        MCReactModule.track("ScreenViewed", { "ScreenName" : "HomeScreen" });
+        LoggingComponent.notifyMessage("ScreenViewed Tracked");
     }
 
     render() {
@@ -251,7 +255,7 @@ class LoggingComponent extends Component {
                     onPress={LoggingComponent.printSdkState}/>
                 <View height={4}/>
                 <Button
-                    title="Track"
+                    title="Track ScreenViewed 4 HomeScreen"
                     onPress={LoggingComponent.track}/>
             </View>
         );

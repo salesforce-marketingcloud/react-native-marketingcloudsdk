@@ -205,7 +205,11 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
         handleAction(new Action() {
             @Override
             void execute(MarketingCloudSdk sdk) {
-                log("MCSDK STATE", sdk.getSdkState().toString());
+                try {
+                    log("~#RNMCSdkModule", "SDK State: " + sdk.getSdkState().toString(2));
+                } catch(Exception e) {
+                    // NO-OP
+                }
             }
         });
     }
@@ -215,9 +219,12 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
         handleAction(new Action() {
             @Override
             void execute(MarketingCloudSdk sdk) {
-                HashMap<String, Object> attr = new HashMap<>();
-                attr.put("someKey", attributes.toHashMap());
-                sdk.getEventManager().track(EventManager.customEvent(name, attr));
+                try {
+                    sdk.getEventManager().track(EventManager.customEvent(name, attributes.toHashMap()));
+                    log("~#RNMCSdkModule", name + " Event Tracked.");
+                } catch(Exception e) {
+                    log("~#RNMCSdkModule", "Error Tracking Event: " + e.getMessage());
+                }
             }
         });
     }
