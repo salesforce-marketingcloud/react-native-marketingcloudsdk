@@ -132,6 +132,7 @@ Follow [these instructions](./ios_push.md) to enable push for iOS.
     * [.enableVerboseLogging()](#MCReactModule.enableVerboseLogging)
     * [.disableVerboseLogging()](#MCReactModule.disableVerboseLogging)
     * [.logSdkState()](#MCReactModule.logSdkState)
+    * [.track()](#MCReactModule.track)
 
 <a name="MCReactModule.isPushEnabled"></a>
 
@@ -324,6 +325,12 @@ Disables verbose logging within the native Marketing Cloud SDK.
 Instructs the native SDK to log the SDK state to the native logging system (Logcat for
 Android and Xcode/Console.app for iOS).  This content can help diagnose most issues within
 the SDK and will be requested by the Marketing Cloud support team.
+
+**Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+<a name="MCReactModule.track"></a>
+
+### MCReactModule.track()
+This method helps to track events, which could result in actions such as an InApp Message being displayed.
 
 **Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
 

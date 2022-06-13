@@ -14,9 +14,12 @@ import {
   TextInput,
   Button,
   View,
+  ToastAndroid,
+  Alert,
+  Platform
 } from "react-native";
 
-import MCReactModule from 'react-native-marketingcloudsdk';
+import MCReactModule from "react-native-marketingcloudsdk";
 
 class RegistrationComponent extends Component {
     constructor(props) {
@@ -55,6 +58,7 @@ class RegistrationComponent extends Component {
     setContactKey() {
         MCReactModule.setContactKey(this.state.contactKeyEdit);
         this.updateContactKey();
+        LoggingComponent.notifyMessage("ContactKey Set");
     }
 
     async updateContactKey() {
@@ -67,11 +71,13 @@ class RegistrationComponent extends Component {
     setAttribute() {
         MCReactModule.setAttribute(this.state.attrKeyEdit, this.state.attrValEdit);
         this.updateAttributes();
+        LoggingComponent.notifyMessage("Attribute Set");
     }
 
     clearAttribute() {
         MCReactModule.clearAttribute(this.state.attrKeyEdit);
         this.updateAttributes();
+        LoggingComponent.notifyMessage("Attribute Cleared");
     }
 
     async updateAttributes() {
@@ -84,13 +90,13 @@ class RegistrationComponent extends Component {
     removeTag() {
         MCReactModule.removeTag(this.state.tagEdit);
         this.updateTags();
-
+        LoggingComponent.notifyMessage("Tag Removed");
     }
 
     addTag() {
         MCReactModule.addTag(this.state.tagEdit);
         this.updateTags();
-
+        LoggingComponent.notifyMessage("Tag Added");
     }
 
     async updateTags() {
@@ -162,8 +168,10 @@ class PushComponent extends Component {
     togglePush() {
         if (this.state.pushEnabled) {
             MCReactModule.disablePush();
+            LoggingComponent.notifyMessage("Push Disabled");
         } else {
             MCReactModule.enablePush();
+            LoggingComponent.notifyMessage("Push Enabled");
         }
         this.updatePushData()
     }
@@ -199,18 +207,36 @@ class LoggingComponent extends Component {
         LoggingComponent.enableLogging = LoggingComponent.enableLogging.bind(this);
         LoggingComponent.disableLogging = LoggingComponent.disableLogging.bind(this);
         LoggingComponent.printSdkState = LoggingComponent.printSdkState.bind(this);
+        LoggingComponent.track = LoggingComponent.track.bind(this);
     }
 
-     static enableLogging() {
+
+     static notifyMessage(msg) {
+        if (Platform.OS === 'android') {
+          ToastAndroid.show(msg, ToastAndroid.SHORT);
+        } else {
+          Alert.alert(msg);
+        }
+      }
+
+    static enableLogging() {
         MCReactModule.enableVerboseLogging();
+        LoggingComponent.notifyMessage("Logging Enabled");
     }
 
-     static disableLogging() {
+    static disableLogging() {
         MCReactModule.disableVerboseLogging();
+        LoggingComponent.notifyMessage("Logging Disabled");
     }
 
-     static printSdkState() {
+    static printSdkState() {
         MCReactModule.logSdkState();
+        LoggingComponent.notifyMessage("Check Platform Logs for Output");
+    }
+
+    static track() {
+        MCReactModule.track("ScreenViewed", { "ScreenName" : "HomeScreen" });
+        LoggingComponent.notifyMessage("ScreenViewed Tracked");
     }
 
     render() {
@@ -227,6 +253,10 @@ class LoggingComponent extends Component {
                 <Button
                     title="Print SdkState"
                     onPress={LoggingComponent.printSdkState}/>
+                <View height={4}/>
+                <Button
+                    title="Track ScreenViewed 4 HomeScreen"
+                    onPress={LoggingComponent.track}/>
             </View>
         );
     }

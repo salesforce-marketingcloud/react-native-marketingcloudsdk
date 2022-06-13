@@ -13,14 +13,19 @@
     "react-native-marketingcloudsdk": "file:.."
   },
   "devDependencies": {
-    "@babel/core": "^7.5.0",
-    "@babel/runtime": "^7.5.0",
-    "@react-native-community/eslint-config": "^0.0.5",
+    "@babel/core": "7.16.7",
+    "@babel/preset-flow": "7.16.7",
+    "@babel/runtime": "7.16.7",
+    "@babel/traverse": "7.16.7",
     "babel-jest": "^24.8.0",
     "eslint": "^6.0.1",
     "jest": "^24.8.0",
-    "metro-react-native-babel-preset": "^0.55.0",
+    "metro-react-native-babel-preset": "^0.59.0",
+    "@react-native-community/eslint-config": "^0.0.5",
     "react-test-renderer": "16.8.6"
+ },
+ "resolutions": {
+    "@babel/traverse": "7.16.7"
   },
   "jest": {
     "preset": "react-native"
