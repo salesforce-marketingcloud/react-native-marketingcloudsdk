@@ -1,6 +1,6 @@
 Change Log
 ==========
-### Version 7.4.4
+### Version 7.5.0
 
 * Using the 7.4.x versions of the Android Marketing Cloud SDK.
 
