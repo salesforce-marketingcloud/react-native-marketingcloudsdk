@@ -17,6 +17,8 @@ import com.salesforce.marketingcloud.MarketingCloudSdk;
 import com.salesforce.marketingcloud.MCLogListener;
 import com.salesforce.marketingcloud.UrlHandler;
 import com.salesforce.marketingcloud.notifications.NotificationCustomizationOptions;
+import com.salesforce.marketingcloud.notifications.NotificationManager;
+import com.salesforce.marketingcloud.notifications.NotificationMessage;
 import com.salesforce.marketingcloud.registration.Registration;
 import com.salesforce.marketingcloud.registration.RegistrationManager;
 
@@ -88,8 +90,21 @@ public class MainApplication extends Application implements ReactApplication, Ur
         .setAccessToken(this.getResources().getString(R.string.PUSH_ACCESS_TOKEN))
         .setSenderId(this.getResources().getString(R.string.PUSH_SENDER_ID))
         .setMarketingCloudServerUrl(this.getResources().getString(R.string.PUSH_TSE))
-        .setNotificationCustomizationOptions(
-            NotificationCustomizationOptions.create(R.drawable.ic_notification))
+        .setNotificationCustomizationOptions(NotificationCustomizationOptions.create(R.drawable.ic_notification,
+            new NotificationManager.NotificationLaunchIntentProvider() {
+              @Override public PendingIntent getNotificationPendingIntent(Context context,
+                  NotificationMessage notificationMessage) {
+                if (notificationMessage.url().isEmpty()) {
+                  return PendingIntent.getActivity(context, new Random().nextInt(),
+                      context.getPackageManager().getLaunchIntentForPackage(context.getPackageName()),
+                      PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+                } else {
+                  return PendingIntent.getActivity(context, new Random().nextInt(),
+                      new Intent(Intent.ACTION_VIEW, Uri.parse(notificationMessage.url())),
+                      PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+                }
+              }
+            }, null))
         .setAnalyticsEnabled(true)
         .setUrlHandler(this)
         .build(this), initializationStatus -> Log.i(TAG, "InitStatus: " + initializationStatus.toString()));
@@ -97,6 +112,6 @@ public class MainApplication extends Application implements ReactApplication, Ur
 
   @Override public PendingIntent handleUrl(Context context, String url, String urlSource) {
     return PendingIntent.getActivity(context, new Random().nextInt(),
-        new Intent(Intent.ACTION_VIEW, Uri.parse(url)), PendingIntent.FLAG_UPDATE_CURRENT);
+        new Intent(Intent.ACTION_VIEW, Uri.parse(url)), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
   }
 }

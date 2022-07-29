@@ -1,5 +1,9 @@
 Change Log
 ==========
+### Version 7.5.1
+
+* Android 12 support, v7.4.3 of the Android SDK or higher required.
+
 ### Version 7.5.0
 
 * Using the 7.4.x versions of the Android Marketing Cloud SDK.
