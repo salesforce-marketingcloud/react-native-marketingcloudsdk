@@ -4,7 +4,7 @@
 
     ![push enablement](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/assets/SDKConfigure8.png)
 
-1. Set your AppDelegate class to adhere to the `UNUserNotificationCenterDelegate` protocol.
+1. Set your AppDelegate class in `Appdelegate.h` to adhere to the `UNUserNotificationCenterDelegate` protocol.
 
         @interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate, UNUserNotificationCenterDelegate>
 
