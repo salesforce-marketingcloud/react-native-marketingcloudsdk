@@ -1,5 +1,9 @@
 Change Log
 ==========
+### Version 7.5.2
+
+* Removed unit tests from released artifact.
+
 ### Version 7.5.1
 
 * Android 12 support, v7.4.3 of the Android SDK or higher required.
