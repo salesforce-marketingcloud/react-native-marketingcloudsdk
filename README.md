@@ -90,6 +90,10 @@ pod install
 #### 2. Configure the SDK in your AppDelegate.m class
 
 ```objc
+// Add this import at the top (before #if RCT_NEW_ARCH_ENABLED)
+#import <MarketingCloudSDK/MarketingCloudSDK.h>
+// Other imports ...
+
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
