@@ -156,6 +156,7 @@ class PushComponent extends Component {
         this.state = {
             pushEnabled: false,
             pushToken: '',
+            deviceId: '',
             toggleEnabled: false
         };
         this.togglePush = this.togglePush.bind(this);
@@ -179,9 +180,11 @@ class PushComponent extends Component {
     async updatePushData() {
         let enabled = await MCReactModule.isPushEnabled();
         let token = await MCReactModule.getSystemToken();
+        let deviceId = await MCReactModule.getDeviceId();
         this.setState({
             pushEnabled: enabled,
-            pushToken: token
+            pushToken: token,
+            deviceId: deviceId
         });
     }
 
@@ -195,6 +198,10 @@ class PushComponent extends Component {
                 <View style={{flexDirection: "row"}}>
                     <Text style={styles.smallHeading}>Push Token: </Text>
                     <Text style={styles.body} selectable={true}>{this.state.pushToken}</Text>
+                </View>
+                <View style={{flexDirection: "row"}}>
+                    <Text style={styles.smallHeading}>Device Id: </Text>
+                    <Text style={styles.body} selectable={true}>{this.state.deviceId}</Text>
                 </View>
             </View>
         );

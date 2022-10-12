@@ -132,4 +132,11 @@ RCT_EXPORT_METHOD(track: (NSString* _Nonnull)name withAttributes: (NSDictionary 
   [[MarketingCloudSDK sharedInstance] sfmc_track:[SFMCEvent customEventWithName:name withAttributes:attributes]];
 }
 
+RCT_EXPORT_METHOD(getDeviceId
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    NSString *deviceId = [[MarketingCloudSDK sharedInstance] sfmc_deviceIdentifier];
+    resolve(deviceId);
+}
+
 @end

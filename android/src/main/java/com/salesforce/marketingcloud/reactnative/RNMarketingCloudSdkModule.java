@@ -229,6 +229,16 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
         });
     }
 
+    @ReactMethod
+    public void getDeviceId(final Promise promise) {
+        handleAction(new PromiseAction(promise) {
+            @Override
+            void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
+                promise.resolve(sdk.getRegistrationManager().getDeviceId());
+            }
+        });
+    }
+
     private void handleAction(final Action action) {
         boolean initializing = MarketingCloudSdk.isInitializing();
         boolean ready = MarketingCloudSdk.isReady();
