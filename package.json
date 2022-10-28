@@ -1,6 +1,6 @@
 {
-  "name": "react-native-marketingcloudsdk",
-  "version": "7.5.2",
+  "name": "react-native-marketingcloudsdk-taqtile",
+  "version": "7.5.3",
   "description": "A React Native component to access the native Salesforce Marketing Cloud MobilePush SDKs",
   "author": "Salesforce Marketing Cloud",
   "license": "BSD-3-Clause",
