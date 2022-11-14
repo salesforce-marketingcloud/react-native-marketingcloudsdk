@@ -125,6 +125,13 @@ declare class MCReactModule {
      */
     static getContactKey(): Promise<string | null>;
     /**
+     * Returns the contact id currently set on the device.
+     * @returns  {Promise<?string>} A promise to the current contact id.
+     * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/registration/RegistrationManager.html#getDeviceId()|Android Docs}
+     * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledoc/Classes/MarketingCloudSDK.html#//api/name/sfmc_deviceId|iOS Docs}
+     */
+    static getDeviceId(): Promise<string | null>;
+    /**
      * Enables verbose logging within the native Marketing Cloud SDK.
      * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/MarketingCloudSdk.html#setLogLevel(int)|Android Docs}
      * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledoc/Classes/MarketingCloudSDK.html#//api/name/sfmc_setDebugLoggingEnabled:|iOS Docs}

@@ -85,6 +85,13 @@ RCT_EXPORT_METHOD(getContactKey
     resolve(contactKey);
 }
 
+RCT_EXPORT_METHOD(getDeviceId
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    NSString *getDeviceId = [[MarketingCloudSDK sharedInstance] sfmc_deviceId];
+    resolve(getDeviceId);
+}
+
 RCT_EXPORT_METHOD(addTag : (NSString *_Nonnull)tag) {
     [[MarketingCloudSDK sharedInstance] sfmc_addTag:tag];
 }
