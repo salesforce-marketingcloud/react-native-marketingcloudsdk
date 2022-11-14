@@ -125,6 +125,7 @@ Follow [these instructions](./ios_push.md) to enable push for iOS.
     * [.enablePush()](#MCReactModule.enablePush)
     * [.disablePush()](#MCReactModule.disablePush)
     * [.getSystemToken()](#MCReactModule.getSystemToken) ⇒ <code>Promise.&lt;?string&gt;</code>
+    * [.getDeviceId()](#MCReactModule.getDeviceId) ⇒ <code>Promise.&lt;?string&gt;</code>
     * [.getAttributes()](#MCReactModule.getAttributes) ⇒ <code>Promise.&lt;Object.&lt;string, string&gt;&gt;</code>
     * [.setAttribute(key, value)](#MCReactModule.setAttribute)
     * [.clearAttribute(key)](#MCReactModule.clearAttribute)
@@ -149,7 +150,7 @@ SDK.
     enabled.  
 **See**
 
-- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/messages/push/PushMessageManager.html#isPushEnabled())
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/6.4/reference/com/salesforce/marketingcloud/messages/push/PushMessageManager.html#isPushEnabled())
 - [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledoc/Classes/MarketingCloudSDK.html#//api/name/sfmc_pushEnabled)
 
 <a name="MCReactModule.enablePush"></a>
@@ -160,7 +161,7 @@ Enables push messaging in the native Marketing Cloud SDK.
 **Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
 **See**
 
-- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/messages/push/PushMessageManager.html#enablePush())
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/6.4/reference/com/salesforce/marketingcloud/messages/push/PushMessageManager.html#enablePush())
 - [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledoc/Classes/MarketingCloudSDK.html#//api/name/sfmc_setPushEnabled:)
 
 <a name="MCReactModule.disablePush"></a>
@@ -171,7 +172,7 @@ Disables push messaging in the native Marketing Cloud SDK.
 **Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
 **See**
 
-- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/messages/push/PushMessageManager.html#disablePush())
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/6.4/reference/com/salesforce/marketingcloud/messages/push/PushMessageManager.html#disablePush())
 - [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledoc/Classes/MarketingCloudSDK.html#//api/name/sfmc_setPushEnabled:)
 
 <a name="MCReactModule.getSystemToken"></a>
@@ -184,8 +185,21 @@ the device.
 **Returns**: <code>Promise.&lt;?string&gt;</code> - A promise to the system token string.  
 **See**
 
-- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/messages/push/PushMessageManager.html#getPushToken())
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/6.4/reference/com/salesforce/marketingcloud/messages/push/PushMessageManager.html#getPushToken())
 - [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledoc/Classes/MarketingCloudSDK.html#//api/name/sfmc_deviceToken)
+
+<a name="MCReactModule.getDeviceId"></a>
+
+### MCReactModule.getDeviceId() ⇒ <code>Promise.&lt;?string&gt;</code>
+Returns the device ID used by the Marketing Cloud to send push messages to
+the device.
+
+**Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+**Returns**: <code>Promise.&lt;?string&gt;</code> - A promise to the device id string.  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/6.4/reference/com/salesforce/marketingcloud/messages/push/PushMessageManager.html#getDeviceId())
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledoc/Classes/MarketingCloudSDK.html#//api/name/sfmc_deviceId)
 
 <a name="MCReactModule.getAttributes"></a>
 
