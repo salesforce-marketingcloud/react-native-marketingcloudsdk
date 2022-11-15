@@ -116,6 +116,10 @@ RCT_EXPORT_METHOD(getAttributes
     resolve((attributes != nil) ? attributes : @[]);
 }
 
+RCT_EXPORT_METHOD(setPushToken : (NSString *_Nonnull)token) {
+    [[MarketingCloudSDK sharedInstance] sfmc_setDeviceToken:token];
+}
+
 RCT_EXPORT_METHOD(enableVerboseLogging) {
     [[MarketingCloudSDK sharedInstance] sfmc_setDebugLoggingEnabled:YES];
 }
