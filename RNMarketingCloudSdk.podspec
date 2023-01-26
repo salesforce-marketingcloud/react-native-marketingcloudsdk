@@ -11,10 +11,10 @@ Pod::Spec.new do |s|
   s.author           = package['author']
   s.platform         = :ios, "10.0"
   s.source           = { :git => "https://github.com/author/RNMarketingCloudSdk.git", :tag => "master" }
-  s.source_files     = "ios/**/*.{h,m}"
+  s.source_files     = "ios/**/*.{h,m,swift}"
   s.requires_arc     = true
 
   s.dependency       'React'
-  s.dependency       'MarketingCloudSDK', '~> 7.6'
+  s.dependency       'MarketingCloudSDK', '~> 8.0'
   s.static_framework = true
 end
