@@ -25,111 +25,71 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#import "RNMarketingCloudSdk.h"
-#import <MarketingCloudSDK/MarketingCloudSDK.h>
+#import "React/RCTBridgeModule.h"
+#import "React/RCTEventEmitter.h"
 
-const int LOG_LENGTH = 800;
+@interface RCT_EXTERN_MODULE (RNMarketingCloudSdk, RCTEventEmitter)
 
-@implementation RNMarketingCloudSdk
-
-- (dispatch_queue_t)methodQueue {
-    return dispatch_get_main_queue();
-}
-
-- (void)log:(NSString *)msg {
-    if (@available(iOS 10, *)) {
-        if (self.logger == nil) {
-            self.logger = os_log_create("com.salesforce.marketingcloudsdk", "ReactNative");
-        }
-        os_log_info(self.logger, "%@", msg);
-    } else {
-        NSLog(@"%@", msg);
-    }
-}
-- (void)splitLog:(NSString *)msg {
-    NSInteger length = msg.length;
-    for (int i = 0; i < length; i += LOG_LENGTH) {
-        NSInteger rangeLength = MIN(length - i, LOG_LENGTH);
-        [self log:[msg substringWithRange:NSMakeRange((NSUInteger)i, (NSUInteger)rangeLength)]];
-    }
-}
-
-RCT_EXPORT_MODULE()
-
-RCT_EXPORT_METHOD(isPushEnabled
+RCT_EXTERN_METHOD(isPushEnabled
                   : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    BOOL status = [[MarketingCloudSDK sharedInstance] sfmc_pushEnabled];
-    resolve(@(status));
-}
+                  : (RCTPromiseRejectBlock)reject)
 
-RCT_EXPORT_METHOD(enablePush) { [[MarketingCloudSDK sharedInstance] sfmc_setPushEnabled:YES]; }
+RCT_EXTERN_METHOD(enablePush)
 
-RCT_EXPORT_METHOD(disablePush) { [[MarketingCloudSDK sharedInstance] sfmc_setPushEnabled:NO]; }
+RCT_EXTERN_METHOD(disablePush)
 
-RCT_EXPORT_METHOD(getSystemToken
+RCT_EXTERN_METHOD(getSystemToken
                   : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    NSString *deviceToken = [[MarketingCloudSDK sharedInstance] sfmc_deviceToken];
-    resolve(deviceToken);
-}
+                  : (RCTPromiseRejectBlock)reject)
 
-RCT_EXPORT_METHOD(setContactKey : (NSString *_Nonnull)contactKey) {
-    [[MarketingCloudSDK sharedInstance] sfmc_setContactKey:contactKey];
-}
+RCT_EXTERN_METHOD(setSystemToken:(NSString *_Nonnull)systemToken
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXPORT_METHOD(getContactKey
+RCT_EXTERN_METHOD(getDeviceID
                   : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    NSString *contactKey = [[MarketingCloudSDK sharedInstance] sfmc_contactKey];
-    resolve(contactKey);
-}
+                  : (RCTPromiseRejectBlock)reject)
 
-RCT_EXPORT_METHOD(addTag : (NSString *_Nonnull)tag) {
-    [[MarketingCloudSDK sharedInstance] sfmc_addTag:tag];
-}
+RCT_EXTERN_METHOD(setContactKey : (NSString *_Nonnull)contactKey)
 
-RCT_EXPORT_METHOD(removeTag : (NSString *_Nonnull)tag) {
-    [[MarketingCloudSDK sharedInstance] sfmc_removeTag:tag];
-}
-
-RCT_EXPORT_METHOD(getTags
+RCT_EXTERN_METHOD(getContactKey
                   : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    NSSet *tags = [[MarketingCloudSDK sharedInstance] sfmc_tags];
-    NSArray *arr = [tags allObjects];
-    resolve(arr);
-}
+                  : (RCTPromiseRejectBlock)reject)
 
-RCT_EXPORT_METHOD(setAttribute : (NSString *_Nonnull)name value : (NSString *_Nonnull)value) {
-    [[MarketingCloudSDK sharedInstance] sfmc_setAttributeNamed:name value:value];
-}
+RCT_EXTERN_METHOD(addTag
+                  : (NSString *_Nonnull)tag
+                  resolver: (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject)
 
-RCT_EXPORT_METHOD(clearAttribute : (NSString *_Nonnull)name) {
-    [[MarketingCloudSDK sharedInstance] sfmc_clearAttributeNamed:name];
-}
+RCT_EXTERN_METHOD(removeTag
+                  : (NSString *_Nonnull)tag
+                  resolver: (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject)
 
-RCT_EXPORT_METHOD(getAttributes
+RCT_EXTERN_METHOD(getTags
                   : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    NSDictionary *attributes = [[MarketingCloudSDK sharedInstance] sfmc_attributes];
-    resolve((attributes != nil) ? attributes : @[]);
-}
+                  : (RCTPromiseRejectBlock)reject)
 
-RCT_EXPORT_METHOD(enableVerboseLogging) {
-    [[MarketingCloudSDK sharedInstance] sfmc_setDebugLoggingEnabled:YES];
-}
+RCT_EXTERN_METHOD(setAttribute : (NSString *_Nonnull)name value : (NSString *_Nonnull)value)
 
-RCT_EXPORT_METHOD(disableVerboseLogging) {
-    [[MarketingCloudSDK sharedInstance] sfmc_setDebugLoggingEnabled:NO];
-}
+RCT_EXTERN_METHOD(clearAttribute : (NSString *_Nonnull)name)
 
-RCT_EXPORT_METHOD(logSdkState) {
-    [self splitLog:[[MarketingCloudSDK sharedInstance] sfmc_getSDKState]];
-}
+RCT_EXTERN_METHOD(getAttributes
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject)
 
-RCT_EXPORT_METHOD(track: (NSString* _Nonnull)name withAttributes: (NSDictionary *_Nonnull) attributes) {
-  [[MarketingCloudSDK sharedInstance] sfmc_track:[SFMCEvent customEventWithName:name withAttributes:attributes]];
-}
+RCT_EXTERN_METHOD(enableVerboseLogging)
+
+RCT_EXTERN_METHOD(logSdkState)
+
+RCT_EXTERN_METHOD(getSdkState
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(track : (NSString *_Nonnull)name attributes : (NSDictionary *_Nonnull)attributes)
+
+RCT_EXTERN_METHOD(refresh
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject)
 
 @end
