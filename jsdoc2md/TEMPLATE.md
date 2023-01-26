@@ -1,4 +1,4 @@
-# Salesforce Marketing Cloud React Native 
+# Salesforce Marketing Cloud React Native
 
 Use this module to implement the Marketing Cloud MobilePush SDK for your [iOS](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/) and [Android](http://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/) applications.
 
@@ -8,12 +8,12 @@ Release notes for the plugin can be found [here](CHANGELOG.md)
 
 ## Installation
 
-* Plugin has a version dependency on React Native v0.60+
+- Plugin has a version dependency on React Native v0.60+
 
-#### 1. Add plugin to your application via [npm](https://www.npmjs.com/package/react-native-marketingcloudsdk)
+#### 1. Add plugin to your application via [npm](https://www.npmjs.com/package/@orustecnologia/react-native-marketingcloudsdk)
 
 ```shell
-npm install react-native-marketingcloudsdk --save
+npm install @orustecnologia/react-native-marketingcloudsdk --save
 ```
 
 ### Android Setup
@@ -21,6 +21,7 @@ npm install react-native-marketingcloudsdk --save
 #### 1. Add Marketing Cloud SDK repository
 
 `android/build.gradle`
+
 ```groovy
 allprojects {
     repositories {
@@ -32,10 +33,11 @@ allprojects {
 
 #### 2. Provide FCM credentials
 
-1. To enable push support for the Android platform you will need to include the google-services.json file.  Download the file from your Firebase console and place it into the `android/app` directory
+1. To enable push support for the Android platform you will need to include the google-services.json file. Download the file from your Firebase console and place it into the `android/app` directory
 
 2. Include the Google Services plugin in your build
-`android/build.gradle`
+   `android/build.gradle`
+
 ```groovy
 buildscript {
   repositories {
@@ -49,8 +51,10 @@ buildscript {
   }
 }
 ```
+
 3. Apply the plugin
-`android/app/build.gradle`
+   `android/app/build.gradle`
+
 ```groovy
 // Add the following line to the bottom of the file:
 apply plugin: 'com.google.gms.google-services
@@ -74,7 +78,7 @@ public void onCreate() {
                     .build(this),
             initializationStatus -> Log.e("INIT", initializationStatus.toString()));
 
-    // ... The rest of the onCreate method    
+    // ... The rest of the onCreate method
 }
 ```
 
@@ -104,7 +108,7 @@ pod install
         [[MarketingCloudSDK sharedInstance] sfmc_configureWithDictionary:[mcsdkBuilder sfmc_build]
                                                                    error:&error];
 
-    // ... The rest of the didFinishLaunchingWithOptions method  
+    // ... The rest of the didFinishLaunchingWithOptions method
 }
 ```
 
@@ -121,4 +125,5 @@ Follow [these instructions](./ios_push.md) to enable push for iOS.
 {{/class}}
 
 ### 3rd Party Product Language Disclaimers
+
 Where possible, we changed noninclusive terms to align with our company value of Equality. We retained noninclusive terms to document a third-party system, but we encourage the developer community to embrace more inclusive language. We can update the term when it’s no longer required for technical accuracy.

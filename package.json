@@ -8,9 +8,9 @@
   "types": "types/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/salesforce-marketingcloud/react-native-marketingcloudsdk.git"
+    "url": "git+https://github.com/orustecnologia/react-native-marketingcloudsdk.git"
   },
-  "homepage": "https://github.com/salesforce-marketingcloud/react-native-marketingcloudsdk",
+  "homepage": "https://github.com/orustecnologia/react-native-marketingcloudsdk",
   "keywords": [
     "react-native-component",
     "react-native",
