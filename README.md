@@ -10,10 +10,10 @@ Release notes for the plugin can be found [here](CHANGELOG.md)
 
 - Plugin has a version dependency on React Native v0.60+
 
-#### 1. Add plugin to your application via [npm](https://www.npmjs.com/package/@orustecnologia/react-native-marketingcloudsdk)
+#### 1. Add plugin to your application via [npm](https://www.npmjs.com/package/@allboatsrise/react-native-marketingcloudsdk)
 
 ```shell
-npm install @orustecnologia/react-native-marketingcloudsdk --save
+npm install @allboatsrise/react-native-marketingcloudsdk --save
 ```
 
 ### Android Setup
@@ -94,10 +94,6 @@ pod install
 #### 2. Configure the SDK in your AppDelegate.m class
 
 ```objc
-// Add this import at the top (before #if RCT_NEW_ARCH_ENABLED)
-#import <MarketingCloudSDK/MarketingCloudSDK.h>
-// Other imports ...
-
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
@@ -129,6 +125,8 @@ Follow [these instructions](./ios_push.md) to enable push for iOS.
   - [.enablePush()](#MCReactModule.enablePush)
   - [.disablePush()](#MCReactModule.disablePush)
   - [.getSystemToken()](#MCReactModule.getSystemToken) ⇒ <code>Promise.&lt;?string&gt;</code>
+  - [.setSystemToken(systemToken)](#MCReactModule.setSystemToken)
+  - [.getDeviceID()](#MCReactModule.getDeviceID) ⇒ <code>Promise.&lt;?string&gt;</code>
   - [.getAttributes()](#MCReactModule.getAttributes) ⇒ <code>Promise.&lt;Object.&lt;string, string&gt;&gt;</code>
   - [.setAttribute(key, value)](#MCReactModule.setAttribute)
   - [.clearAttribute(key)](#MCReactModule.clearAttribute)
@@ -140,7 +138,9 @@ Follow [these instructions](./ios_push.md) to enable push for iOS.
   - [.enableVerboseLogging()](#MCReactModule.enableVerboseLogging)
   - [.disableVerboseLogging()](#MCReactModule.disableVerboseLogging)
   - [.logSdkState()](#MCReactModule.logSdkState)
+  - [.getSdkState()](#MCReactModule.getSdkState) ⇒ <code>Promise.&lt;string&gt;</code>
   - [.track()](#MCReactModule.track)
+  - [.refresh()](#MCReactModule.refresh) ⇒ <code>Promise.&lt;(&#x27;throttled&#x27;\|&#x27;updated&#x27;\|&#x27;failed&#x27;\|&#x27;unknown&#x27;)&gt;</code>
 
 <a name="MCReactModule.isPushEnabled"></a>
 
@@ -194,6 +194,37 @@ the device.
 
 - [Android Docs](<https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/messages/push/PushMessageManager.html#getPushToken()>)
 - [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledoc/Classes/MarketingCloudSDK.html#//api/name/sfmc_deviceToken)
+
+<a name="MCReactModule.setSystemToken"></a>
+
+### MCReactModule.setSystemToken(systemToken)
+
+Sets the token used by the Marketing Cloud to send push messages to
+the device.
+
+**Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+**See**
+
+- [Android Docs](<https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/6.4/reference/com/salesforce/marketingcloud/messages/push/PushMessageManager.html#setPushToken(java.lang.String)>)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledoc/Classes/MarketingCloudSDK.html#//api/name/sfmc_setDeviceToken:)
+
+| Param       | Type                | Description                                            |
+| ----------- | ------------------- | ------------------------------------------------------ |
+| systemToken | <code>string</code> | The value to be set as the token of the device's user. |
+
+<a name="MCReactModule.getDeviceID"></a>
+
+### MCReactModule.getDeviceID() ⇒ <code>Promise.&lt;?string&gt;</code>
+
+Returns the deviceID used by the Marketing Cloud to send push messages to
+the device.
+
+**Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+**Returns**: <code>Promise.&lt;?string&gt;</code> - A promise to the device ID.  
+**See**
+
+- [Android Docs](<https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/registration/RegistrationManager.html#getDeviceId()>)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledoc/Classes/MarketingCloudSDK.html#//api/name/sfmc_deviceIdentifier)
 
 <a name="MCReactModule.getAttributes"></a>
 
@@ -331,6 +362,7 @@ Enables verbose logging within the native Marketing Cloud SDK.
 Disables verbose logging within the native Marketing Cloud SDK.
 
 **Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+**Platform**: android  
 **See**
 
 - [Android Docs](<https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/MarketingCloudSdk.html#setLogLevel(int)>)
@@ -345,13 +377,33 @@ Android and Xcode/Console.app for iOS). This content can help diagnose most issu
 the SDK and will be requested by the Marketing Cloud support team.
 
 **Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+<a name="MCReactModule.getSdkState"></a>
+
+### MCReactModule.getSdkState() ⇒ <code>Promise.&lt;string&gt;</code>
+
+Outputs a formatted, easily readable block of text describing the current status of the SDK.
+This content can help diagnose most issues within the SDK and will be requested by
+the Marketing Cloud support team.
+
+**Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+**Platform**: ios  
 <a name="MCReactModule.track"></a>
 
 ### MCReactModule.track()
 
-This method helps to track events, which could result in actions such as an InApp Message being displayed.
+This method helps to track events, which could result in actions such as an InApp Message
+being displayed.
 
-**Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)
+**Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+<a name="MCReactModule.refresh"></a>
+
+### MCReactModule.refresh() ⇒ <code>Promise.&lt;(&#x27;throttled&#x27;\|&#x27;updated&#x27;\|&#x27;failed&#x27;\|&#x27;unknown&#x27;)&gt;</code>
+
+Ask MarketingCloudSDK to update its data. MarketingCloudSDK will throttle attempts based on
+the time since the last time this was called.
+
+**Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+**Platform**: ios
 
 ### 3rd Party Product Language Disclaimers
 
