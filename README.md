@@ -59,6 +59,16 @@ apply plugin: 'com.google.gms.google-services
 #### 3. Configure the SDK in your MainApplication.java class
 
 ```java
+// imports
+import android.util.Log;
+import com.salesforce.marketingcloud.MCLogListener;
+import com.salesforce.marketingcloud.MarketingCloudSdk;
+import com.salesforce.marketingcloud.MarketingCloudConfig;
+import com.salesforce.marketingcloud.notifications.NotificationManager;
+import com.salesforce.marketingcloud.notifications.NotificationCustomizationOptions;
+import com.{your_project_name}.R;
+
+// after imports
 @Override
 public void onCreate() {
     super.onCreate();
@@ -70,11 +80,12 @@ public void onCreate() {
                     .setSenderId("{FCM_SENDER_ID_FOR_MC_APP}")
                     .setMarketingCloudServerUrl("{MC_APP_SERVER_URL}")
                     .setNotificationCustomizationOptions(NotificationCustomizationOptions.create(R.drawable.ic_notification))
+                    // remember to create a path "drawable" inside your android/app/src/main/res with a icon name "ic_notification.(png/jpg)"
                     .setAnalyticsEnabled(true)
                     .build(this),
             initializationStatus -> Log.e("INIT", initializationStatus.toString()));
 
-    // ... The rest of the onCreate method    
+    // ... The rest of the onCreate method
 }
 ```
 
