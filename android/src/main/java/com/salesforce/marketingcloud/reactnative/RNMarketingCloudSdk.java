@@ -39,7 +39,7 @@ import java.util.List;
 public class RNMarketingCloudSdk implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Collections.<NativeModule>singletonList(new RNMarketingCloudSdkModule(reactContext));
+        return Collections.<NativeModule>singletonList(new RNSFMCSdkModule(reactContext));
     }
 
     // Deprecated from RN 0.47
