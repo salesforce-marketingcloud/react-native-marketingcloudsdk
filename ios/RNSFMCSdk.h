@@ -1,6 +1,6 @@
-// RNMarketingCloudSdk.h
+// RNSFMCSdk.h
 //
-// Copyright (c) 2019 Salesforce, Inc
+// Copyright (c) 2023 Salesforce, Inc
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -32,7 +32,7 @@
 #endif
 #import <os/log.h>
 
-@interface RNMarketingCloudSdk : NSObject <RCTBridgeModule>
+@interface RNSFMCSdk : NSObject <RCTBridgeModule>
 @property(nonatomic, strong) os_log_t logger;
 
 @end

@@ -36,7 +36,7 @@ import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class RNMarketingCloudSdk implements ReactPackage {
+public class RNSFMCSdk implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         return Collections.<NativeModule>singletonList(new RNSFMCSdkModule(reactContext));

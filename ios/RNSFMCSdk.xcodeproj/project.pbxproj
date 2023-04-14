@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B3E7B58A1CC2AC0600A0062D /* RNMarketingCloudSdk.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNMarketingCloudSdk.m */; };
+		C3DE97D629DED9420023BE4C /* RNSFMCSdk.m in Sources */ = {isa = PBXBuildFile; fileRef = C3DE97D529DED9420023BE4C /* RNSFMCSdk.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,9 +23,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		134814201AA4EA6300B7C361 /* libRNMarketingCloudSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNMarketingCloudSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B3E7B5881CC2AC0600A0062D /* RNMarketingCloudSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNMarketingCloudSdk.h; sourceTree = "<group>"; };
-		B3E7B5891CC2AC0600A0062D /* RNMarketingCloudSdk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNMarketingCloudSdk.m; sourceTree = "<group>"; };
+		134814201AA4EA6300B7C361 /* libRNSFMCSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNSFMCSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C3DE97D429DED9420023BE4C /* RNSFMCSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSFMCSdk.h; sourceTree = "<group>"; };
+		C3DE97D529DED9420023BE4C /* RNSFMCSdk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSFMCSdk.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,7 +42,7 @@
 		134814211AA4EA7D00B7C361 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				134814201AA4EA6300B7C361 /* libRNMarketingCloudSdk.a */,
+				134814201AA4EA6300B7C361 /* libRNSFMCSdk.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -50,8 +50,8 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				B3E7B5881CC2AC0600A0062D /* RNMarketingCloudSdk.h */,
-				B3E7B5891CC2AC0600A0062D /* RNMarketingCloudSdk.m */,
+				C3DE97D429DED9420023BE4C /* RNSFMCSdk.h */,
+				C3DE97D529DED9420023BE4C /* RNSFMCSdk.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,9 +59,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		58B511DA1A9E6C8500147676 /* RNMarketingCloudSdk */ = {
+		58B511DA1A9E6C8500147676 /* RNSFMCSdk */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "RNMarketingCloudSdk" */;
+			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "RNSFMCSdk" */;
 			buildPhases = (
 				58B511D71A9E6C8500147676 /* Sources */,
 				58B511D81A9E6C8500147676 /* Frameworks */,
@@ -71,9 +71,9 @@
 			);
 			dependencies = (
 			);
-			name = RNMarketingCloudSdk;
+			name = RNSFMCSdk;
 			productName = RCTDataManager;
-			productReference = 134814201AA4EA6300B7C361 /* libRNMarketingCloudSdk.a */;
+			productReference = 134814201AA4EA6300B7C361 /* libRNSFMCSdk.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -90,7 +90,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "RNMarketingCloudSdk" */;
+			buildConfigurationList = 58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "RNSFMCSdk" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -103,7 +103,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				58B511DA1A9E6C8500147676 /* RNMarketingCloudSdk */,
+				58B511DA1A9E6C8500147676 /* RNSFMCSdk */,
 			);
 		};
 /* End PBXProject section */
@@ -113,7 +113,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3E7B58A1CC2AC0600A0062D /* RNMarketingCloudSdk.m in Sources */,
+				C3DE97D629DED9420023BE4C /* RNSFMCSdk.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,7 +212,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = RNMarketingCloudSdk;
+				PRODUCT_NAME = RNSFMCSdk;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -228,7 +228,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = RNMarketingCloudSdk;
+				PRODUCT_NAME = RNSFMCSdk;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -236,7 +236,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "RNMarketingCloudSdk" */ = {
+		58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "RNSFMCSdk" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				58B511ED1A9E6C8500147676 /* Debug */,
@@ -245,7 +245,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "RNMarketingCloudSdk" */ = {
+		58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "RNSFMCSdk" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				58B511F01A9E6C8500147676 /* Debug */,
