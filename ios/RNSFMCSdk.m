@@ -72,4 +72,26 @@ RCT_EXPORT_METHOD(enableLogging) {
     [SFMCSdk setLoggerWithLogLevel:SFMCSdkLogLevelDebug logOutputter:[[SFMCSdkLogOutputter alloc] init]];
 }
 
+RCT_EXPORT_METHOD(disableLogging) {
+    [SFMCSdk setLoggerWithLogLevel:SFMCSdkLogLevelFault logOutputter:[[SFMCSdkLogOutputter alloc] init]];
+}
+
+RCT_EXPORT_METHOD(enablePush) { [[SFMCSdk mp] setPushEnabled:YES]; }
+
+RCT_EXPORT_METHOD(disablePush) { [[SFMCSdk mp] setPushEnabled:NO]; }
+
+RCT_EXPORT_METHOD(isPushEnabled
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    BOOL status =  [[SFMCSdk mp] pushEnabled];
+    resolve(@(status));
+}
+
+RCT_EXPORT_METHOD(getDeviceId
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    NSString *deviceId = [[SFMCSdk mp] deviceIdentifier];
+    resolve(deviceId);
+}
+
 @end

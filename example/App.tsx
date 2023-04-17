@@ -33,10 +33,10 @@ const App = () => {
           <Tags />
           <Attributes />
         </Section>
+        */}
         <Section title="Logging">
           <Logging />
         </Section>
-        */}
       </ScrollView>
     </SafeAreaView>
   );
