@@ -86,6 +86,26 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         });
     }
 
+    @ReactMethod
+    public void getTags(Promise promise) {
+        
+    }
+
+    @ReactMethod
+    public void getContactKey(Promise promise) {
+        
+    }
+
+    @ReactMethod
+    public void getAttributes(Promise promise) {
+        
+    }
+
+    @ReactMethod
+    public void isPushEnabled(Promise promise) {
+        
+    }
+
     private void handleAction(final SFMCAction action) {
         SFMCSdk.requestSdk(new SFMCSdkReadyListener() {
             @Override

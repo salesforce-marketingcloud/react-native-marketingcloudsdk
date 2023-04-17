@@ -1,6 +1,6 @@
 // AppDelegate.h
 //
-// Copyright (c) 2019 Salesforce, Inc
+// Copyright (c) 2023 Salesforce, Inc
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -26,13 +26,10 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 
-#import <React/RCTBridgeDelegate.h>
+#import <RCTAppDelegate.h>
 #import <UIKit/UIKit.h>
 #import <UserNotifications/UserNotifications.h>
 
-@interface AppDelegate
-    : UIResponder <UIApplicationDelegate, RCTBridgeDelegate, UNUserNotificationCenterDelegate>
-
-@property(nonatomic, strong) UIWindow *window;
+@interface AppDelegate : RCTAppDelegate<UNUserNotificationCenterDelegate>
 
 @end

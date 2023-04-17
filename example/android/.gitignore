@@ -1,5 +1,0 @@
-*.bzl
-bin/
-.settings
-.project
-google-services.json

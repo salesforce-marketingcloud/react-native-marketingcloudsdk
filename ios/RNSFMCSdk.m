@@ -68,4 +68,8 @@ RCT_EXPORT_METHOD(getSystemToken
     resolve(deviceToken);
 }
 
+RCT_EXPORT_METHOD(enableLogging) {
+    [SFMCSdk setLoggerWithLogLevel:SFMCSdkLogLevelDebug logOutputter:[[SFMCSdkLogOutputter alloc] init]];
+}
+
 @end
