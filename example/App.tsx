@@ -37,6 +37,7 @@ const App = () => {
         <Section title="Logging">
           <Logging />
         </Section>
+        
       </ScrollView>
     </SafeAreaView>
   );

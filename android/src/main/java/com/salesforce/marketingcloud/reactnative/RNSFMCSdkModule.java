@@ -77,11 +77,57 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void disableLogging() {
+        SFMCSdk.Companion.setLogging(LogLevel.NONE, null);
+        MarketingCloudSdk.setLogListener(null);
+    }
+
+    @ReactMethod
     public void getSystemToken(Promise promise) {
         handlePushAction(new MCPushAction() {
             @Override
             void execute(PushModuleInterface sdk) {
                 promise.resolve(sdk.getPushMessageManager().getPushToken());
+            }
+        });
+    }
+
+    @ReactMethod
+    public void isPushEnabled(Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                promise.resolve(sdk.getPushMessageManager().isPushEnabled());
+            }
+        });
+    }
+
+    @ReactMethod
+    public void enablePush() {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                sdk.getPushMessageManager().enablePush();
+            }
+        });
+    }
+
+    @ReactMethod
+    public void disablePush() {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                sdk.getPushMessageManager().disablePush();
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getDeviceId(final Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                promise.resolve(sdk.getRegistrationManager().getDeviceId());
             }
         });
     }
@@ -98,11 +144,6 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getAttributes(Promise promise) {
-        
-    }
-
-    @ReactMethod
-    public void isPushEnabled(Promise promise) {
         
     }
 
