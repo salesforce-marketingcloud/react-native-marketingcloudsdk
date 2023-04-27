@@ -94,4 +94,49 @@ RCT_EXPORT_METHOD(getDeviceId
     resolve(deviceId);
 }
 
+RCT_EXPORT_METHOD(track: (NSString* _Nonnull)name withAttributes: (NSDictionary* _Nullable)attributes) {
+    [SFMCSdk trackWithEvent:[[SFMCSdkCustomEvent alloc] initWithName:name attributes:attributes]];
+}
+
+RCT_EXPORT_METHOD(setContactKey : (NSString* _Nonnull)contactKey) {
+    [[SFMCSdk identity] setProfileId:contactKey];
+}
+
+RCT_EXPORT_METHOD(getContactKey
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    NSString *contactKey = [[SFMCSdk mp] contactKey];
+    resolve(contactKey);
+}
+
+RCT_EXPORT_METHOD(addTag : (NSString* _Nonnull)tag) {
+    [[SFMCSdk mp] addTag:tag];
+}
+
+RCT_EXPORT_METHOD(removeTag : (NSString* _Nonnull)tag) {
+    [[SFMCSdk mp] removeTag:tag];
+}
+
+RCT_EXPORT_METHOD(getTags
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    NSArray *tags = [[[SFMCSdk mp] tags] allObjects];
+    resolve(tags);
+}
+
+RCT_EXPORT_METHOD(setAttribute : (NSString* _Nonnull)name value : (NSString* _Nonnull)value) {
+    [[SFMCSdk identity] setProfileAttributes:@{name: value}];
+}
+
+RCT_EXPORT_METHOD(clearAttribute : (NSString* _Nonnull)name) {
+    [[SFMCSdk identity] clearProfileAttributeWithKey:name];
+}
+
+RCT_EXPORT_METHOD(getAttributes
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    NSDictionary *attributes = [[SFMCSdk mp] attributes];
+    resolve((attributes != nil) ? attributes : @[]);
+}
+
 @end

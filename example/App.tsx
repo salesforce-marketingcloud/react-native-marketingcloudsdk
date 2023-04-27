@@ -27,13 +27,11 @@ const App = () => {
         <Section title="Push">
           <Push />
         </Section>
-        {/*
         <Section title="Registration">
           <ContactKey />
           <Tags />
           <Attributes />
         </Section>
-        */}
         <Section title="Logging">
           <Logging />
         </Section>
@@ -100,16 +98,23 @@ const Tags = () => {
   const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
-    MCReactModule.getTags().then(val => {
-      setTags(val);
-    });
+    updateTags();
   }, []);
+
+  const updateTags = async (msg?: string) => {
+    return Promise.resolve()
+      .then(MCReactModule.getTags)
+      .then(val => {
+        setTags(val);
+        msg && Toast.show(msg);
+        return val;
+      });
+  };
 
   const handleTags = async () => {
     MCReactModule.addTag(inputText);
-    let t = await MCReactModule.getTags();
-    setTags(t);
-    Toast.show('Tag added');
+    setInputText('');
+    updateTags('Tag added');
   };
 
   return (
@@ -127,6 +132,12 @@ const Tags = () => {
       <TouchableOpacity style={styles.button} onPress={handleTags}>
         <Text style={styles.buttonText}>Add Tag</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => updateTags('Tags updated')}>
+        <Text style={styles.buttonText}>Get Tags</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -136,20 +147,27 @@ const ContactKey = () => {
   const [contactKey, setContactKey] = useState('');
 
   useEffect(() => {
-    MCReactModule.getContactKey().then(val => {
-      setContactKey(val || '');
-    });
+    updateContactKey();
   }, []);
+
+  const updateContactKey = async (msg?: string) => {
+    return Promise.resolve()
+      .then(MCReactModule.getContactKey)
+      .then(val => {
+        setContactKey(val || '');
+        msg && Toast.show(msg);
+        return val;
+      });
+  };
 
   const handleContactKey = async () => {
     if (inputText === '') {
       Toast.show('Please enter valid contact key');
+      return;
     }
-    setContactKey(inputText);
     MCReactModule.setContactKey(inputText);
-    Toast.show('Contact key is set');
-    let val = await MCReactModule.getContactKey();
-    setContactKey(val || '');
+    setInputText('');
+    updateContactKey('ContactKey is set');
   };
 
   return (
@@ -170,6 +188,12 @@ const ContactKey = () => {
       <TouchableOpacity style={styles.button} onPress={handleContactKey}>
         <Text style={styles.buttonText}>Set Contact Key</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => updateContactKey('Contact Key updated')}>
+        <Text style={styles.buttonText}>Get Contact Key</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -178,10 +202,18 @@ const Attributes = () => {
   const [attributes, setAttributes] = useState({});
 
   useEffect(() => {
-    MCReactModule.getAttributes().then(val => {
-      setAttributes(val);
-    });
+    updateAttributes();
   }, []);
+
+  const updateAttributes = async (msg?: string) => {
+    return Promise.resolve()
+      .then(MCReactModule.getAttributes)
+      .then(val => {
+        setAttributes(val);
+        msg && Toast.show(msg);
+        return val;
+      });
+  };
 
   const handleAddKeyValue = async () => {
     const newKey = keyInput.trim();
@@ -189,11 +221,9 @@ const Attributes = () => {
 
     if (newKey && newValue && newKey !== '' && newValue !== '') {
       MCReactModule.setAttribute(newKey, newValue);
-      let val = await MCReactModule.getAttributes();
-      setAttributes(val);
       setKeyInput('');
       setValueInput('');
-      Toast.show('Attribute added');
+      updateAttributes('Attribute added');
     } else {
       Toast.show('Please enter valid key and value');
     }
@@ -203,15 +233,14 @@ const Attributes = () => {
     const newKey = keyInput.trim();
     if (keyInput === '') {
       Toast.show('Please enter key to remove');
+      return;
     }
 
     if (newKey && newKey !== '') {
       MCReactModule.clearAttribute(newKey);
-      let val = await MCReactModule.getAttributes();
-      setAttributes(val);
       setKeyInput('');
       setValueInput('');
-      Toast.show('Attribute removed with key: ' + newKey);
+      updateAttributes('Attribute removed with key: ' + newKey);
     } else {
       Toast.show('Please enter key to remove');
     }
@@ -248,6 +277,12 @@ const Attributes = () => {
 
       <TouchableOpacity style={styles.button} onPress={handleClearAttribute}>
         <Text style={styles.buttonText}>Clear Attribute with Key</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => updateAttributes('Attributes updated')}>
+        <Text style={styles.buttonText}>Get Attributes</Text>
       </TouchableOpacity>
     </View>
   );
