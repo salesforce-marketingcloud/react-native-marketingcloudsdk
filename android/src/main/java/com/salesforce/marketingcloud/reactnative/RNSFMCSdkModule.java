@@ -33,14 +33,22 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableNativeArray;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.salesforce.marketingcloud.MCLogListener;
 import com.salesforce.marketingcloud.MarketingCloudSdk;
 import com.salesforce.marketingcloud.sfmcsdk.SFMCSdk;
 import com.salesforce.marketingcloud.sfmcsdk.SFMCSdkReadyListener;
+import com.salesforce.marketingcloud.sfmcsdk.components.identity.Identity;
 import com.salesforce.marketingcloud.sfmcsdk.components.logging.LogLevel;
 import com.salesforce.marketingcloud.sfmcsdk.components.logging.LogListener;
 import com.salesforce.marketingcloud.sfmcsdk.modules.push.PushModuleInterface;
 import com.salesforce.marketingcloud.sfmcsdk.modules.push.PushModuleReadyListener;
+
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -133,18 +141,97 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getTags(Promise promise) {
-        
+    public void getTags(final Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                Set<String> tags = sdk.getRegistrationManager().getTags();
+                WritableArray array = new WritableNativeArray();
+                if (!tags.isEmpty()) {
+                    for (String tag : tags) {
+                        array.pushString(tag);
+                    }
+                }
+                promise.resolve(array);
+            }
+        });
     }
 
     @ReactMethod
-    public void getContactKey(Promise promise) {
-        
+    public void addTag(final String tag) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                sdk.getRegistrationManager().edit().addTag(tag).commit();
+            }
+        });
     }
 
     @ReactMethod
-    public void getAttributes(Promise promise) {
-        
+    public void removeTag(final String tag) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                sdk.getRegistrationManager().edit().removeTag(tag).commit();
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getContactKey(final Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                promise.resolve(sdk.getRegistrationManager().getContactKey());
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setContactKey(final String contactKey) {
+        handleIdentityAction(new SFMCIdentityAction() {
+            @Override
+            void execute(Identity identity) {
+                identity.setProfileId(contactKey);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getAttributes(final Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                Map<String, String> attributes = sdk.getRegistrationManager().getAttributes();
+                WritableMap writableMap = new WritableNativeMap();
+                if (!attributes.isEmpty()) {
+                    for (Map.Entry<String, String> entry : attributes.entrySet()) {
+                        writableMap.putString(entry.getKey(), entry.getValue());
+                    }
+                }
+                promise.resolve(writableMap);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setAttribute(final String key, final String value) {
+        handleIdentityAction(new SFMCIdentityAction() {
+            @Override
+            void execute(Identity identity) {
+                identity.setProfileAttribute(key, value);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void clearAttribute(final String key) {
+        handleIdentityAction(new SFMCIdentityAction() {
+            @Override
+            void execute(Identity identity) {
+                identity.clearProfileAttribute(key);
+            }
+        });
     }
 
     private void handleAction(final SFMCAction action) {
@@ -166,6 +253,15 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
                         action.execute(pushModuleInterface);
                     }
                 });
+            }
+        });
+    }
+
+    private void handleIdentityAction(final SFMCIdentityAction action) {
+        SFMCSdk.requestSdk(new SFMCSdkReadyListener() {
+            @Override
+            public void ready(@NonNull SFMCSdk sfmcSdk) {
+                action.execute(sfmcSdk.identity);
             }
         });
     }
@@ -232,6 +328,34 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         }
 
         abstract void execute(PushModuleInterface sdk, @NonNull Promise promise);
+    }
+
+    abstract class SFMCIdentityAction {
+        abstract void execute(Identity identity);
+
+        void err() {
+        }
+    }
+
+    abstract class SFMCIdentityPromiseAction extends SFMCIdentityAction {
+        private final Promise promise;
+
+        SFMCIdentityPromiseAction(@Nonnull Promise promise) {
+            this.promise = promise;
+        }
+
+        @Override
+        final void execute(Identity identity) {
+            execute(identity, promise);
+        }
+
+        @Override
+        void err() {
+            promise.reject("SFMCSDK-INIT",
+                    "The SFMCSdk#configure method must be called in the Application's onCreate.");
+        }
+
+        abstract void execute(Identity sdk, @NonNull Promise promise);
     }
 
 }
