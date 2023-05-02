@@ -95,7 +95,7 @@ RCT_EXPORT_METHOD(getDeviceId
     resolve(deviceId);
 }
 
-RCT_EXPORT_METHOD(track:(NSDictionary* _Nullable)eventJson) {
+RCT_EXPORT_METHOD(track:(NSDictionary* _Nonnull)eventJson) {
     [SFMCSdk trackWithEvent:[RCTConvert SFMCEvent:eventJson]];
 }
 
