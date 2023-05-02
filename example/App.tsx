@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'react-native';
 
-import MCReactModule from 'react-native-marketingcloudsdk';
+import MCReactModule, {CustomEvent} from 'react-native-marketingcloudsdk';
 import Toast from 'react-native-root-toast';
 
 const App = () => {
@@ -35,7 +35,6 @@ const App = () => {
         <Section title="Logging">
           <Logging />
         </Section>
-        
       </ScrollView>
     </SafeAreaView>
   );
@@ -105,7 +104,7 @@ const Tags = () => {
     return Promise.resolve()
       .then(MCReactModule.getTags)
       .then(val => {
-        setTags(val);
+        setTags(val || []);
         msg && Toast.show(msg);
         return val;
       });
@@ -209,7 +208,7 @@ const Attributes = () => {
     return Promise.resolve()
       .then(MCReactModule.getAttributes)
       .then(val => {
-        setAttributes(val);
+        setAttributes(val || {});
         msg && Toast.show(msg);
         return val;
       });
@@ -321,7 +320,8 @@ const Logging = () => {
   };
 
   const handleTrack = async () => {
-    MCReactModule.track('ScreenViewed', {ScreenName: 'HomeScreen'});
+    let event = new CustomEvent('ScreenViewed', {ScreenName: 'HomeScreen'});
+    MCReactModule.track(event);
     Toast.show('ScreenViewed Tracked for HomeScreen');
   };
 

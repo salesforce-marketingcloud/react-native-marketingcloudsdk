@@ -28,6 +28,7 @@
 #import "RNSFMCSdk.h"
 #import <SFMCSDK/SFMCSDK.h>
 #import <MarketingCloudSDK/MarketingCloudSDK.h>
+#import "RCTConvert+SFMCEvent.h"
 
 const int LOG_LENGTH = 800;
 
@@ -94,8 +95,8 @@ RCT_EXPORT_METHOD(getDeviceId
     resolve(deviceId);
 }
 
-RCT_EXPORT_METHOD(track: (NSString* _Nonnull)name withAttributes: (NSDictionary* _Nullable)attributes) {
-    [SFMCSdk trackWithEvent:[[SFMCSdkCustomEvent alloc] initWithName:name attributes:attributes]];
+RCT_EXPORT_METHOD(track:(NSDictionary* _Nullable)eventJson) {
+    [SFMCSdk trackWithEvent:[RCTConvert SFMCEvent:eventJson]];
 }
 
 RCT_EXPORT_METHOD(setContactKey : (NSString* _Nonnull)contactKey) {
