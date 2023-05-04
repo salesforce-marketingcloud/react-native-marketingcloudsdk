@@ -76,7 +76,10 @@ export class IdentityEvent extends CustomEvent {
   profileAttributes?: { [x: string]: string };
   profileId?: string;
 
-  constructor(attributes?: { [x: string]: string });
+  private constructor()
+  static attributes(attributes: {
+    [x: string]: string;
+  }): IdentityEvent;
   static profileAttributes(profileAttributes: {
     [x: string]: string;
   }): IdentityEvent;
@@ -90,11 +93,11 @@ export enum CartEventType {
 }
 
 export class CartEvent extends EngagementEvent {
-  lineItem: LineItem;
-  constructor(name: CartEventType, lineItem: LineItem);
+  lineItems: LineItem[];
+  private constructor(name: CartEventType, lineItems: LineItem[]);
   static addToCart(lineItem: LineItem): CartEvent;
   static removeFromCart(lineItem: LineItem): CartEvent;
-  static replaceCart(lineItem: LineItem): CartEvent;
+  static replaceCart(lineItems: LineItem[]): CartEvent;
 }
 
 export enum CatalogObjectEventName {
@@ -109,7 +112,7 @@ export enum CatalogObjectEventName {
 
 export class CatalogObjectEvent extends EngagementEvent {
   catalogObject: CatalogObject;
-  constructor(name: CatalogObjectEventName, catalogObject: CatalogObject);
+  private constructor(name: CatalogObjectEventName, catalogObject: CatalogObject);
   static commentCatalog(catalogObject: CatalogObject): CatalogObjectEvent;
   static detailCatalog(catalogObject: CatalogObject): CatalogObjectEvent;
   static favoriteCatalog(catalogObject: CatalogObject): CatalogObjectEvent;
@@ -130,7 +133,7 @@ export enum OrderEventName {
 }
 
 export class OrderEvent extends EngagementEvent {
-  constructor(name: OrderEventName, order: Order);
+  private constructor(name: OrderEventName, order: Order);
 
   static purchase(order: Order): OrderEvent;
   static preorder(order: Order): OrderEvent;
@@ -145,13 +148,13 @@ export class CatalogObject {
   type: string;
   id: string;
   attributes: { [x: string]: string };
-  relatedCatalogObjects: { [x: string]: string };
+  relatedCatalogObjects: { [x: string]: string[] };
 
   constructor(
     type: string,
     id: string,
     attributes: { [x: string]: string },
-    relatedCatalogObjects: { [x: string]: string }
+    relatedCatalogObjects: { [x: string]: string[] }
   );
 }
 

@@ -34,7 +34,11 @@
     NSString *objType = [RCTConvert NSString:json[@"objType"]];
     NSString *name = [RCTConvert NSString:json[@"name"]];
     if ([objType isEqualToString:@"CartEvent"] ) {
-        return [[[self eventClassFromName:json]  alloc] initWithLineItem:[RCTConvert LineItem:json[@"lineItem"]]];
+        if ([name isEqualToString:@"Replace Cart"]) {
+            return [[SFMCSdkReplaceCartEvent alloc] initWithLineItems:[RCTConvert LineItems:json[@"lineItems"]]];
+        } else {
+            return [[[self eventClassFromName:json] alloc] initWithLineItem:[[RCTConvert LineItems:json[@"lineItems"]] lastObject]];
+        }
     } else if ([objType isEqualToString:@"CatalogObjectEvent"] ) {
         return [[[self eventClassFromName:json]  alloc] initWithCatalogObject:[RCTConvert CatalogObject:json[@"catalogObject"]]];
     } else if ([objType isEqualToString:@"OrderEvent"]) {
@@ -90,14 +94,7 @@
 + (SFMCSdkOrder *)Order:(NSDictionary *)eventJson {
     NSDictionary *json = [self removeNulls:[RCTConvert NSDictionary:eventJson]];
     if ([json[@"objType"] isEqualToString:@"Order"]) {
-        NSMutableArray *lineItems = [NSMutableArray array];
-        for (NSDictionary *dict in [RCTConvert NSArray:json[@"lineItems"]]) {
-            SFMCSdkLineItem *lineItem = [RCTConvert LineItem:dict];
-            if (lineItem != nil) {
-                [lineItems addObject:lineItem];
-            }
-        }
-
+        NSArray *lineItems = [RCTConvert LineItems:json[@"lineItems"]];
         return [[SFMCSdkOrder alloc]
          initWithId:[RCTConvert NSString:json[@"id"]]
          lineItems:lineItems
@@ -108,6 +105,19 @@
     return nil;
 }
 
++ (NSArray *)LineItems:(NSArray *)lineItemsJson {
+    NSMutableArray *lineItems = [NSMutableArray array];
+
+    for (NSDictionary *dict in [RCTConvert NSArray:lineItemsJson]) {
+        NSDictionary *lineItemJson = [self removeNulls:[RCTConvert NSDictionary:dict]];
+
+        SFMCSdkLineItem *lineItem = [RCTConvert LineItem:lineItemJson];
+        if (lineItem != nil) {
+            [lineItems addObject:lineItem];
+        }
+    }
+    return lineItems;
+}
 
 + (Class)eventClassFromName:(NSDictionary *)json {
     NSDictionary *SFMCSdkEventType =  @{
