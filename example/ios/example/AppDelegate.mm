@@ -40,19 +40,19 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
   
-  //Configure the Marketing Cloud SDK
+  // Configure the SFMC sdk ...
   PushConfigBuilder *pushConfigBuilder = [[PushConfigBuilder alloc] initWithAppId:@"{MC_APP_ID}"];
   [pushConfigBuilder setAccessToken:@"{MC_ACCESS_TOKEN}"];
   [pushConfigBuilder setMarketingCloudServerUrl:[NSURL URLWithString:@"{MC_APP_SERVER_URL}"]];
   [pushConfigBuilder setMid:@"MC_MID"];
-  [pushConfigBuilder setAnalyticsEnabled:@(YES)];
-   
+  [pushConfigBuilder setAnalyticsEnabled:YES];
+
   [SFMCSdk initializeSdk:[[[SFMCSdkConfigBuilder new] setPushWithConfig:[pushConfigBuilder build] onCompletion:^(SFMCSdkOperationResult result) {
     if (result == SFMCSdkOperationResultSuccess) {
       [self pushSetup];
     } else {
-      //  MarketingCloudSDK sfmc_configure failed
-      NSLog(@"MarketingCloudSDK sfmc_configure failed.");
+      // SFMC sdk configuration failed.
+      NSLog(@"SFMC sdk configuration failed.");
     }
   }] build]];
 
@@ -80,25 +80,22 @@
 
 - (void)pushSetup {
   dispatch_async(dispatch_get_main_queue(), ^{
-    if (@available(iOS 10, *)) {
-        // set the UNUserNotificationCenter delegate - the delegate must be set here in
-        // didFinishLaunchingWithOptions
-        [UNUserNotificationCenter currentNotificationCenter].delegate = self;
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-
-        [[UNUserNotificationCenter currentNotificationCenter]
-            requestAuthorizationWithOptions:UNAuthorizationOptionAlert |
-                                            UNAuthorizationOptionSound |
-                                            UNAuthorizationOptionBadge
-                          completionHandler:^(BOOL granted, NSError *_Nullable error) {
-                            if (error == nil) {
-                                if (granted == YES) {
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                   });
-                                }
-                            }
-                          }];
-    }
+    // set the UNUserNotificationCenter delegate - the delegate must be set here in
+    // didFinishLaunchingWithOptions
+    [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    
+    [[UNUserNotificationCenter currentNotificationCenter]
+     requestAuthorizationWithOptions:UNAuthorizationOptionAlert |
+     UNAuthorizationOptionSound |
+     UNAuthorizationOptionBadge
+     completionHandler:^(BOOL granted, NSError *_Nullable error) {
+      if (error == nil) {
+        if (granted == YES) {
+          NSLog(@"User granted permission");
+        }
+      }
+    }];
   });
 }
 
@@ -141,7 +138,7 @@
 - (void)application:(UIApplication *)application
     didReceiveRemoteNotification:(NSDictionary *)userInfo
           fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-  [[SFMCSdk mp] setNotificationUserInfo:userInfo];
+    [[SFMCSdk mp] setNotificationUserInfo:userInfo];
 
     completionHandler(UIBackgroundFetchResultNewData);
 }

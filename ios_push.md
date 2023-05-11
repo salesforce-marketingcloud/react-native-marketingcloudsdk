@@ -1,67 +1,76 @@
 # Enable Push for iOS
 
-1. Enable push notifications in your target’s Capabilities settings in xCode.
+1. Enable push notifications in your target’s Capabilities settings in Xcode.
 
-    ![push enablement](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/assets/SDKConfigure8.png)
+    ![push enablement](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/assets/SDKConfigure6.png)
 
-1. Set your AppDelegate class to adhere to the `UNUserNotificationCenterDelegate` protocol.
-
-        @interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate, UNUserNotificationCenterDelegate>
+2. Set your AppDelegate class to adhere to the `UNUserNotificationCenterDelegate` protocol.
+    ```objc
+    @interface AppDelegate : RCTAppDelegate<UNUserNotificationCenterDelegate>
+    ```
 
 2.  Extend the SDK configuration code outlined in [Configure the SDK](./README.md#2-configure-the-sdk-in-your-appdelegatem-class) to add support for push registration.
 
     ```objc
+    // Other imports ...
+    #import <MarketingCloudSDK/MarketingCloudSDK.h>
+    #import <SFMCSDK/SFMCSDK.h>
+
     @implementation AppDelegate
 
     - (BOOL)application:(UIApplication *)application
         didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-        // configure the Marketing Cloud SDK ...
+        
+        //RN setup
+        self.moduleName = @"example";
+        // You can add your custom initial props in the dictionary below.
+        // They will be passed down to the ViewController used by React Native.
+        self.initialProps = @{};
 
-        if (success == YES) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-              if (@available(iOS 10, *)) {
-                  // set the UNUserNotificationCenter delegate - the delegate must be set here in
-                  // didFinishLaunchingWithOptions
-                  [UNUserNotificationCenter currentNotificationCenter].delegate = self;
-                  [[UIApplication sharedApplication] registerForRemoteNotifications];
+        // Configure the SFMC sdk ...
+        PushConfigBuilder *pushConfigBuilder = [[PushConfigBuilder alloc] initWithAppId:@"{MC_APP_ID}"];
+        [pushConfigBuilder setAccessToken:@"{MC_ACCESS_TOKEN}"];
+        [pushConfigBuilder setMarketingCloudServerUrl:[NSURL URLWithString:@"{MC_APP_SERVER_URL}"]];
+        [pushConfigBuilder setMid:@"MC_MID"];
+        [pushConfigBuilder setAnalyticsEnabled:YES];
+         
+        [SFMCSdk initializeSdk:[[[SFMCSdkConfigBuilder new] setPushWithConfig:[pushConfigBuilder build] onCompletion:^(SFMCSdkOperationResult result) {
+          if (result == SFMCSdkOperationResultSuccess) {
+            [self pushSetup];
+          } else {
+            // SFMC sdk configuration failed.
+            NSLog(@"SFMC sdk configuration failed.");
+          }
+        }] build]];
 
-                  [[UNUserNotificationCenter currentNotificationCenter]
-                      requestAuthorizationWithOptions:UNAuthorizationOptionAlert |
-                                                      UNAuthorizationOptionSound |
-                                                      UNAuthorizationOptionBadge
-                                    completionHandler:^(BOOL granted, NSError *_Nullable error) {
-                                      if (error == nil) {
-                                          if (granted == YES) {
-                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                             });
-                                          }
-                                      }
-                                    }];
-              } else {
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED < 100000
-                  UIUserNotificationSettings *settings = [UIUserNotificationSettings
-                      settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound |
-                                       UIUserNotificationTypeAlert
-                            categories:nil];
-                  [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    #endif
-                  [[UIApplication sharedApplication] registerForRemoteNotifications];
+        // ... The rest of the didFinishLaunchingWithOptions method 
+        return [super application:application didFinishLaunchingWithOptions:launchOptions];
+    }
+
+    - (void)pushSetup {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          // set the UNUserNotificationCenter delegate - the delegate must be set here in
+          // didFinishLaunchingWithOptions
+          [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+          [[UIApplication sharedApplication] registerForRemoteNotifications];
+          
+          [[UNUserNotificationCenter currentNotificationCenter]
+           requestAuthorizationWithOptions:UNAuthorizationOptionAlert |
+           UNAuthorizationOptionSound |
+           UNAuthorizationOptionBadge
+           completionHandler:^(BOOL granted, NSError *_Nullable error) {
+            if (error == nil) {
+              if (granted == YES) {
+                    NSLog(@"User granted permission");
               }
-            });
-        } else {
-            //  MarketingCloudSDK sfmc_configure failed
-            os_log_debug(OS_LOG_DEFAULT, "MarketingCloudSDK sfmc_configure failed with error = %@",
-                         error);
-        }
-
-        // RN setup
-
-        return YES;
+            }
+          }];
+        });
     }
 
     - (void)application:(UIApplication *)application
         didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-        [[MarketingCloudSDK sharedInstance] sfmc_setDeviceToken:deviceToken];
+        [[SFMCSdk mp] setDeviceToken:deviceToken];
     }
 
     - (void)application:(UIApplication *)application
@@ -76,7 +85,7 @@
         didReceiveNotificationResponse:(UNNotificationResponse *)response
                  withCompletionHandler:(void (^)(void))completionHandler {
         // tell the MarketingCloudSDK about the notification
-        [[MarketingCloudSDK sharedInstance] sfmc_setNotificationRequest:response.notification.request];
+        [[SFMCSdk mp] setNotificationRequest:response.notification.request];
 
         if (completionHandler != nil) {
             completionHandler();
@@ -98,10 +107,11 @@
     - (void)application:(UIApplication *)application
         didReceiveRemoteNotification:(NSDictionary *)userInfo
               fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-        [[MarketingCloudSDK sharedInstance] sfmc_setNotificationUserInfo:userInfo];
+        [[SFMCSdk mp] setNotificationUserInfo:userInfo];
 
         completionHandler(UIBackgroundFetchResultNewData);
     }
+
 
     @end
     ```

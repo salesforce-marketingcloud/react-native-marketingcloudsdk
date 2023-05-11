@@ -143,6 +143,8 @@ declare class MCReactModule {
    * Instructs the native SDK to log the SDK state to the native logging system (Logcat for
    * Android and Xcode/Console.app for iOS).  This content can help diagnose most issues within
    * the SDK and will be requested by the Marketing Cloud support team.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/SFMCSdk/8.0/com.salesforce.marketingcloud.sfmcsdk/-s-f-m-c-sdk/get-sdk-state.html|Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/SFMCSdk/8.0/Classes/SFMCSdk.html#/c:@M@SFMCSDK@objc(cs)SFMCSdk(cm)state|iOS Docs}
    */
   static logSdkState(): void;
   /**
