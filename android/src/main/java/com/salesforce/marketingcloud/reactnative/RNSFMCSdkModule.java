@@ -33,14 +33,16 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
-import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.salesforce.marketingcloud.MCLogListener;
 import com.salesforce.marketingcloud.MarketingCloudSdk;
 import com.salesforce.marketingcloud.sfmcsdk.SFMCSdk;
 import com.salesforce.marketingcloud.sfmcsdk.SFMCSdkReadyListener;
+import com.salesforce.marketingcloud.sfmcsdk.components.events.Event;
 import com.salesforce.marketingcloud.sfmcsdk.components.identity.Identity;
 import com.salesforce.marketingcloud.sfmcsdk.components.logging.LogLevel;
 import com.salesforce.marketingcloud.sfmcsdk.components.logging.LogListener;
@@ -52,7 +54,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-@SuppressWarnings({ "unused", "WeakerAccess" })
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     public RNSFMCSdkModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -232,6 +234,12 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
                 identity.clearProfileAttribute(key);
             }
         });
+    }
+
+    @ReactMethod
+    public void track(final ReadableMap event) {
+        Event sfmcEvent = EventUtility.toEvent(event);
+        SFMCSdk.track(sfmcEvent);
     }
 
     private void handleAction(final SFMCAction action) {

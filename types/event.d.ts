@@ -30,7 +30,7 @@
  */
 
 /**
- * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/registration/RegistrationManager.html#getDeviceId()|Android Docs}
+ * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/SFMCSdk/8.0/com.salesforce.marketingcloud.sfmcsdk.components.events/-event/-category/index.html|Android Docs}
  * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/SFMCSdk/8.0/Enums/EventCategory.html|iOS Docs}
  */
 export enum EventCategory {
@@ -40,7 +40,7 @@ export enum EventCategory {
 }
 
 /**
- * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/registration/RegistrationManager.html#getDeviceId()|Android Docs}
+ * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/SFMCSdk/8.0/com.salesforce.marketingcloud.sfmcsdk.components.events/-event-manager/custom-event.html|Android Docs}
  * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/SFMCSdk/8.0/Classes/CustomEvent.html|iOS Docs}
  */
 export class CustomEvent {
@@ -56,7 +56,6 @@ export class CustomEvent {
 }
 
 /**
- * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/registration/RegistrationManager.html#getDeviceId()|Android Docs}
  * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/SFMCSdk/8.0/Classes/EngagementEvent.html|iOS Docs}
  */
 export class EngagementEvent extends CustomEvent {
@@ -64,7 +63,6 @@ export class EngagementEvent extends CustomEvent {
 }
 
 /**
- * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/6.0/reference/com/salesforce/marketingcloud/registration/RegistrationManager.html#getDeviceId()|Android Docs}
  * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/SFMCSdk/8.0/Classes/SystemEvent.html|iOS Docs}
  */
 export class SystemEvent extends CustomEvent {
