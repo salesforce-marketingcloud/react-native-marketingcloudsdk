@@ -61,18 +61,26 @@ apply plugin: 'com.google.gms.google-services
 ```java
 @Override
 public void onCreate() {
-    super.onCreate();
+  super.onCreate();
 
-    MarketingCloudSdk.init(this,
-            MarketingCloudConfig.builder()
-                    .setApplicationId("{MC_APP_ID}")
-                    .setAccessToken("{MC_ACCESS_TOKEN}")
-                    .setSenderId("{FCM_SENDER_ID_FOR_MC_APP}")
-                    .setMarketingCloudServerUrl("{MC_APP_SERVER_URL}")
-                    .setNotificationCustomizationOptions(NotificationCustomizationOptions.create(R.drawable.ic_notification))
-                    .setAnalyticsEnabled(true)
-                    .build(this),
-            initializationStatus -> Log.e("INIT", initializationStatus.toString()));
+  SFMCSdk.configure((Context) this, SFMCSdkModuleConfig.build(builder -> {
+      builder.setPushModuleConfig(MarketingCloudConfig.builder()
+              .setApplicationId("{MC_APP_ID}")
+              .setAccessToken("{MC_ACCESS_TOKEN}")
+              .setSenderId("{FCM_SENDER_ID_FOR_MC_APP}")
+              .setMarketingCloudServerUrl("{MC_APP_SERVER_URL}")
+              .setNotificationCustomizationOptions(NotificationCustomizationOptions.create(R.drawable.ic_notification))
+              .setAnalyticsEnabled(true)
+              .build(this));
+
+      return null;
+  }), initializationStatus -> {
+      Log.e("TAG", "STATUS "+initializationStatus);
+      if (initializationStatus.getStatus() == 1) {
+          Log.e("TAG", "STATUS SUCCESS");
+      }
+      return null;
+  });
 
     // ... The rest of the onCreate method    
 }
