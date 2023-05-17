@@ -15,6 +15,11 @@ Release notes for the plugin can be found [here](CHANGELOG.md)
 ```shell
 npm install react-native-marketingcloudsdk --save
 ```
+or via [yarn](https://yarnpkg.com/package/react-native-marketingcloudsdk)
+
+```shell
+yarn add react-native-marketingcloudsdk
+```
 
 ### Android Setup
 
@@ -91,6 +96,7 @@ public void onCreate() {
 #### 1. Install pod for Marketing Cloud SDK
 
 ```shell
+// In your App, go to ios directory after installing plugin via npm or yarn.
 cd ios
 pod install
 ```
@@ -98,19 +104,28 @@ pod install
 #### 2. Configure the SDK in your AppDelegate.m class
 
 ```objc
+#import <MarketingCloudSDK/MarketingCloudSDK.h>
+#import <SFMCSDK/SFMCSDK.h>
+// Other imports ...
+
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-    MarketingCloudSDKConfigBuilder *mcsdkBuilder = [MarketingCloudSDKConfigBuilder new];
-    [mcsdkBuilder sfmc_setApplicationId:@"{MC_APP_ID}"];
-    [mcsdkBuilder sfmc_setAccessToken:@"{MC_ACCESS_TOKEN}"];
-    [mcsdkBuilder sfmc_setAnalyticsEnabled:@(YES)];
-    [mcsdkBuilder sfmc_setMarketingCloudServerUrl:@"{MC_APP_SERVER_URL}"];
+    // Configure the SFMC sdk
+    PushConfigBuilder *pushConfigBuilder = [[PushConfigBuilder alloc] initWithAppId:@"{MC_APP_ID}"];
+    [pushConfigBuilder setAccessToken:@"{MC_ACCESS_TOKEN}"];
+    [pushConfigBuilder setMarketingCloudServerUrl:[NSURL URLWithString:@"{MC_APP_SERVER_URL}"]];
+    [pushConfigBuilder setMid:@"MC_MID"];
+    [pushConfigBuilder setAnalyticsEnabled:YES];
 
-    NSError *error = nil;
-    BOOL success =
-        [[MarketingCloudSDK sharedInstance] sfmc_configureWithDictionary:[mcsdkBuilder sfmc_build]
-                                                                   error:&error];
+    [SFMCSdk initializeSdk:[[[SFMCSdkConfigBuilder new] setPushWithConfig:[pushConfigBuilder build] onCompletion:^(SFMCSdkOperationResult result) {
+        if (result == SFMCSdkOperationResultSuccess) {
+        //Enable Push
+        } else {
+        // SFMC sdk configuration failed.
+        NSLog(@"SFMC sdk configuration failed.");
+        }
+    }] build]];
 
     // ... The rest of the didFinishLaunchingWithOptions method  
 }
