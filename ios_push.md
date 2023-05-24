@@ -6,15 +6,17 @@
 
 2. Set your AppDelegate class to adhere to the `UNUserNotificationCenterDelegate` protocol.
     ```objc
-    @interface AppDelegate : RCTAppDelegate<UNUserNotificationCenterDelegate>
+    //Other imports...
+    #import <UserNotifications/UserNotifications.h>
+    #import <MarketingCloudSDK/MarketingCloudSDK.h>
+    #import <SFMCSDK/SFMCSDK.h>
+
+    @interface AppDelegate : RCTAppDelegate<UNUserNotificationCenterDelegate, SFMCSdkURLHandlingDelegate>
     ```
 
 2.  Extend the SDK configuration code outlined in [Configure the SDK](./README.md#2-configure-the-sdk-in-your-appdelegatem-class) to add support for push registration.
 
     ```objc
-    // Other imports ...
-    #import <MarketingCloudSDK/MarketingCloudSDK.h>
-    #import <SFMCSDK/SFMCSDK.h>
 
     @implementation AppDelegate
 
@@ -52,6 +54,7 @@
           // set the UNUserNotificationCenter delegate - the delegate must be set here in
           // didFinishLaunchingWithOptions
           [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+          [[SFMCSdk mp] setURLHandlingDelegate:self];
           [[UIApplication sharedApplication] registerForRemoteNotifications];
           
           [[UNUserNotificationCenter currentNotificationCenter]
@@ -111,7 +114,19 @@
 
         completionHandler(UIBackgroundFetchResultNewData);
     }
-
+    
+    //URL Handling
+    - (void)sfmc_handleURL:(NSURL * _Nonnull)url type:(NSString * _Nonnull)type {
+      if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+          if (success) {
+            NSLog(@"url %@ opened successfully", url);
+          } else {
+            NSLog(@"url %@ could not be opened", url);
+          }
+        }];
+      }
+    }
 
     @end
     ```
