@@ -28,8 +28,6 @@
 
 #import "AppDelegate.h"
 #import <React/RCTBundleURLProvider.h>
-#import <MarketingCloudSDK/MarketingCloudSDK.h>
-#import <SFMCSDK/SFMCSDK.h>
 
 @implementation AppDelegate
 
@@ -83,6 +81,7 @@
     // set the UNUserNotificationCenter delegate - the delegate must be set here in
     // didFinishLaunchingWithOptions
     [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+    [[SFMCSdk mp] setURLHandlingDelegate:self];
     [[UIApplication sharedApplication] registerForRemoteNotifications];
     
     [[UNUserNotificationCenter currentNotificationCenter]
@@ -141,6 +140,19 @@
     [[SFMCSdk mp] setNotificationUserInfo:userInfo];
 
     completionHandler(UIBackgroundFetchResultNewData);
+}
+
+//URL Handling
+- (void)sfmc_handleURL:(NSURL * _Nonnull)url type:(NSString * _Nonnull)type {
+  if ([[UIApplication sharedApplication] canOpenURL:url]) {
+    [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+      if (success) {
+        NSLog(@"url %@ opened successfully", url);
+      } else {
+        NSLog(@"url %@ could not be opened", url);
+      }
+    }];
+  }
 }
 
 @end
