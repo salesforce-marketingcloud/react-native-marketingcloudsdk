@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react';
+import {PermissionsAndroid} from 'react-native';
+
 import {
   View,
   TextInput,
@@ -44,6 +46,16 @@ const Push = () => {
   const [isPushEnabled, setPushEnabled] = useState(false);
   const [pushToken, setPushToken] = useState('');
 
+  const requestNotificationPermission = async () => {
+    try {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATION,
+      );
+    } catch (err) {
+      console.warn('requestNotificationPermission error: ', err);
+    }
+  };
+
   const updatePushData = async () => {
     let enabled = await MCReactModule.isPushEnabled();
     let systemToken = await MCReactModule.getSystemToken();
@@ -73,6 +85,7 @@ const Push = () => {
 
   useEffect(() => {
     updatePushData();
+    requestNotificationPermission();
   }, []);
 
   return (
