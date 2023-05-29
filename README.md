@@ -6,6 +6,16 @@ Use this module to implement the Marketing Cloud MobilePush SDK for your [iOS](h
 
 Release notes for the plugin can be found [here](CHANGELOG.md)
 
+## Upgrading from 7.x to 8.x
+After updating the dependency from 7.x to 8.x via npm or yarn. Please follow below steps:
+
+#### iOS
+- Import both `SFMCSDK` and `MarketingCloudSDK` in `AppDelegate` and update the configuration of the SDK as outlined in [Step 2 Configure the SDK for iOS](#2-configure-the-sdk-in-your-appdelegatem-class).
+- Update the delegate methods and verify your implementation by following [iOS guide](./ios_push.md).
+
+#### Android
+Ensure that you import `SFMCSdk` and properly configure the SDK as specified in  [Step 3 Configure the SDK for Android](#3-configure-the-sdk-in-your-mainapplicationjava-class), which details the process of configuring the SDK for Android in this guide.
+ 
 ## Installation
 
 * Plugin has a version dependency on React Native v0.60+
