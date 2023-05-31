@@ -1,5 +1,11 @@
 Change Log
 ==========
+### Version 8.0.0
+
+* Android 13 support.
+* Integrated with the Engagement SDK, which includes support for mobile app events.
+* Bug Fixes and Performance Improvements* -- This release includes bug fixes and SDK improvements.
+
 ### Version 7.5.2
 
 * Removed unit tests from released artifact.
