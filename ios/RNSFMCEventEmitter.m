@@ -30,7 +30,7 @@
 #import <MarketingCloudSDK/MarketingCloudSDK.h>
 #import <UserNotifications/UserNotifications.h>
 
-NSNotificationName const SFMCFoundationUNNotificationReceivedNotification = @"SFMCFoundationUNNotificationReceivedNotification";
+NSNotificationName const SFMCNotificationUNNotificationReceived = @"SFMCFoundationUNNotificationReceivedNotification";
 NSString * const SFMCNotificationOpened = @"SFMCNotificationOpened";
 
 // userInfo
@@ -47,7 +47,7 @@ RCT_EXPORT_MODULE();
     hasListeners = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(sfmcUNNotificationReceived:)
-                                                 name:SFMCFoundationUNNotificationReceivedNotification
+                                                 name:SFMCNotificationUNNotificationReceived
                                                object:nil];
 }
 
@@ -56,7 +56,7 @@ RCT_EXPORT_MODULE();
 }
 
 -(void)stopObserving {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:SFMCFoundationUNNotificationReceivedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SFMCNotificationUNNotificationReceived object:nil];
     hasListeners = NO;
 }
 
