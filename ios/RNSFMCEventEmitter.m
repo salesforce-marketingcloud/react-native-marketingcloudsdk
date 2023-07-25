@@ -34,8 +34,8 @@ NSNotificationName const SFMCFoundationUNNotificationReceivedNotification = @"SF
 NSString * const SFMCNotificationOpened = @"SFMCNotificationOpened";
 
 // userInfo
-NSNotificationName const SFMCFoundationUNNotificationReceivedNotificationKeyUNNotificationRequest = @"SFMCFoundationUNNotificationReceivedNotificationKeyUNNotificationRequest";
-NSNotificationName const SFMCFoundationNotificationReceivedNotificationKeyUserInfo = @"SFMCFoundationNotificationReceivedNotificationKeyUserInfo";
+NSNotificationName const SFMCNotificationReceivedKeyUNNotificationRequest = @"SFMCFoundationUNNotificationReceivedNotificationKeyUNNotificationRequest";
+NSNotificationName const SFMCNotificationReceivedKeyUserInfo = @"SFMCFoundationNotificationReceivedNotificationKeyUserInfo";
 
 @implementation RNSFMCEventEmitter {
     BOOL hasListeners;
@@ -44,38 +44,38 @@ NSNotificationName const SFMCFoundationNotificationReceivedNotificationKeyUserIn
 RCT_EXPORT_MODULE();
 
 -(void)startObserving {
-  hasListeners = YES;
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                         selector:@selector(sfmcUNNotificationReceived:)
-                                             name:SFMCFoundationUNNotificationReceivedNotification
-                                           object:nil];
+    hasListeners = YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(sfmcUNNotificationReceived:)
+                                                 name:SFMCFoundationUNNotificationReceivedNotification
+                                               object:nil];
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-   return @[SFMCNotificationOpened];
+    return @[SFMCNotificationOpened];
 }
 
 -(void)stopObserving {
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:SFMCFoundationUNNotificationReceivedNotification object:nil];
-  hasListeners = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SFMCFoundationUNNotificationReceivedNotification object:nil];
+    hasListeners = NO;
 }
 
 - (void)sfmcUNNotificationReceived:(NSNotification *)notification {
-if (hasListeners) {
-    NSDictionary *userInfo = nil;
-    if (notification.userInfo != nil) {
-        UNNotificationRequest *userNotificationRequest = [notification.userInfo objectForKey:SFMCFoundationUNNotificationReceivedNotificationKeyUNNotificationRequest];
-        if (userNotificationRequest != nil) {
-            userInfo = [userNotificationRequest.content.userInfo copy];
+    if (hasListeners) {
+        NSDictionary *userInfo = nil;
+        if (notification.userInfo != nil) {
+            UNNotificationRequest *userNotificationRequest = [notification.userInfo objectForKey:SFMCNotificationReceivedKeyUNNotificationRequest];
+            if (userNotificationRequest != nil) {
+                userInfo = [userNotificationRequest.content.userInfo copy];
+            }
+            if (userInfo == nil) {
+                NSDictionary *userNotificationUserInfo = [notification.userInfo objectForKey:SFMCNotificationReceivedKeyUserInfo];
+                userInfo = [userNotificationUserInfo copy];
+            }
         }
-        if (userInfo == nil) {
-            NSDictionary *userNotificationUserInfo = [notification.userInfo objectForKey:SFMCFoundationNotificationReceivedNotificationKeyUserInfo];
-            userInfo = [userNotificationUserInfo copy];
-        }
+        
+        [self sendEventWithName:SFMCNotificationOpened body:userInfo];
     }
-
-  [self sendEventWithName:SFMCNotificationOpened body:userInfo];
-}
 }
 
 @end
