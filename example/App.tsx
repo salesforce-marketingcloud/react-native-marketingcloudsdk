@@ -86,6 +86,11 @@ const Push = () => {
   useEffect(() => {
     updatePushData();
     requestNotificationPermission();
+
+    //Add notification open listener
+    MCReactModule.setOnNotificationOpenedListener(userInfo => {
+      Alert.alert('setNotificationOpenListener :' + JSON.stringify(userInfo));
+    });
   }, []);
 
   return (
