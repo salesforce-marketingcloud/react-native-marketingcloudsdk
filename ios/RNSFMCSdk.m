@@ -45,7 +45,7 @@ RCT_EXPORT_MODULE()
         if (self.logger == nil) {
             self.logger = os_log_create("com.salesforce.marketingcloudsdk", "ReactNative");
         }
-        os_log_info(self.logger, "%@", msg);
+        os_log_info(self.logger, "%{public}@", msg);
     } else {
         NSLog(@"%@", msg);
     }
