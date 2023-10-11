@@ -163,13 +163,6 @@ declare class MCReactModule {
    * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)deviceIdentifier|iOS Docs}
    */
   static getDeviceId(): Promise<string | null>;
-
-  /**
-   * @param {function(event)} notificationOpenedListener
-   * @param {callback}
-   *     notificationOpenedListener.event
-   */
-  static setOnNotificationOpenedListener(callback: (userInfo: any) => void): EmitterSubscription;
 }
 
 export * from "./event";

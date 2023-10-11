@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C3BA0C5D2A6A71CF0011230C /* RNSFMCEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BA0C5C2A6A71CF0011230C /* RNSFMCEventEmitter.m */; };
 		C3DE97D629DED9420023BE4C /* RNSFMCSdk.m in Sources */ = {isa = PBXBuildFile; fileRef = C3DE97D529DED9420023BE4C /* RNSFMCSdk.m */; };
 /* End PBXBuildFile section */
 
@@ -25,8 +24,6 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNSFMCSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNSFMCSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		C3BA0C5B2A6A71CF0011230C /* RNSFMCEventEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNSFMCEventEmitter.h; sourceTree = "<group>"; };
-		C3BA0C5C2A6A71CF0011230C /* RNSFMCEventEmitter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNSFMCEventEmitter.m; sourceTree = "<group>"; };
 		C3DE97D429DED9420023BE4C /* RNSFMCSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSFMCSdk.h; sourceTree = "<group>"; };
 		C3DE97D529DED9420023BE4C /* RNSFMCSdk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSFMCSdk.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -53,8 +50,6 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				C3BA0C5B2A6A71CF0011230C /* RNSFMCEventEmitter.h */,
-				C3BA0C5C2A6A71CF0011230C /* RNSFMCEventEmitter.m */,
 				C3DE97D429DED9420023BE4C /* RNSFMCSdk.h */,
 				C3DE97D529DED9420023BE4C /* RNSFMCSdk.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
@@ -118,7 +113,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3BA0C5D2A6A71CF0011230C /* RNSFMCEventEmitter.m in Sources */,
 				C3DE97D629DED9420023BE4C /* RNSFMCSdk.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
