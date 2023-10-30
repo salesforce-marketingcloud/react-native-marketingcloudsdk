@@ -12,6 +12,7 @@ import {
   ScrollView,
   StatusBar,
   Alert,
+  Switch
 } from 'react-native';
 
 import MCReactModule, {CustomEvent} from 'react-native-marketingcloudsdk';
@@ -37,6 +38,10 @@ const App = () => {
         <Section title="Logging">
           <Logging />
         </Section>
+        <Section title="Runtime Feature Toggle">
+          <FeatureToggle />
+        </Section>
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -300,6 +305,68 @@ const Attributes = () => {
   );
 };
 
+const FeatureToggle = () => {
+  const [isAnalyticsEnabled, setAnalyticsEnabledState] = useState(false);
+  const [isPiAnalyticsEnabled, setPiAnalyticsEnabledState] = useState(false);
+  const [isLocationEnabled, setLocationEnabledState] = useState(false);
+  const [isInboxEnabled, setInboxEnabledState] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setAnalyticsEnabledState(await MCReactModule.isAnalyticsEnabled());
+      setPiAnalyticsEnabledState(await MCReactModule.isPiAnalyticsEnabled());
+      setLocationEnabledState(await MCReactModule.isLocationEnabled());
+      setInboxEnabledState(await MCReactModule.isInboxEnabled());
+    };
+
+    fetchData();
+  }, []);
+
+  const toggleFeature = async (
+    featureName: string,
+    currentValue: boolean,
+    setterFunction: React.Dispatch<React.SetStateAction<boolean>>,
+    toggleFunction: (enabled: boolean) => void
+  ) => {
+    toggleFunction(!currentValue);
+    setterFunction(!currentValue);
+    Toast.show(`${featureName} is ${!currentValue ? 'Enabled' : 'Disabled'}`);
+  };
+
+  return (
+    <View style={styles.toggleContainer}>
+      <View style={styles.toggleRow}>
+        <Text style={styles.toggleLabel}>Analytics</Text>
+        <Switch
+          onValueChange={() => toggleFeature('Analytics', isAnalyticsEnabled, setAnalyticsEnabledState, MCReactModule.setAnalyticsEnabled)}
+          value={isAnalyticsEnabled}
+        />
+      </View>
+      <View style={styles.toggleRow}>
+        <Text style={styles.toggleLabel}>PI Analytics</Text>
+        <Switch
+          onValueChange={() => toggleFeature('PI Analytics', isPiAnalyticsEnabled, setPiAnalyticsEnabledState, MCReactModule.setPiAnalyticsEnabled)}
+          value={isPiAnalyticsEnabled}
+        />
+      </View>
+      <View style={styles.toggleRow}>
+        <Text style={styles.toggleLabel}>Location Services</Text>
+        <Switch
+          onValueChange={() => toggleFeature('Location Services', isLocationEnabled, setLocationEnabledState, MCReactModule.setLocationEnabled)}
+          value={isLocationEnabled}
+        />
+      </View>
+      <View style={styles.toggleRow}>
+        <Text style={styles.toggleLabel}>Inbox</Text>
+        <Switch
+          onValueChange={() => toggleFeature('Inbox', isInboxEnabled, setInboxEnabledState, MCReactModule.setInboxEnabled)}
+          value={isInboxEnabled}
+        />
+      </View>
+    </View>
+  );
+};
+
 const Logging = () => {
   const [deviceId, setDeviceId] = useState('');
 
@@ -463,6 +530,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
   },
+  toggleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    marginTop: 20,
+  },
+  toggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 10
+  },
+  toggleLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+  }
 });
 
 export default App;

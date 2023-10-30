@@ -163,6 +163,62 @@ declare class MCReactModule {
    * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)deviceIdentifier|iOS Docs}
    */
   static getDeviceId(): Promise<string | null>;
+
+  /**
+ * Enables or disables analytics in the Marketing Cloud SDK.
+ * @param {boolean} analyticsEnabled - A flag indicating whether analytics should be enabled.
+ * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html|iOS Docs}
+ */
+  static setAnalyticsEnabled(analyticsEnabled: boolean): void;
+
+  /**
+   * Checks if analytics is enabled in the Marketing Cloud SDK.
+   * @returns {Promise<boolean>} A promise to the boolean representation of whether analytics is enabled.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html|iOS Docs}
+   */
+  static isAnalyticsEnabled(): Promise<boolean>;
+
+  /**
+   * Enables or disables Predictive Intelligence analytics in the Marketing Cloud SDK.
+   * @param {boolean} analyticsEnabled - A flag indicating whether PI analytics should be enabled.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html|iOS Docs}
+   */
+  static setPiAnalyticsEnabled(analyticsEnabled: boolean): void;
+
+  /**
+   * Checks if Predictive Intelligence analytics is enabled in the Marketing Cloud SDK.
+   * @returns {Promise<boolean>} A promise to the boolean representation of whether PI analytics is enabled.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html|iOS Docs}
+   */
+  static isPiAnalyticsEnabled(): Promise<boolean>;
+
+  /**
+   * Enables or disables location services in the Marketing Cloud SDK.
+   * @param {boolean} locationEnabled - A flag indicating whether location services should be enabled.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html|iOS Docs}
+   */
+  static setLocationEnabled(locationEnabled: boolean): void;
+
+  /**
+   * Checks if location services are enabled in the Marketing Cloud SDK.
+   * @returns {Promise<boolean>} A promise to the boolean representation of whether location services are enabled.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html|iOS Docs}
+   */
+  static isLocationEnabled(): Promise<boolean>;
+
+  /**
+   * Enables or disables the inbox feature in the Marketing Cloud SDK.
+   * @param {boolean} inboxEnabled - A flag indicating whether the inbox feature should be enabled.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html|iOS Docs}
+   */
+  static setInboxEnabled(inboxEnabled: boolean): void;
+
+  /**
+   * Checks if the inbox feature is enabled in the Marketing Cloud SDK.
+   * @returns {Promise<boolean>} A promise to the boolean representation of whether the inbox feature is enabled.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html|iOS Docs}
+   */
+  static isInboxEnabled(): Promise<boolean>;
 }
 
 export * from "./event";

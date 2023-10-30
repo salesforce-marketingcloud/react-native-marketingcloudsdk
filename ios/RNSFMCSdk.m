@@ -45,7 +45,7 @@ RCT_EXPORT_MODULE()
         if (self.logger == nil) {
             self.logger = os_log_create("com.salesforce.marketingcloudsdk", "ReactNative");
         }
-        os_log_info(self.logger, "%{public}@", msg);
+        os_log_info(self.logger, "%@", msg);
     } else {
         NSLog(@"%@", msg);
     }
@@ -138,6 +138,54 @@ RCT_EXPORT_METHOD(getAttributes
                   : (RCTPromiseRejectBlock)reject) {
     NSDictionary *attributes = [[SFMCSdk mp] attributes];
     resolve((attributes != nil) ? attributes : @[]);
+}
+
+
+RCT_EXPORT_METHOD(setAnalyticsEnabled : (BOOL)analyticsEnabled) {
+    [[SFMCSdk mp] setAnalyticsEnabled:analyticsEnabled];
+}
+
+RCT_EXPORT_METHOD(isAnalyticsEnabled
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    BOOL isEnabled = [[SFMCSdk mp] isAnalyticsEnabled];
+    resolve(@(isEnabled));
+}
+
+// PI Analytics Enablement
+RCT_EXPORT_METHOD(setPiAnalyticsEnabled : (BOOL)analyticsEnabled) {
+    [[SFMCSdk mp] setPiAnalyticsEnabled:analyticsEnabled];
+}
+
+RCT_EXPORT_METHOD(isPiAnalyticsEnabled
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    BOOL isEnabled = [[SFMCSdk mp] isPiAnalyticsEnabled];
+    resolve(@(isEnabled));
+}
+
+// Location Services Enablement
+RCT_EXPORT_METHOD(setLocationEnabled : (BOOL)locationEnabled) {
+    [[SFMCSdk mp] setLocationEnabled:locationEnabled];
+}
+
+RCT_EXPORT_METHOD(isLocationEnabled
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    BOOL isEnabled = [[SFMCSdk mp] isLocationEnabled];
+    resolve(@(isEnabled));
+}
+
+// Inbox Feature Enablement
+RCT_EXPORT_METHOD(setInboxEnabled : (BOOL)inboxEnabled) {
+    [[SFMCSdk mp] setInboxEnabled:inboxEnabled];
+}
+
+RCT_EXPORT_METHOD(isInboxEnabled
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    BOOL isEnabled = [[SFMCSdk mp] isInboxEnabled];
+    resolve(@(isEnabled));
 }
 
 @end
