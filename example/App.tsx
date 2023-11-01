@@ -309,14 +309,12 @@ const FeatureToggle = () => {
   const [isAnalyticsEnabled, setAnalyticsEnabledState] = useState(false);
   const [isPiAnalyticsEnabled, setPiAnalyticsEnabledState] = useState(false);
   const [isLocationEnabled, setLocationEnabledState] = useState(false);
-  const [isInboxEnabled, setInboxEnabledState] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setAnalyticsEnabledState(await MCReactModule.isAnalyticsEnabled());
       setPiAnalyticsEnabledState(await MCReactModule.isPiAnalyticsEnabled());
       setLocationEnabledState(await MCReactModule.isLocationEnabled());
-      setInboxEnabledState(await MCReactModule.isInboxEnabled());
     };
 
     fetchData();
@@ -354,13 +352,6 @@ const FeatureToggle = () => {
         <Switch
           onValueChange={() => toggleFeature('Location Services', isLocationEnabled, setLocationEnabledState, MCReactModule.setLocationEnabled)}
           value={isLocationEnabled}
-        />
-      </View>
-      <View style={styles.toggleRow}>
-        <Text style={styles.toggleLabel}>Inbox</Text>
-        <Switch
-          onValueChange={() => toggleFeature('Inbox', isInboxEnabled, setInboxEnabledState, MCReactModule.setInboxEnabled)}
-          value={isInboxEnabled}
         />
       </View>
     </View>

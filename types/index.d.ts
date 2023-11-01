@@ -205,20 +205,6 @@ declare class MCReactModule {
    * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html|iOS Docs}
    */
   static isLocationEnabled(): Promise<boolean>;
-
-  /**
-   * Enables or disables the inbox feature in the Marketing Cloud SDK.
-   * @param {boolean} inboxEnabled - A flag indicating whether the inbox feature should be enabled.
-   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html|iOS Docs}
-   */
-  static setInboxEnabled(inboxEnabled: boolean): void;
-
-  /**
-   * Checks if the inbox feature is enabled in the Marketing Cloud SDK.
-   * @returns {Promise<boolean>} A promise to the boolean representation of whether the inbox feature is enabled.
-   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html|iOS Docs}
-   */
-  static isInboxEnabled(): Promise<boolean>;
 }
 
 export * from "./event";

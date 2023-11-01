@@ -176,16 +176,4 @@ RCT_EXPORT_METHOD(isLocationEnabled
     resolve(@(isEnabled));
 }
 
-// Inbox Feature Enablement
-RCT_EXPORT_METHOD(setInboxEnabled : (BOOL)inboxEnabled) {
-    [[SFMCSdk mp] setInboxEnabled:inboxEnabled];
-}
-
-RCT_EXPORT_METHOD(isInboxEnabled
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    BOOL isEnabled = [[SFMCSdk mp] isInboxEnabled];
-    resolve(@(isEnabled));
-}
-
 @end
