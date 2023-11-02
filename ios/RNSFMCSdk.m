@@ -41,14 +41,10 @@ const int LOG_LENGTH = 800;
 RCT_EXPORT_MODULE()
 
 - (void)log:(NSString *)msg {
-    if (@available(iOS 10, *)) {
-        if (self.logger == nil) {
-            self.logger = os_log_create("com.salesforce.marketingcloudsdk", "ReactNative");
-        }
-        os_log_info(self.logger, "%{public}@", msg);
-    } else {
-        NSLog(@"%@", msg);
+    if (self.logger == nil) {
+        self.logger = os_log_create("com.salesforce.marketingcloudsdk", "ReactNative");
     }
+    os_log_info(self.logger, "%{public}@", msg);
 }
 - (void)splitLog:(NSString *)msg {
     NSInteger length = msg.length;
@@ -138,6 +134,30 @@ RCT_EXPORT_METHOD(getAttributes
                   : (RCTPromiseRejectBlock)reject) {
     NSDictionary *attributes = [[SFMCSdk mp] attributes];
     resolve((attributes != nil) ? attributes : @[]);
+}
+
+
+RCT_EXPORT_METHOD(setAnalyticsEnabled : (BOOL)analyticsEnabled) {
+    [[SFMCSdk mp] setAnalyticsEnabled:analyticsEnabled];
+}
+
+RCT_EXPORT_METHOD(isAnalyticsEnabled
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    BOOL isEnabled = [[SFMCSdk mp] isAnalyticsEnabled];
+    resolve(@(isEnabled));
+}
+
+// PI Analytics Enablement
+RCT_EXPORT_METHOD(setPiAnalyticsEnabled : (BOOL)analyticsEnabled) {
+    [[SFMCSdk mp] setPiAnalyticsEnabled:analyticsEnabled];
+}
+
+RCT_EXPORT_METHOD(isPiAnalyticsEnabled
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    BOOL isEnabled = [[SFMCSdk mp] isPiAnalyticsEnabled];
+    resolve(@(isEnabled));
 }
 
 @end

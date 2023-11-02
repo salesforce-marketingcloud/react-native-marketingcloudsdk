@@ -1,6 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {PermissionsAndroid} from 'react-native';
-
 import {
   View,
   TextInput,
@@ -12,6 +10,9 @@ import {
   ScrollView,
   StatusBar,
   Alert,
+  Switch,
+  PermissionsAndroid,
+  Platform
 } from 'react-native';
 
 import MCReactModule, {CustomEvent} from 'react-native-marketingcloudsdk';
@@ -37,6 +38,10 @@ const App = () => {
         <Section title="Logging">
           <Logging />
         </Section>
+        <Section title="Runtime Feature Toggle">
+          <FeatureToggle />
+        </Section>
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -48,9 +53,11 @@ const Push = () => {
 
   const requestNotificationPermission = async () => {
     try {
-      await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATION,
-      );
+      if (Platform.OS === 'android') {
+        await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATION,
+        );
+      }
     } catch (err) {
       console.warn('requestNotificationPermission error: ', err);
     }
@@ -300,6 +307,50 @@ const Attributes = () => {
   );
 };
 
+const FeatureToggle = () => {
+  const [isAnalyticsEnabled, setAnalyticsEnabledState] = useState(false);
+  const [isPiAnalyticsEnabled, setPiAnalyticsEnabledState] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setAnalyticsEnabledState(await MCReactModule.isAnalyticsEnabled());
+      setPiAnalyticsEnabledState(await MCReactModule.isPiAnalyticsEnabled());
+    };
+
+    fetchData();
+  }, []);
+
+  const toggleFeature = async (
+    featureName: string,
+    currentValue: boolean,
+    setterFunction: React.Dispatch<React.SetStateAction<boolean>>,
+    toggleFunction: (enabled: boolean) => void
+  ) => {
+    toggleFunction(!currentValue);
+    setterFunction(!currentValue);
+    Toast.show(`${featureName} is ${!currentValue ? 'Enabled' : 'Disabled'}`);
+  };
+
+  return (
+    <View style={styles.toggleContainer}>
+      <View style={styles.toggleRow}>
+        <Text style={styles.toggleLabel}>Analytics</Text>
+        <Switch
+          onValueChange={() => toggleFeature('Analytics', isAnalyticsEnabled, setAnalyticsEnabledState, MCReactModule.setAnalyticsEnabled)}
+          value={isAnalyticsEnabled}
+        />
+      </View>
+      <View style={styles.toggleRow}>
+        <Text style={styles.toggleLabel}>PI Analytics</Text>
+        <Switch
+          onValueChange={() => toggleFeature('PI Analytics', isPiAnalyticsEnabled, setPiAnalyticsEnabledState, MCReactModule.setPiAnalyticsEnabled)}
+          value={isPiAnalyticsEnabled}
+        />
+      </View>
+    </View>
+  );
+};
+
 const Logging = () => {
   const [deviceId, setDeviceId] = useState('');
 
@@ -463,6 +514,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
   },
+  toggleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    marginTop: 20,
+  },
+  toggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 10
+  },
+  toggleLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+  }
 });
 
 export default App;
