@@ -41,14 +41,10 @@ const int LOG_LENGTH = 800;
 RCT_EXPORT_MODULE()
 
 - (void)log:(NSString *)msg {
-    if (@available(iOS 10, *)) {
-        if (self.logger == nil) {
-            self.logger = os_log_create("com.salesforce.marketingcloudsdk", "ReactNative");
-        }
-        os_log_info(self.logger, "%@", msg);
-    } else {
-        NSLog(@"%@", msg);
+    if (self.logger == nil) {
+        self.logger = os_log_create("com.salesforce.marketingcloudsdk", "ReactNative");
     }
+    os_log_info(self.logger, "%{public}@", msg);
 }
 - (void)splitLog:(NSString *)msg {
     NSInteger length = msg.length;
