@@ -308,13 +308,11 @@ const Attributes = () => {
 const FeatureToggle = () => {
   const [isAnalyticsEnabled, setAnalyticsEnabledState] = useState(false);
   const [isPiAnalyticsEnabled, setPiAnalyticsEnabledState] = useState(false);
-  const [isLocationEnabled, setLocationEnabledState] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setAnalyticsEnabledState(await MCReactModule.isAnalyticsEnabled());
       setPiAnalyticsEnabledState(await MCReactModule.isPiAnalyticsEnabled());
-      setLocationEnabledState(await MCReactModule.isLocationEnabled());
     };
 
     fetchData();
@@ -345,13 +343,6 @@ const FeatureToggle = () => {
         <Switch
           onValueChange={() => toggleFeature('PI Analytics', isPiAnalyticsEnabled, setPiAnalyticsEnabledState, MCReactModule.setPiAnalyticsEnabled)}
           value={isPiAnalyticsEnabled}
-        />
-      </View>
-      <View style={styles.toggleRow}>
-        <Text style={styles.toggleLabel}>Location Services</Text>
-        <Switch
-          onValueChange={() => toggleFeature('Location Services', isLocationEnabled, setLocationEnabledState, MCReactModule.setLocationEnabled)}
-          value={isLocationEnabled}
         />
       </View>
     </View>

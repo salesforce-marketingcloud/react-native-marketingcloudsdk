@@ -164,16 +164,4 @@ RCT_EXPORT_METHOD(isPiAnalyticsEnabled
     resolve(@(isEnabled));
 }
 
-// Location Services Enablement
-RCT_EXPORT_METHOD(setLocationEnabled : (BOOL)locationEnabled) {
-    [[SFMCSdk mp] setLocationEnabled:locationEnabled];
-}
-
-RCT_EXPORT_METHOD(isLocationEnabled
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    BOOL isEnabled = [[SFMCSdk mp] isLocationEnabled];
-    resolve(@(isEnabled));
-}
-
 @end
