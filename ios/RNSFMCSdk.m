@@ -39,8 +39,8 @@ const int LOG_LENGTH = 800;
     self = [super init];
     if (self) {
         //Add default tag.
-        [[SFMCSDK mp] executeWhenReady:^void () {
-            [[SFMCSdk mp] addTag:@"REACT"];
+        [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
+            (void)[mp addTag:@"REACT"];
         }];
     }
     return self;
