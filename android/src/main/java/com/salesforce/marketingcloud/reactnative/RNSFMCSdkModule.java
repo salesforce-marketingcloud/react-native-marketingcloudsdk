@@ -54,7 +54,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
+@SuppressWarnings({ "unused", "WeakerAccess" })
 public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     public RNSFMCSdkModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -240,6 +240,54 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     public void track(final ReadableMap event) {
         Event sfmcEvent = EventUtility.toEvent(event);
         SFMCSdk.track(sfmcEvent);
+    }
+
+    @ReactMethod
+    public void isAnalyticsEnabled(Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                promise.resolve(sdk.getAnalyticsManager().areAnalyticsEnabled());
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setAnalyticsEnabled(final Boolean enable) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                if (enable) {
+                    sdk.getAnalyticsManager().enableAnalytics();
+                } else {
+                    sdk.getAnalyticsManager().disableAnalytics();
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void isPiAnalyticsEnabled(Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                promise.resolve(sdk.getAnalyticsManager().arePiAnalyticsEnabled());
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setPiAnalyticsEnabled(final Boolean enable) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                if (enable) {
+                    sdk.getAnalyticsManager().enablePiAnalytics();
+                } else {
+                    sdk.getAnalyticsManager().disablePiAnalytics();
+                }
+            }
+        });
     }
 
     private void handleAction(final SFMCAction action) {
