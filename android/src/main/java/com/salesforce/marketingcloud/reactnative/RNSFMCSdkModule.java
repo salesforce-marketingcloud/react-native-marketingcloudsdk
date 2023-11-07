@@ -58,6 +58,12 @@ import javax.annotation.Nonnull;
 public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     public RNSFMCSdkModule(ReactApplicationContext reactContext) {
         super(reactContext);
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                sdk.getRegistrationManager().edit().addTag("React").commit();
+            }
+        });
     }
 
     @Override
