@@ -130,6 +130,12 @@ const Tags = () => {
       });
   };
 
+  const removeTag = async () => {
+    MCReactModule.removeTag(inputText);
+    setInputText('');
+    updateTags('Tag removed');
+  };
+
   const handleTags = async () => {
     MCReactModule.addTag(inputText);
     setInputText('');
@@ -157,6 +163,11 @@ const Tags = () => {
         onPress={() => updateTags('Tags updated')}>
         <Text style={styles.buttonText}>Get Tags</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={removeTag}>
+        <Text style={styles.buttonText}>Remove Tag</Text>
+      </TouchableOpacity>
+
     </View>
   );
 };
