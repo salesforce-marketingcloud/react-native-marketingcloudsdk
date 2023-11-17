@@ -50,6 +50,10 @@ const int LOG_LENGTH = 800;
     return dispatch_get_main_queue();
 }
 
++ (BOOL)requiresMainQueueSetup {
+    return YES;
+}
+
 RCT_EXPORT_MODULE()
 
 - (void)log:(NSString *)msg {
