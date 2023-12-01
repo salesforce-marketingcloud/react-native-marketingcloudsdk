@@ -145,6 +145,92 @@ pod install
 
 Follow [these instructions](./ios_push.md) to enable push for iOS.
 
+### URL Handling
+
+The SDK doesn’t automatically present URLs from these sources.
+
+* CloudPage URLs from push notifications
+* OpenDirect URLs from push notifications
+* Action URLs from in-app messages
+
+To handle URLs from push notifications, you'll need to implement the following for Android and iOS.
+
+```java
+@Override
+public void onCreate() {
+    super.onCreate();
+
+    SFMCSdk.configure((Context) this, SFMCSdkModuleConfig.build(builder -> { 
+        builder.setPushModuleConfig(MarketingCloudConfig.builder()
+        .setApplicationId("{MC_APP_ID}")
+        .setAccessToken("{MC_ACCESS_TOKEN}")
+        .setSenderId("{FCM_SENDER_ID_FOR_MC_APP}")
+        .setMarketingCloudServerUrl("{MC_APP_SERVER_URL}")
+        .setNotificationCustomizationOptions(NotificationCustomizationOptions.create(R.drawable.ic_notification))
+        .setAnalyticsEnabled(true)
+        // Here we set the URL handler to present URLs from CloudPages, OpenDirect, and In-App Messages
+        .setUrlHandler((context, s, s1) -> PendingIntent.getActivity(
+            context, 
+            new Random().nextInt(), 
+            new Intent(Intent.ACTION_VIEW, Uri.parse(s)), 
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )).build(this));
+
+        return null;
+    }), initializationStatus -> {
+        Log.e("TAG", "STATUS "+initializationStatus);
+        if (initializationStatus.getStatus() == 1) {
+            Log.e("TAG", "STATUS SUCCESS");
+        }
+        return null;
+    });
+
+    // The rest of the onCreate method
+}
+```
+
+```objc
+// AppDelegate.h ----
+
+#import <MarketingCloudSDK/MarketingCloudSDK.h>
+#import <SFMCSDK/SFMCSDK.h>
+
+...
+
+// Implement the SFMCSdkURLHandlingDelegate delegate
+@interface AppDelegate : RCTAppDelegate<UNUserNotificationCenterDelegate, SFMCSdkURLHandlingDelegate>
+
+// AppDelegate.mm ----
+
+// This method is called after successfully initializing the SFMCSdk
+- (void)pushSetup {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    // Here we set the URL Handling delegate to present URLs from CloudPages, OpenDirect, and In-App Messages
+    [[SFMCSdk mp] setURLHandlingDelegate:self];
+
+    // Set UNUserNotificationCenter delegate, register for remote notifications, etc...
+  });
+}
+
+// ...
+
+// Implement the required delegate method to handle URLs
+- (void)sfmc_handleURL:(NSURL * _Nonnull)url type:(NSString * _Nonnull)type {
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+            if (success) {
+                NSLog(@"url %@ opened successfully", url);
+            } else {
+                NSLog(@"url %@ could not be opened", url);
+            }
+        }];
+    }
+}
+
+```
+
+Please also see additional documentation on URL Handling for [Android](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/sdk-implementation/url-handling.html) and [iOS](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/implementation-urlhandling.html).
+
 ## API Reference <a name="reference"></a>
 
 **Kind**: global class  
