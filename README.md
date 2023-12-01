@@ -155,6 +155,8 @@ The SDK doesn’t automatically present URLs from these sources.
 
 To handle URLs from push notifications, you'll need to implement the following for Android and iOS.
 
+#### Android
+
 ```java
 @Override
 public void onCreate() {
@@ -188,6 +190,8 @@ public void onCreate() {
     // The rest of the onCreate method
 }
 ```
+
+#### iOS
 
 ```objc
 // AppDelegate.h ----
