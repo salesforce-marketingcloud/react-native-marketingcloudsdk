@@ -15,7 +15,7 @@ After updating the dependency from 7.x to 8.x via npm or yarn. Please follow bel
 
 #### Android
 Ensure that you import `SFMCSdk` and properly configure the SDK as specified in  [Step 3 Configure the SDK for Android](#3-configure-the-sdk-in-your-mainapplicationjava-class), which details the process of configuring the SDK for Android in this guide.
- 
+
 ## Installation
 
 * Plugin has a version dependency on React Native v0.60+
@@ -100,6 +100,7 @@ public void onCreate() {
     // ... The rest of the onCreate method    
 }
 ```
+
 ### iOS Setup
 
 #### 1. Install pod for Marketing Cloud SDK
@@ -144,6 +145,96 @@ pod install
 
 Follow [these instructions](./ios_push.md) to enable push for iOS.
 
+### URL Handling
+
+The SDK doesn’t automatically present URLs from these sources.
+
+* CloudPage URLs from push notifications
+* OpenDirect URLs from push notifications
+* Action URLs from in-app messages
+
+To handle URLs from push notifications, you'll need to implement the following for Android and iOS.
+
+#### Android
+
+```java
+@Override
+public void onCreate() {
+    super.onCreate();
+
+    SFMCSdk.configure((Context) this, SFMCSdkModuleConfig.build(builder -> { 
+        builder.setPushModuleConfig(MarketingCloudConfig.builder()
+        .setApplicationId("{MC_APP_ID}")
+        .setAccessToken("{MC_ACCESS_TOKEN}")
+        .setSenderId("{FCM_SENDER_ID_FOR_MC_APP}")
+        .setMarketingCloudServerUrl("{MC_APP_SERVER_URL}")
+        .setNotificationCustomizationOptions(NotificationCustomizationOptions.create(R.drawable.ic_notification))
+        .setAnalyticsEnabled(true)
+        // Here we set the URL handler to present URLs from CloudPages, OpenDirect, and In-App Messages
+        .setUrlHandler((context, s, s1) -> PendingIntent.getActivity(
+            context, 
+            new Random().nextInt(), 
+            new Intent(Intent.ACTION_VIEW, Uri.parse(s)), 
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )).build(this));
+
+        return null;
+    }), initializationStatus -> {
+        Log.e("TAG", "STATUS "+initializationStatus);
+        if (initializationStatus.getStatus() == 1) {
+            Log.e("TAG", "STATUS SUCCESS");
+        }
+        return null;
+    });
+
+    // The rest of the onCreate method
+}
+```
+
+#### iOS
+
+```objc
+// AppDelegate.h ----
+
+#import <MarketingCloudSDK/MarketingCloudSDK.h>
+#import <SFMCSDK/SFMCSDK.h>
+
+...
+
+// Implement the SFMCSdkURLHandlingDelegate delegate
+@interface AppDelegate : RCTAppDelegate<UNUserNotificationCenterDelegate, SFMCSdkURLHandlingDelegate>
+
+// AppDelegate.mm ----
+
+// This method is called after successfully initializing the SFMCSdk
+- (void)pushSetup {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    // Here we set the URL Handling delegate to present URLs from CloudPages, OpenDirect, and In-App Messages
+    [[SFMCSdk mp] setURLHandlingDelegate:self];
+
+    // Set UNUserNotificationCenter delegate, register for remote notifications, etc...
+  });
+}
+
+// ...
+
+// Implement the required delegate method to handle URLs
+- (void)sfmc_handleURL:(NSURL * _Nonnull)url type:(NSString * _Nonnull)type {
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+            if (success) {
+                NSLog(@"url %@ opened successfully", url);
+            } else {
+                NSLog(@"url %@ could not be opened", url);
+            }
+        }];
+    }
+}
+
+```
+
+Please also see additional documentation on URL Handling for [Android](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/sdk-implementation/url-handling.html) and [iOS](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/implementation-urlhandling.html).
+
 ## API Reference <a name="reference"></a>
 
 **Kind**: global class  
@@ -164,8 +255,12 @@ Follow [these instructions](./ios_push.md) to enable push for iOS.
     * [.enableLogging()](#MCReactModule.enableLogging)
     * [.disableLogging()](#MCReactModule.disableLogging)
     * [.logSdkState()](#MCReactModule.logSdkState)
-    * [.track()](#MCReactModule.track)
+    * [.track(event)](#MCReactModule.track)
     * [.getDeviceId()](#MCReactModule.getDeviceId) ⇒ <code>Promise.&lt;?string&gt;</code>
+    * [.setAnalyticsEnabled(analyticsEnabled)](#MCReactModule.setAnalyticsEnabled)
+    * [.isAnalyticsEnabled()](#MCReactModule.isAnalyticsEnabled) ⇒ <code>Promise.&lt;boolean&gt;</code>
+    * [.setPiAnalyticsEnabled(analyticsEnabled)](#MCReactModule.setPiAnalyticsEnabled)
+    * [.isPiAnalyticsEnabled()](#MCReactModule.isPiAnalyticsEnabled) ⇒ <code>Promise.&lt;boolean&gt;</code>
 
 <a name="MCReactModule.isPushEnabled"></a>
 
@@ -365,22 +460,21 @@ the SDK and will be requested by the Marketing Cloud support team.
 - [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/SFMCSdk/8.0/com.salesforce.marketingcloud.sfmcsdk/-s-f-m-c-sdk/get-sdk-state.html)
 - [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/SFMCSdk/8.0/Classes/SFMCSdk.html#/c:@M@SFMCSDK@objc(cs)SFMCSdk(cm)state)
 
-
 <a name="MCReactModule.track"></a>
 
 ### MCReactModule.track(event)
 This method helps to track events, which could result in actions such as an InApp Message being displayed.
 
 **Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| event | [<code>CustomEvent</code>](#CustomEvent) \| [<code>EngagementEvent</code>](#EngagementEvent) \| <code>IdentityEvent</code> \| [<code>SystemEvent</code>](#SystemEvent) \| <code>CartEvent</code> \| <code>OrderEvent</code> \| <code>CatalogObjectEvent</code> | The event to be tracked. |
 **See**
 
 - [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/event-tracking/event-tracking-event-tracking.html)
 - [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/event-tracking/event-tracking-event-tracking.html)
 
+
+| Param | Type | Description |
+| --- | --- | --- |
+| event | [<code>CustomEvent</code>](#CustomEvent) \| [<code>EngagementEvent</code>](#EngagementEvent) \| <code>IdentityEvent</code> \| [<code>SystemEvent</code>](#SystemEvent) \| <code>CartEvent</code> \| <code>OrderEvent</code> \| <code>CatalogObjectEvent</code> | The event to be tracked. |
 
 <a name="MCReactModule.getDeviceId"></a>
 
@@ -393,6 +487,62 @@ Returns the deviceId used by the Marketing Cloud to send push messages to the de
 
 - [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.registration/-registration-manager/get-device-id.html)
 - [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)deviceIdentifier)
+
+<a name="MCReactModule.setAnalyticsEnabled"></a>
+
+### MCReactModule.setAnalyticsEnabled(analyticsEnabled)
+Enables or disables analytics in the Marketing Cloud SDK.
+
+**Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/sdk-implementation/runtime-toggles.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html)
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| analyticsEnabled | <code>boolean</code> | A flag indicating whether analytics should be enabled. |
+
+<a name="MCReactModule.isAnalyticsEnabled"></a>
+
+### MCReactModule.isAnalyticsEnabled() ⇒ <code>Promise.&lt;boolean&gt;</code>
+Checks if analytics is enabled in the Marketing Cloud SDK.
+
+**Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - A promise to the boolean representation of whether analytics is enabled.  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/sdk-implementation/runtime-toggles.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html)
+
+<a name="MCReactModule.setPiAnalyticsEnabled"></a>
+
+### MCReactModule.setPiAnalyticsEnabled(analyticsEnabled)
+Enables or disables Predictive Intelligence analytics in the Marketing Cloud SDK.
+
+**Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/sdk-implementation/runtime-toggles.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html)
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| analyticsEnabled | <code>boolean</code> | A flag indicating whether PI analytics should be enabled. |
+
+<a name="MCReactModule.isPiAnalyticsEnabled"></a>
+
+### MCReactModule.isPiAnalyticsEnabled() ⇒ <code>Promise.&lt;boolean&gt;</code>
+Checks if Predictive Intelligence analytics is enabled in the Marketing Cloud SDK.
+
+**Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - A promise to the boolean representation of whether PI analytics is enabled.  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/sdk-implementation/runtime-toggles.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html)
 
 
 ### 3rd Party Product Language Disclaimers
