@@ -25,36 +25,41 @@
  */
 package com.salesforce.marketingcloud.reactnative;
 
-import com.facebook.react.ReactPackage;
-import com.facebook.react.bridge.JavaScriptModule;
-import com.facebook.react.bridge.NativeModule;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.uimanager.ViewManager;
-import com.salesforce.marketingcloud.MCLogListener;
-import com.salesforce.marketingcloud.MarketingCloudSdk;
-import java.util.ArrayList;
-import java.util.Collections;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
+import com.salesforce.marketingcloud.messages.inbox.InboxMessage;
+
 import java.util.List;
 
-@SuppressWarnings("unused")
-public class RNSFMCSdk implements ReactPackage {
-    @Override
-    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        List<NativeModule> modules = new ArrayList<>();
+public class InboxMessagingUtility {
+    public static WritableMap mapInboxMessage(InboxMessage message) {
+        WritableMap result = Arguments.createMap();
+        result.putString("id", message.id());
+        result.putString("alert", message.alert());
+        result.putString("subject", message.subject());
+        result.putString("custom", message.custom());
+        result.putNull("name");
+        result.putString("title", message.title());
+        result.putString("url", message.url());
+        result.putBoolean("deleted", message.deleted());
+        result.putBoolean("read", message.read());
+        result.putString("sound", message.sound());
+        result.putNull("subtitle");
+        result.putDouble("startDate", message.startDateUtc().getTime());
+        result.putDouble("endDate", message.endDateUtc().getTime());
+        result.putDouble("sendDate", message.sendDateUtc().getTime());
 
-        modules.add(new RNSFMCSdkModule(reactContext));
-        modules.add(new RNSFMCInboxModule(reactContext));
-
-        return modules;
+        return result;
     }
 
-    // Deprecated from RN 0.47
-    public List<Class<? extends JavaScriptModule>> createJSModules() {
-        return Collections.emptyList();
-    }
+    public static WritableArray mapInboxMessages(List<InboxMessage> messages) {
+        WritableArray result = Arguments.createArray();
 
-    @Override
-    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Collections.emptyList();
+        for (InboxMessage message : messages) {
+            result.pushMap(mapInboxMessage(message));
+        }
+
+        return result;
     }
 }

@@ -455,5 +455,188 @@ Checks if Predictive Intelligence analytics is enabled in the Marketing Cloud SD
 - [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html)
 
 
+### InboxMessaging Module
+import { SFMCInboxModule } from "react-native-marketingcloudsdk".
+
+**Kind**: global class  
+
+* [SFMCInboxModule](#SFMCInboxModule)
+    * [.deleteMessage(messageId)](#SFMCInboxModule.deleteMessage)
+    * [.getDeletedMessageCount()](#SFMCInboxModule.getDeletedMessageCount) ⇒ <code>Promise.&lt;number&gt;</code>
+    * [.getDeletedMessages()](#SFMCInboxModule.getDeletedMessages) ⇒ <code>Promise.&lt;Array.&lt;InboxMessage&gt;&gt;</code>
+    * [.getMessages()](#SFMCInboxModule.getMessages) ⇒ <code>Promise.&lt;Array.&lt;InboxMessage&gt;&gt;</code>
+    * [.getMessageCount()](#SFMCInboxModule.getMessageCount) ⇒ <code>Promise.&lt;number&gt;</code>
+    * [.getReadMessageCount()](#SFMCInboxModule.getReadMessageCount) ⇒ <code>Promise.&lt;number&gt;</code>
+    * [.getReadMessages()](#SFMCInboxModule.getReadMessages) ⇒ <code>Promise.&lt;Array.&lt;InboxMessage&gt;&gt;</code>
+    * [.getUnreadMessageCount()](#SFMCInboxModule.getUnreadMessageCount) ⇒ <code>Promise.&lt;number&gt;</code>
+    * [.getUnreadMessages()](#SFMCInboxModule.getUnreadMessages) ⇒ <code>Promise.&lt;Array.&lt;InboxMessage&gt;&gt;</code>
+    * [.markAllMessagesDeleted()](#SFMCInboxModule.markAllMessagesDeleted)
+    * [.markAllMessagesRead()](#SFMCInboxModule.markAllMessagesRead)
+    * [.refreshInbox()](#SFMCInboxModule.refreshInbox)
+    * [.setMessageRead(messageId)](#SFMCInboxModule.setMessageRead)
+
+<a name="SFMCInboxModule.deleteMessage"></a>
+
+### SFMCInboxModule.deleteMessage(messageId)
+Marks an InboxMessage as deleted in local storage. This will prevent the message from being shown in the future unless local storage is cleared on the device.
+
+**Kind**: static method of [<code>SFMCInboxModule</code>](#SFMCInboxModule)  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/delete-message.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)markMessageWithIdDeletedWithMessageId:)
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| messageId | <code>string</code> | The id of the InboxMessage to mark as deleted. |
+
+<a name="SFMCInboxModule.getDeletedMessageCount"></a>
+
+### SFMCInboxModule.getDeletedMessageCount() ⇒ <code>Promise.&lt;number&gt;</code>
+Get the number of deleted Inbox Messages regardless of their read status.
+
+**Kind**: static method of [<code>SFMCInboxModule</code>](#SFMCInboxModule)  
+**Returns**: <code>Promise.&lt;number&gt;</code> - A numerical representation of the total number of deleted messages.  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-deleted-message-count.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getDeletedMessagesCount)
+
+<a name="SFMCInboxModule.getDeletedMessages"></a>
+
+### SFMCInboxModule.getDeletedMessages() ⇒ <code>Promise.&lt;Array.&lt;InboxMessage&gt;&gt;</code>
+Gets a list of Active, Deleted Inbox Messages.
+A Inbox Message is considered Active if its startDateUtc is in the past and its endDateUtc is NULL or in the future.
+
+**Kind**: static method of [<code>SFMCInboxModule</code>](#SFMCInboxModule)  
+**Returns**: <code>Promise.&lt;Array.&lt;InboxMessage&gt;&gt;</code> - An array of Inbox Messages.  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-deleted-messages.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getDeletedMessages)
+
+<a name="SFMCInboxModule.getMessages"></a>
+
+### SFMCInboxModule.getMessages() ⇒ <code>Promise.&lt;Array.&lt;InboxMessage&gt;&gt;</code>
+Gets a list of active, read, and unread Inbox Messages that are not deleted.
+
+**Kind**: static method of [<code>SFMCInboxModule</code>](#SFMCInboxModule)  
+**Returns**: <code>Promise.&lt;Array.&lt;InboxMessage&gt;&gt;</code> - An array of Inbox Messages.  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-messages.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getAllMessages)
+
+<a name="SFMCInboxModule.getMessageCount"></a>
+
+### SFMCInboxModule.getMessageCount() ⇒ <code>Promise.&lt;number&gt;</code>
+Get the total number of not deleted Inbox Messages regardless of their read status.
+
+**Kind**: static method of [<code>SFMCInboxModule</code>](#SFMCInboxModule)  
+**Returns**: <code>Promise.&lt;number&gt;</code> - a representation of the total number of messages.  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-message-count.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getAllMessagesCount)
+
+<a name="SFMCInboxModule.getReadMessageCount"></a>
+
+### SFMCInboxModule.getReadMessageCount() ⇒ <code>Promise.&lt;number&gt;</code>
+Get the number of read, non-deleted Inbox Messages.
+
+**Kind**: static method of [<code>SFMCInboxModule</code>](#SFMCInboxModule)  
+**Returns**: <code>Promise.&lt;number&gt;</code> - a representation of the number of read messages.  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-read-message-count.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getReadMessagesCount)
+
+<a name="SFMCInboxModule.getReadMessages"></a>
+
+### SFMCInboxModule.getReadMessages() ⇒ <code>Promise.&lt;Array.&lt;InboxMessage&gt;&gt;</code>
+Gets a list of active, read, not deleted Inbox Messages.
+
+**Kind**: static method of [<code>SFMCInboxModule</code>](#SFMCInboxModule)  
+**Returns**: <code>Promise.&lt;Array.&lt;InboxMessage&gt;&gt;</code> - an array of Inbox Messages.  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-read-messages.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getReadMessages)
+
+<a name="SFMCInboxModule.getUnreadMessageCount"></a>
+
+### SFMCInboxModule.getUnreadMessageCount() ⇒ <code>Promise.&lt;number&gt;</code>
+Get the number of unread, non-deleted Inbox Messages.
+
+**Kind**: static method of [<code>SFMCInboxModule</code>](#SFMCInboxModule)  
+**Returns**: <code>Promise.&lt;number&gt;</code> - a representation of the number of unread messages.  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-unread-message-count.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getUnreadMessagesCount)
+
+<a name="SFMCInboxModule.getUnreadMessages"></a>
+
+### SFMCInboxModule.getUnreadMessages() ⇒ <code>Promise.&lt;Array.&lt;InboxMessage&gt;&gt;</code>
+Gets a list of active, unread, non-deleted Inbox Messages.
+
+**Kind**: static method of [<code>SFMCInboxModule</code>](#SFMCInboxModule)  
+**Returns**: <code>Promise.&lt;Array.&lt;InboxMessage&gt;&gt;</code> - an array of Inbox Messages.  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-unread-messages.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getUnreadMessages)
+
+<a name="SFMCInboxModule.markAllMessagesDeleted"></a>
+
+### SFMCInboxModule.markAllMessagesDeleted()
+Marks all active InboxMessages as deleted.
+
+**Kind**: static method of [<code>SFMCInboxModule</code>](#SFMCInboxModule)  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/mark-all-messages-deleted.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)markAllMessagesDeleted)
+
+<a name="SFMCInboxModule.markAllMessagesRead"></a>
+
+### SFMCInboxModule.markAllMessagesRead()
+Marks all active, unread InboxMessages as read.
+
+**Kind**: static method of [<code>SFMCInboxModule</code>](#SFMCInboxModule)  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/mark-all-messages-read.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)markAllMessagesRead)
+
+<a name="SFMCInboxModule.refreshInbox"></a>
+
+### SFMCInboxModule.refreshInbox()
+Requests an updated list of Inbox Messages from the Marketing Cloud Servers. This request can be made, at most, once per minute. This throttle also includes the Inbox request that is made by the SDK when your application is brought into the foreground.
+
+**Kind**: static method of [<code>SFMCInboxModule</code>](#SFMCInboxModule)  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/refresh-inbox.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)refreshMessages)
+
+<a name="SFMCInboxModule.setMessageRead"></a>
+
+### SFMCInboxModule.setMessageRead(messageId)
+Marks an InboxMessage as read in local storage. This status will persist unless local storage is cleared on the device.
+
+**Kind**: static method of [<code>SFMCInboxModule</code>](#SFMCInboxModule)  
+**See**
+
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/set-message-read.html)
+- [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)markMessageWithIdReadWithMessageId:)
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| messageId | <code>string</code> | the id of the InboxMessage to mark as read. |
+
+
 ### 3rd Party Product Language Disclaimers
 Where possible, we changed noninclusive terms to align with our company value of Equality. We retained noninclusive terms to document a third-party system, but we encourage the developer community to embrace more inclusive language. We can update the term when it’s no longer required for technical accuracy.

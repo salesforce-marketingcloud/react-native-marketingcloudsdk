@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		497C2BF02BDF9E9900CA14F8 /* InboxMessagingUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 497C2BEC2BDF9E9900CA14F8 /* InboxMessagingUtility.m */; };
+		497C2BF12BDF9E9900CA14F8 /* RNSFMCInboxModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 497C2BEF2BDF9E9900CA14F8 /* RNSFMCInboxModule.m */; };
 		C3DE97D629DED9420023BE4C /* RNSFMCSdk.m in Sources */ = {isa = PBXBuildFile; fileRef = C3DE97D529DED9420023BE4C /* RNSFMCSdk.m */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +26,10 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNSFMCSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNSFMCSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		497C2BEC2BDF9E9900CA14F8 /* InboxMessagingUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxMessagingUtility.m; sourceTree = "<group>"; };
+		497C2BED2BDF9E9900CA14F8 /* InboxMessagingUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxMessagingUtility.h; sourceTree = "<group>"; };
+		497C2BEE2BDF9E9900CA14F8 /* RNSFMCInboxModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSFMCInboxModule.h; sourceTree = "<group>"; };
+		497C2BEF2BDF9E9900CA14F8 /* RNSFMCInboxModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSFMCInboxModule.m; sourceTree = "<group>"; };
 		C3DE97D429DED9420023BE4C /* RNSFMCSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSFMCSdk.h; sourceTree = "<group>"; };
 		C3DE97D529DED9420023BE4C /* RNSFMCSdk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSFMCSdk.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -52,6 +58,10 @@
 			children = (
 				C3DE97D429DED9420023BE4C /* RNSFMCSdk.h */,
 				C3DE97D529DED9420023BE4C /* RNSFMCSdk.m */,
+				497C2BED2BDF9E9900CA14F8 /* InboxMessagingUtility.h */,
+				497C2BEC2BDF9E9900CA14F8 /* InboxMessagingUtility.m */,
+				497C2BEE2BDF9E9900CA14F8 /* RNSFMCInboxModule.h */,
+				497C2BEF2BDF9E9900CA14F8 /* RNSFMCInboxModule.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -113,7 +123,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				497C2BF02BDF9E9900CA14F8 /* InboxMessagingUtility.m in Sources */,
 				C3DE97D629DED9420023BE4C /* RNSFMCSdk.m in Sources */,
+				497C2BF12BDF9E9900CA14F8 /* RNSFMCInboxModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -153,5 +153,12 @@ Follow [these instructions](./ios_push.md) to enable push for iOS.
 {{>members~}}
 {{/class}}
 
+### InboxMessaging Module
+{{#class name="SFMCInboxModule"}}
+{{>body~}}
+{{>member-index~}}
+{{>members~}}
+{{/class}}
+
 ### 3rd Party Product Language Disclaimers
 Where possible, we changed noninclusive terms to align with our company value of Equality. We retained noninclusive terms to document a third-party system, but we encourage the developer community to embrace more inclusive language. We can update the term when it’s no longer required for technical accuracy.

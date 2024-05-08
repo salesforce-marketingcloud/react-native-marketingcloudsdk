@@ -194,3 +194,4 @@ declare class MCReactModule {
 }
 
 export * from "./event";
+export * from './inbox';
