@@ -11,9 +11,9 @@ import {
   StatusBar,
   Alert,
   Switch,
-  PermissionsAndroid,
-  Platform
+  Platform,
 } from 'react-native';
+import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 
 import MCReactModule, {CustomEvent} from 'react-native-marketingcloudsdk';
 import Toast from 'react-native-root-toast';
@@ -41,7 +41,6 @@ const App = () => {
         <Section title="Runtime Feature Toggle">
           <FeatureToggle />
         </Section>
-
       </ScrollView>
     </SafeAreaView>
   );
@@ -54,9 +53,16 @@ const Push = () => {
   const requestNotificationPermission = async () => {
     try {
       if (Platform.OS === 'android') {
-        await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATION,
-        );
+
+      let checkPerm = await check(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+        if(checkPerm != "granted"){
+          let result = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+          if (result === RESULTS.GRANTED) {
+            console.log('Notification permission granted');
+          } else {
+            console.log('Notification permission denied');
+          }
+        }
       }
     } catch (err) {
       console.warn('requestNotificationPermission error: ', err);
@@ -461,17 +467,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    color: '#000000',
   },
   section: {
     width: '100%',
     alignItems: 'center',
     marginBottom: 40,
     marginTop: 2,
+    color: '#000',
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     alignItems: 'center',
+    color: '#000',
   },
   sectionContent: {
     width: '80%',
@@ -483,6 +492,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#FFF',
     marginBottom: 10,
+    color: '#000',
   },
   button: {
     backgroundColor: '#1A89CE',
@@ -506,6 +516,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginTop: 16,
     marginBottom: 20,
+    color: '#000000',
   },
   text: {
     fontSize: 16,
@@ -535,12 +546,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   toggleLabel: {
     fontSize: 16,
     fontWeight: '600',
-  }
+    color: '#000',
+  },
 });
 
 export default App;
