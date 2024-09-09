@@ -1,6 +1,6 @@
 // NotificationService.m
 //
-// Copyright (c) 2023 Salesforce, Inc
+// Copyright (c) 2024 Salesforce, Inc
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
