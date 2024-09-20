@@ -42,6 +42,7 @@ local.properties
 .settings
 .project
 .classpath
+google-services.json
 
 # BUCK
 buck-out/
