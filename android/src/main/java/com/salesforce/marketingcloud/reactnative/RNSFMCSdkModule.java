@@ -318,7 +318,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
                     
                     @Override
                     public void ready(@NonNull ModuleInterface moduleInterface) {
-                        action.execute((PushModuleInterface) moduleInterface);
+                        this.ready((PushModuleInterface) moduleInterface);
                     }
 
                 });
