@@ -47,6 +47,7 @@ import com.salesforce.marketingcloud.sfmcsdk.components.identity.Identity;
 import com.salesforce.marketingcloud.sfmcsdk.components.logging.LogLevel;
 import com.salesforce.marketingcloud.sfmcsdk.components.logging.LogListener;
 import com.salesforce.marketingcloud.sfmcsdk.modules.push.PushModuleInterface;
+import com.salesforce.marketingcloud.sfmcsdk.modules.ModuleInterface;
 import com.salesforce.marketingcloud.sfmcsdk.modules.push.PushModuleReadyListener;
 
 import java.util.Map;
@@ -314,6 +315,12 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
                     public void ready(@NonNull PushModuleInterface pushModuleInterface) {
                         action.execute(pushModuleInterface);
                     }
+                    
+                    @Override
+                    public void ready(@NonNull ModuleInterface moduleInterface) {
+                        this.ready((PushModuleInterface) moduleInterface);
+                    }
+
                 });
             }
         });
