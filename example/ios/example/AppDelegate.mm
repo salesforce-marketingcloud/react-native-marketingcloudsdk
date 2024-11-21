@@ -72,30 +72,38 @@
 }
 
 - (void)pushSetup {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    // set the UNUserNotificationCenter delegate - the delegate must be set here in
-    // didFinishLaunchingWithOptions
-    [UNUserNotificationCenter currentNotificationCenter].delegate = self;
-    [[SFMCSdk mp] setURLHandlingDelegate:self];
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
-    
-    [[UNUserNotificationCenter currentNotificationCenter]
-     requestAuthorizationWithOptions:UNAuthorizationOptionAlert |
-     UNAuthorizationOptionSound |
-     UNAuthorizationOptionBadge
-     completionHandler:^(BOOL granted, NSError *_Nullable error) {
-      if (error == nil) {
-        if (granted == YES) {
-          NSLog(@"User granted permission");
-        }
-      }
+    // AppDelegate adheres to the SFMCSdkURLHandlingDelegate protocol
+    // and handles URLs passed back from the SDK in `sfmc_handleURL`.
+    // For more information, see https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/implementation-urlhandling.html
+    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
+        [mp setURLHandlingDelegate:self];
     }];
-  });
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // set the UNUserNotificationCenter delegate - the delegate must be set here in
+        // didFinishLaunchingWithOptions
+        [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+        
+        [[UNUserNotificationCenter currentNotificationCenter]
+         requestAuthorizationWithOptions:UNAuthorizationOptionAlert |
+         UNAuthorizationOptionSound |
+         UNAuthorizationOptionBadge
+         completionHandler:^(BOOL granted, NSError *_Nullable error) {
+            if (error == nil) {
+                if (granted == YES) {
+                    NSLog(@"User granted permission");
+                }
+            }
+        }];
+    });
 }
 
 - (void)application:(UIApplication *)application
     didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    [[SFMCSdk mp] setDeviceToken:deviceToken];
+    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
+        [mp setDeviceToken:deviceToken];
+    }];
 }
 
 - (void)application:(UIApplication *)application
@@ -110,8 +118,9 @@
     didReceiveNotificationResponse:(UNNotificationResponse *)response
              withCompletionHandler:(void (^)(void))completionHandler {
     // tell the MarketingCloudSDK about the notification
-    [[SFMCSdk mp] setNotificationRequest:response.notification.request];
-
+    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
+        [mp setNotificationRequest:response.notification.request];
+    }];
     if (completionHandler != nil) {
         completionHandler();
     }
@@ -132,8 +141,9 @@
 - (void)application:(UIApplication *)application
     didReceiveRemoteNotification:(NSDictionary *)userInfo
           fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    [[SFMCSdk mp] setNotificationUserInfo:userInfo];
-
+    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
+        [mp setNotificationUserInfo:userInfo];
+    }];
     completionHandler(UIBackgroundFetchResultNewData);
 }
 
