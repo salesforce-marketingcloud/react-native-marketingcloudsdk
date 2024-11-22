@@ -99,6 +99,7 @@ const Push = () => {
   useEffect(() => {
     updatePushData();
     requestNotificationPermission();
+    MCReactModule.enableLogging();
   }, []);
 
   return (

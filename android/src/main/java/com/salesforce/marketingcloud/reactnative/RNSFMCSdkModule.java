@@ -26,9 +26,7 @@
 package com.salesforce.marketingcloud.reactnative;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -46,16 +44,14 @@ import com.salesforce.marketingcloud.sfmcsdk.components.events.Event;
 import com.salesforce.marketingcloud.sfmcsdk.components.identity.Identity;
 import com.salesforce.marketingcloud.sfmcsdk.components.logging.LogLevel;
 import com.salesforce.marketingcloud.sfmcsdk.components.logging.LogListener;
-import com.salesforce.marketingcloud.sfmcsdk.modules.push.PushModuleInterface;
 import com.salesforce.marketingcloud.sfmcsdk.modules.ModuleInterface;
+import com.salesforce.marketingcloud.sfmcsdk.modules.push.PushModuleInterface;
 import com.salesforce.marketingcloud.sfmcsdk.modules.push.PushModuleReadyListener;
-
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.Nonnull;
 
-@SuppressWarnings({ "unused", "WeakerAccess" })
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     public RNSFMCSdkModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -315,12 +311,11 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
                     public void ready(@NonNull PushModuleInterface pushModuleInterface) {
                         action.execute(pushModuleInterface);
                     }
-                    
+
                     @Override
                     public void ready(@NonNull ModuleInterface moduleInterface) {
                         this.ready((PushModuleInterface) moduleInterface);
                     }
-
                 });
             }
         });
@@ -346,8 +341,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     abstract class SFMCAction {
         abstract void execute(SFMCSdk sdk);
 
-        void err() {
-        }
+        void err() {}
     }
 
     abstract class SFMCPromiseAction extends SFMCAction {
@@ -365,7 +359,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         @Override
         void err() {
             promise.reject("SFMCSDK-INIT",
-                    "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
+                "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
         }
 
         abstract void execute(SFMCSdk sdk, @NonNull Promise promise);
@@ -374,8 +368,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     abstract class MCPushAction {
         abstract void execute(PushModuleInterface pushSdk);
 
-        void err() {
-        }
+        void err() {}
     }
 
     abstract class MCPushPromiseAction extends MCPushAction {
@@ -393,7 +386,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         @Override
         void err() {
             promise.reject("SFMCSDK-INIT",
-                    "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
+                "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
         }
 
         abstract void execute(PushModuleInterface sdk, @NonNull Promise promise);
@@ -402,8 +395,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     abstract class SFMCIdentityAction {
         abstract void execute(Identity identity);
 
-        void err() {
-        }
+        void err() {}
     }
 
     abstract class SFMCIdentityPromiseAction extends SFMCIdentityAction {
@@ -421,10 +413,9 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         @Override
         void err() {
             promise.reject("SFMCSDK-INIT",
-                    "The SFMCSdk#configure method must be called in the Application's onCreate.");
+                "The SFMCSdk#configure method must be called in the Application's onCreate.");
         }
 
         abstract void execute(Identity sdk, @NonNull Promise promise);
     }
-
 }

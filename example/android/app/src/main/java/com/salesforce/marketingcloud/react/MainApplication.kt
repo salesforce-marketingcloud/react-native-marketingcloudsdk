@@ -63,10 +63,10 @@ class MainApplication : Application(), ReactApplication, UrlHandler,
           MarketingCloudConfig.builder()
             .apply {
               //Update these details based on your MC config
-              setApplicationId("{MC_APP_ID}")
-              setAccessToken("{MC_ACCESS_TOKEN}")
-              setMarketingCloudServerUrl("{MC_APP_SERVER_URL}")
-              setSenderId("{FCM_SENDER_ID}")
+              setApplicationId(this@MainApplication.resources.getString(R.string.PUSH_APPLICATION_ID))
+              setAccessToken(this@MainApplication.resources.getString(R.string.PUSH_ACCESS_TOKEN))
+              setSenderId(this@MainApplication.resources.getString(R.string.PUSH_SENDER_ID))
+              setMarketingCloudServerUrl(this@MainApplication.resources.getString(R.string.PUSH_TSE))
               setNotificationCustomizationOptions(
                 NotificationCustomizationOptions.create(
                   R.mipmap.ic_launcher,

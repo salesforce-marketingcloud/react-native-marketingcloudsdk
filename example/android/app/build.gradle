@@ -85,6 +85,12 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+
+        resValue "string", "PUSH_APPLICATION_ID", "${System.getenv("PUSH_APP_ID")}"
+        resValue "string", "PUSH_SENDER_ID", "${System.getenv("PUSH_SENDER_ID")}"
+        resValue "string", "PUSH_ACCESS_TOKEN", "${System.getenv("PUSH_ACCESS_TOKEN")}"
+        resValue "string", "PUSH_TSE", "${System.getenv("PUSH_TSE")}"
+
     }
     signingConfigs {
         debug {
