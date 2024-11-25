@@ -1,5 +1,9 @@
 Change Log
 ==========
+### Version 8.1.1
+
+* Fix for URL handler not working in iOS when application is in a killed state
+
 ### Version 8.1.0
 
 * Runtime Toggles – Enable/disable Analytics and PI analytics at runtime.  Refer to the [API Reference](README.md#reference) for more details.
