@@ -67,6 +67,7 @@ class MainApplication : Application(), ReactApplication, UrlHandler,
               setAccessToken(this@MainApplication.resources.getString(R.string.PUSH_ACCESS_TOKEN))
               setSenderId(this@MainApplication.resources.getString(R.string.PUSH_SENDER_ID))
               setMarketingCloudServerUrl(this@MainApplication.resources.getString(R.string.PUSH_TSE))
+              setInboxEnabled(true)
               setNotificationCustomizationOptions(
                 NotificationCustomizationOptions.create(
                   R.mipmap.ic_launcher,

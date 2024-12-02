@@ -207,4 +207,69 @@ RCT_EXPORT_METHOD(isPiAnalyticsEnabled
     }];
 }
 
+RCT_EXPORT_METHOD(getMessages
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    // TODO: Implement get all Inbox Messages
+}
+
+RCT_EXPORT_METHOD(getReadMessages
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    // TODO: Implement get read Inbox Messages
+}
+
+RCT_EXPORT_METHOD(getUnreadMessages
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    // TODO: Implement get Unread Inbox Messages
+}
+
+RCT_EXPORT_METHOD(getDeletedMessages
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    // TODO: Implement get deleted Inbox Messages
+}
+
+RCT_EXPORT_METHOD(setMessageRead : (NSString* _Nonnull)messageId) {
+    // TODO: Implement mark  message read
+}
+
+RCT_EXPORT_METHOD(deleteMessage : (NSString* _Nonnull)messageId) {
+    // TODO: Implement delete  message
+}
+
+RCT_EXPORT_METHOD(getMessageCount
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    // TODO: Implement get messages count
+}
+
+RCT_EXPORT_METHOD(getReadMessageCount
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    // TODO: Implement get read messages count
+}
+
+RCT_EXPORT_METHOD(getUnreadMessageCount
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    // TODO: Implement get Unread messages count
+}
+
+RCT_EXPORT_METHOD(getDeletedMessageCount
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    // TODO: Implement get deleted messages count
+}
+
+RCT_EXPORT_METHOD(markAllMessagesDeleted) {
+    // TODO: Implement mark all messages deleted
+}
+
+RCT_EXPORT_METHOD(refreshInbox
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    // TODO: Implement refresh inbox
+}
 @end

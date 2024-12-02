@@ -44,6 +44,7 @@
   [pushConfigBuilder setMarketingCloudServerUrl:[NSURL URLWithString:@"{MC_APP_SERVER_URL}"]];
   [pushConfigBuilder setMid:@"MC_MID"];
   [pushConfigBuilder setAnalyticsEnabled:YES];
+  [pushConfigBuilder setInboxEnabled:YES];
 
   [SFMCSdk initializeSdk:[[[SFMCSdkConfigBuilder new] setPushWithConfig:[pushConfigBuilder build] onCompletion:^(SFMCSdkOperationResult result) {
     if (result == SFMCSdkOperationResultSuccess) {
