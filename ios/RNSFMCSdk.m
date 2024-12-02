@@ -263,6 +263,10 @@ RCT_EXPORT_METHOD(getDeletedMessageCount
     // TODO: Implement get deleted messages count
 }
 
+RCT_EXPORT_METHOD(markAllMessagesRead) {
+    // TODO: Implement mark all messages read
+}
+
 RCT_EXPORT_METHOD(markAllMessagesDeleted) {
     // TODO: Implement mark all messages deleted
 }

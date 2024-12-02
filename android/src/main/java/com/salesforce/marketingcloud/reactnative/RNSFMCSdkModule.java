@@ -407,6 +407,16 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void markAllMessagesRead() {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement mark all messages read
+            }
+        });
+    }
+
+    @ReactMethod
     public void markAllMessagesDeleted() {
         handlePushAction(new MCPushAction() {
             @Override
