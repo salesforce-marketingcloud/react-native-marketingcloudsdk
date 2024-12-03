@@ -276,4 +276,12 @@ RCT_EXPORT_METHOD(refreshInbox
                   : (RCTPromiseRejectBlock)reject) {
     // TODO: Implement refresh inbox
 }
+
+RCT_EXPORT_METHOD(registerInboxResponseListener:(RCTResponseSenderBlock)callback) {
+    // TODO: Implement registerInboxResponseListener
+}
+
+RCT_EXPORT_METHOD(unregisterInboxResponseListener) {
+    // TODO: Implement unregisterInboxResponseListener 
+}
 @end

@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
+import javax.security.auth.callback.Callback;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
@@ -432,6 +433,28 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
             @Override
             public void execute(PushModuleInterface sdk) {
                 // TODO: Implement refresh inbox
+                promise.resolve(true);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void registerInboxResponseListener(Callback listenerCallback) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement registerInboxResponseListener
+                promise.resolve(true);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void unregisterInboxResponseListener() {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement unregisterInboxResponseListener
                 promise.resolve(true);
             }
         });
