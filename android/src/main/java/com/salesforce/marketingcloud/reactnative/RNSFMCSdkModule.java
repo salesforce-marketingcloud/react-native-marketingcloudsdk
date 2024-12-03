@@ -47,12 +47,18 @@ import com.salesforce.marketingcloud.sfmcsdk.components.logging.LogListener;
 import com.salesforce.marketingcloud.sfmcsdk.modules.ModuleInterface;
 import com.salesforce.marketingcloud.sfmcsdk.modules.push.PushModuleInterface;
 import com.salesforce.marketingcloud.sfmcsdk.modules.push.PushModuleReadyListener;
+import com.salesforce.marketingcloud.messages.inbox.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
+import javax.security.auth.callback.Callback;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
+
     public RNSFMCSdkModule(ReactApplicationContext reactContext) {
         super(reactContext);
         handlePushAction(new MCPushAction() {
@@ -289,6 +295,167 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
                 } else {
                     sdk.getAnalyticsManager().disablePiAnalytics();
                 }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getMessages(Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            void execute(PushModuleInterface sdk) {
+                // TODO: Implement get all Inbox Messages
+                promise.resolve(null);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getReadMessages(final Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement get Unread Inbox Messages
+                promise.resolve(true);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getUnreadMessages(final Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement get Unread Inbox Messages
+                promise.resolve(true);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getDeletedMessages(final Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement get deleted Inbox Messages
+                promise.resolve(true);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setMessageRead(final String messageId) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement mark  message read
+            }
+        });
+    }
+
+    @ReactMethod
+    public void deleteMessage(final String messageId) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement delete  message 
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getMessageCount(final Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement get messages count
+                promise.resolve(true);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getReadMessageCount(final Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement get read messages count
+                promise.resolve(true);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getUnreadMessageCount(final Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement get Unread messages count
+                promise.resolve(true);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getDeletedMessageCount(final Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement get deleted messages count
+                promise.resolve(true);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void markAllMessagesRead() {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement mark all messages read
+            }
+        });
+    }
+
+    @ReactMethod
+    public void markAllMessagesDeleted() {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement mark all messages deleted
+            }
+        });
+    }
+
+    @ReactMethod
+    public void refreshInbox(final Promise promise) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement refresh inbox
+                promise.resolve(true);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void registerInboxResponseListener(Callback listenerCallback) {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement registerInboxResponseListener
+                promise.resolve(true);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void unregisterInboxResponseListener() {
+        handlePushAction(new MCPushAction() {
+            @Override
+            public void execute(PushModuleInterface sdk) {
+                // TODO: Implement unregisterInboxResponseListener
+                promise.resolve(true);
             }
         });
     }
