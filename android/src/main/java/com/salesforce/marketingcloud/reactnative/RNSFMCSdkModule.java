@@ -304,8 +304,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             void execute(PushModuleInterface sdk) {
-                // TODO: Implement get all Inbox Messages
-                promise.resolve(null);
+                promise.resolve(InboxUtils.inboxMessagesToString(sdk.getInboxMessageManager().getMessages()));
             }
         });
     }
@@ -315,8 +314,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get Unread Inbox Messages
-                promise.resolve(true);
+                promise.resolve(InboxUtils.inboxMessagesToString(sdk.getInboxMessageManager().getReadMessages()));
             }
         });
     }
@@ -326,8 +324,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get Unread Inbox Messages
-                promise.resolve(true);
+                promise.resolve(InboxUtils.inboxMessagesToString(sdk.getInboxMessageManager().getUnreadMessages()));
             }
         });
     }
@@ -337,8 +334,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get deleted Inbox Messages
-                promise.resolve(true);
+                promise.resolve(InboxUtils.inboxMessagesToString(sdk.getInboxMessageManager().getDeletedMessages()));
             }
         });
     }
@@ -348,7 +344,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement mark  message read
+                sdk.getInboxMessageManager().setMessageRead(messageId);
             }
         });
     }
@@ -358,7 +354,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement delete  message 
+                sdk.getInboxMessageManager().deleteMessage(messageId);
             }
         });
     }
@@ -368,8 +364,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get messages count
-                promise.resolve(true);
+                promise.resolve(sdk.getInboxMessageManager().getMessageCount());
             }
         });
     }
@@ -379,8 +374,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get read messages count
-                promise.resolve(true);
+                promise.resolve(sdk.getInboxMessageManager().getReadMessageCount());
             }
         });
     }
@@ -390,8 +384,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get Unread messages count
-                promise.resolve(true);
+                promise.resolve(sdk.getInboxMessageManager().getUnreadMessageCount());
             }
         });
     }
@@ -401,8 +394,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get deleted messages count
-                promise.resolve(true);
+                promise.resolve(sdk.getInboxMessageManager().getDeletedMessageCount());
             }
         });
     }
@@ -412,7 +404,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement mark all messages read
+                sdk.getInboxMessageManager().markAllMessagesRead();
             }
         });
     }
@@ -422,7 +414,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement mark all messages deleted
+                sdk.getInboxMessageManager().markAllMessagesDeleted();
             }
         });
     }
@@ -444,7 +436,6 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
             @Override
             public void execute(PushModuleInterface sdk) {
                 // TODO: Implement registerInboxResponseListener
-                promise.resolve(true);
             }
         });
     }
@@ -455,7 +446,6 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
             @Override
             public void execute(PushModuleInterface sdk) {
                 // TODO: Implement unregisterInboxResponseListener
-                promise.resolve(true);
             }
         });
     }
