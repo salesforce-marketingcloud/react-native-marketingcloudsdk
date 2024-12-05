@@ -27,6 +27,7 @@ package com.salesforce.marketingcloud.reactnative;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -56,8 +57,10 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.security.auth.callback.Callback;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
+@SuppressWarnings({ "unused", "WeakerAccess" })
 public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
+    private static final String TAG = "~#RNMCSdkModule";
+    private InboxMessageManager.InboxResponseListener inboxResponseListener;
 
     public RNSFMCSdkModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -80,7 +83,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
             @Override
             void execute(SFMCSdk sdk) {
                 try {
-                    log("~#RNMCSdkModule", "SDK State: " + sdk.getSdkState().toString(2));
+                    log(TAG, "SDK State: " + sdk.getSdkState().toString(2));
                 } catch (Exception e) {
                     // NO-OP
                 }
@@ -304,7 +307,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             void execute(PushModuleInterface sdk) {
-                promise.resolve(InboxUtils.inboxMessagesToString(sdk.getInboxMessageManager().getMessages()));
+                promise.resolve(InboxUtils.inboxMessagesToWritableArray(sdk.getInboxMessageManager().getMessages()));
             }
         });
     }
@@ -314,7 +317,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                promise.resolve(InboxUtils.inboxMessagesToString(sdk.getInboxMessageManager().getReadMessages()));
+                promise.resolve(InboxUtils.inboxMessagesToWritableArray(sdk.getInboxMessageManager().getReadMessages()));
             }
         });
     }
@@ -324,7 +327,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                promise.resolve(InboxUtils.inboxMessagesToString(sdk.getInboxMessageManager().getUnreadMessages()));
+                promise.resolve(InboxUtils.inboxMessagesToWritableArray(sdk.getInboxMessageManager().getUnreadMessages()));
             }
         });
     }
@@ -334,7 +337,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                promise.resolve(InboxUtils.inboxMessagesToString(sdk.getInboxMessageManager().getDeletedMessages()));
+                promise.resolve(InboxUtils.inboxMessagesToWritableArray(sdk.getInboxMessageManager().getDeletedMessages()));
             }
         });
     }
@@ -424,18 +427,25 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement refresh inbox
-                promise.resolve(true);
+                sdk.getInboxMessageManager().refreshInbox(new InboxMessageManager.InboxRefreshListener() {
+                    @Override
+                    public void onRefreshComplete(boolean successful) {
+                        promise.resolve(successful);
+                    }
+                });
             }
         });
     }
 
     @ReactMethod
-    public void registerInboxResponseListener(Callback listenerCallback) {
+    public void registerInboxResponseListener(final Promise promise) {
+        inboxResponseListener = listener();
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement registerInboxResponseListener
+                sdk.getInboxMessageManager()
+                        .registerInboxResponseListener(inboxResponseListener);
+                promise.resolve("Success");
             }
         });
     }
@@ -445,7 +455,9 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement unregisterInboxResponseListener
+                if(inboxResponseListener != null){
+                    sdk.getInboxMessageManager().unregisterInboxResponseListener(inboxResponseListener);
+                }
             }
         });
     }
@@ -498,7 +510,8 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     abstract class SFMCAction {
         abstract void execute(SFMCSdk sdk);
 
-        void err() {}
+        void err() {
+        }
     }
 
     abstract class SFMCPromiseAction extends SFMCAction {
@@ -516,7 +529,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         @Override
         void err() {
             promise.reject("SFMCSDK-INIT",
-                "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
+                    "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
         }
 
         abstract void execute(SFMCSdk sdk, @NonNull Promise promise);
@@ -525,7 +538,8 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     abstract class MCPushAction {
         abstract void execute(PushModuleInterface pushSdk);
 
-        void err() {}
+        void err() {
+        }
     }
 
     abstract class MCPushPromiseAction extends MCPushAction {
@@ -543,7 +557,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         @Override
         void err() {
             promise.reject("SFMCSDK-INIT",
-                "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
+                    "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
         }
 
         abstract void execute(PushModuleInterface sdk, @NonNull Promise promise);
@@ -552,7 +566,8 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     abstract class SFMCIdentityAction {
         abstract void execute(Identity identity);
 
-        void err() {}
+        void err() {
+        }
     }
 
     abstract class SFMCIdentityPromiseAction extends SFMCIdentityAction {
@@ -570,9 +585,30 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         @Override
         void err() {
             promise.reject("SFMCSDK-INIT",
-                "The SFMCSdk#configure method must be called in the Application's onCreate.");
+                    "The SFMCSdk#configure method must be called in the Application's onCreate.");
         }
 
         abstract void execute(Identity sdk, @NonNull Promise promise);
+    }
+
+    private InboxMessageManager.InboxResponseListener listener(){
+        log(TAG, "Creating an InboxResponseListener");
+        return new InboxMessageManager.InboxResponseListener() {
+            @Override
+            public void onInboxMessagesChanged(@NonNull List<InboxMessage> messages) {
+                try {
+                    WritableArray writableArray = InboxUtils.inboxMessagesToWritableArray(messages);
+                    sendEvent("onInboxMessagesChanged", writableArray);
+                } catch (Exception e) {
+                    log(TAG, e.getMessage());
+                }
+            }
+        };
+    }
+
+    private void sendEvent(String eventName, WritableArray messages) {
+        getReactApplicationContext()
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, messages);
     }
 }

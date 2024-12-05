@@ -80,7 +80,7 @@ public class InboxUtils {
         return map;
     }
 
-    public static WritableArray inboxMessagesToString(List<InboxMessage> messages) {
+    public static WritableArray inboxMessagesToWritableArray(List<InboxMessage> messages) {
         WritableArray writableArray = new WritableNativeArray();
         if (messages == null)
             return writableArray;
