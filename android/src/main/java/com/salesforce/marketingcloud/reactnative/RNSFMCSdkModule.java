@@ -59,7 +59,8 @@ import javax.security.auth.callback.Callback;
 
 @SuppressWarnings({ "unused", "WeakerAccess" })
 public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
-    private static final String TAG = "~#RNMCSdkModule";
+    private final String TAG = "~#RNMCSdkModule";
+    private final String SFMC_INIT_TAG = "SFMCSDK-INIT";
     private InboxMessageManager.InboxResponseListener inboxResponseListener;
 
     public RNSFMCSdkModule(ReactApplicationContext reactContext) {
@@ -85,7 +86,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
                 try {
                     log(TAG, "SDK State: " + sdk.getSdkState().toString(2));
                 } catch (Exception e) {
-                    // NO-OP
+                    // ignored
                 }
             }
         });
@@ -172,7 +173,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void addTag(final String tag) {
+    public void addTag(@NonNull final String tag) {
         handlePushAction(new MCPushAction() {
             @Override
             void execute(PushModuleInterface sdk) {
@@ -182,7 +183,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void removeTag(final String tag) {
+    public void removeTag(@NonNull final String tag) {
         handlePushAction(new MCPushAction() {
             @Override
             void execute(PushModuleInterface sdk) {
@@ -202,7 +203,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setContactKey(final String contactKey) {
+    public void setContactKey(@NonNull final String contactKey) {
         handleIdentityAction(new SFMCIdentityAction() {
             @Override
             void execute(Identity identity) {
@@ -229,7 +230,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setAttribute(final String key, final String value) {
+    public void setAttribute(@NonNull final String key, @NonNull final String value) {
         handleIdentityAction(new SFMCIdentityAction() {
             @Override
             void execute(Identity identity) {
@@ -239,7 +240,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void clearAttribute(final String key) {
+    public void clearAttribute(@NonNull final String key) {
         handleIdentityAction(new SFMCIdentityAction() {
             @Override
             void execute(Identity identity) {
@@ -249,7 +250,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void track(final ReadableMap event) {
+    public void track(@NonNull final ReadableMap event) {
         Event sfmcEvent = EventUtility.toEvent(event);
         SFMCSdk.track(sfmcEvent);
     }
@@ -343,7 +344,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setMessageRead(final String messageId) {
+    public void setMessageRead(@NonNull final String messageId) {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
@@ -353,7 +354,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void deleteMessage(final String messageId) {
+    public void deleteMessage(@NonNull final String messageId) {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
@@ -510,8 +511,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     abstract class SFMCAction {
         abstract void execute(SFMCSdk sdk);
 
-        void err() {
-        }
+        void err() {}
     }
 
     abstract class SFMCPromiseAction extends SFMCAction {
@@ -528,7 +528,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
 
         @Override
         void err() {
-            promise.reject("SFMCSDK-INIT",
+            promise.reject(SFMC_INIT_TAG,
                     "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
         }
 
@@ -538,8 +538,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     abstract class MCPushAction {
         abstract void execute(PushModuleInterface pushSdk);
 
-        void err() {
-        }
+        void err() {}
     }
 
     abstract class MCPushPromiseAction extends MCPushAction {
@@ -556,7 +555,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
 
         @Override
         void err() {
-            promise.reject("SFMCSDK-INIT",
+            promise.reject(SFMC_INIT_TAG,
                     "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
         }
 
@@ -566,8 +565,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     abstract class SFMCIdentityAction {
         abstract void execute(Identity identity);
 
-        void err() {
-        }
+        void err() {}
     }
 
     abstract class SFMCIdentityPromiseAction extends SFMCIdentityAction {
@@ -584,7 +582,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
 
         @Override
         void err() {
-            promise.reject("SFMCSDK-INIT",
+            promise.reject(SFMC_INIT_TAG,
                     "The SFMCSdk#configure method must be called in the Application's onCreate.");
         }
 
@@ -592,7 +590,6 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     private InboxMessageManager.InboxResponseListener listener(){
-        log(TAG, "Creating an InboxResponseListener");
         return new InboxMessageManager.InboxResponseListener() {
             @Override
             public void onInboxMessagesChanged(@NonNull List<InboxMessage> messages) {

@@ -2,6 +2,7 @@ package com.salesforce.marketingcloud.reactnative;
 
 import com.salesforce.marketingcloud.messages.inbox.InboxMessage;
 
+import androidx.annotation.NonNull;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,14 +16,14 @@ import com.facebook.react.bridge.WritableNativeMap;
 
 public class InboxUtils {
 
-    public static String asDateString(Date date) {
+    public static String dateToString(Date date) {
         if (date == null)
             return null;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(date);
     }
 
-    private static WritableMap hashMapToWritableMap(Map<String, String> map) {
+    private static WritableMap mapToWritableMap(@NonNull Map<String, String> map) {
         WritableMap writableMap = new WritableNativeMap();
         if (!map.isEmpty()) {
             for (Map.Entry<String, String> entry : map.entrySet()) {
@@ -32,7 +33,7 @@ public class InboxUtils {
         return writableMap;
     }
 
-    public static WritableMap toWritableMap(InboxMessage message) {
+    public static WritableMap innoxMessageToWritableMap(@NonNull InboxMessage message) {
         if (message == null)
             return null;
 
@@ -59,13 +60,13 @@ public class InboxUtils {
         }
 
         if (message.startDateUtc() != null) {
-            map.putString("startDateUtc", asDateString(message.startDateUtc()));
+            map.putString("startDateUtc", dateToString(message.startDateUtc()));
         }
         if (message.sendDateUtc() != null) {
-            map.putString("sendDateUtc", asDateString(message.sendDateUtc()));
+            map.putString("sendDateUtc", dateToString(message.sendDateUtc()));
         }
         if (message.endDateUtc() != null) {
-            map.putString("endDateUtc", asDateString(message.endDateUtc()));
+            map.putString("endDateUtc", dateToString(message.endDateUtc()));
         }
 
         map.putString("url", message.url());
@@ -74,19 +75,19 @@ public class InboxUtils {
             map.putString("custom", message.custom());
         }
         if (message.customKeys() != null) {
-            map.putMap("keys", hashMapToWritableMap(message.customKeys()));
+            map.putMap("keys", mapToWritableMap(message.customKeys()));
         }
 
         return map;
     }
 
-    public static WritableArray inboxMessagesToWritableArray(List<InboxMessage> messages) {
+    public static WritableArray inboxMessagesToWritableArray(@NonNull List<InboxMessage> messages) {
         WritableArray writableArray = new WritableNativeArray();
         if (messages == null)
             return writableArray;
 
         for (InboxMessage message : messages) {
-            WritableMap map = toWritableMap(message);
+            WritableMap map = innoxMessageToWritableMap(message);
             if (map != null) {
                 writableArray.pushMap(map);
             }
