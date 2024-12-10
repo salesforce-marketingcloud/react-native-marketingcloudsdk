@@ -65,6 +65,8 @@ const dummyInboxMessages: InboxMessage[] = [
 const sdk = {
   getMessages: () => dummyInboxMessages,
   deleteAllMessages: async () => console.log('All messages deleted'),
+  handleMarkAsRead: async () => console.log('Message marked read'),
+  handleDeleteMessage: async () => console.log('Message marked deleted'),
   markAllMessagesRead: async (): InboxMessage[] => {
     return dummyInboxMessages.map((message) => ({
       ...message,
@@ -142,6 +144,14 @@ const MessageScreen = ({ navigation }: { navigation: any }) => {
 
   const handleMarkAllRead = async () => {
     await sdk.markAllMessagesRead();
+  };
+
+  const handleMarkAsRead = async (messageId) => {
+    await sdk.markMessagesRead(messageId);
+  };
+
+  const handleDeleteMessage = async (messageId) => {
+    await sdk.deleteMessage(messageId);
   };
 
   // InboxMessage card

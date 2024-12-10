@@ -33,7 +33,7 @@ public class InboxUtils {
         return writableMap;
     }
 
-    public static WritableMap innoxMessageToWritableMap(@NonNull InboxMessage message) {
+    public static WritableMap inboxMessageToWritableMap(@NonNull InboxMessage message) {
         if (message == null)
             return null;
 
@@ -87,7 +87,7 @@ public class InboxUtils {
             return writableArray;
 
         for (InboxMessage message : messages) {
-            WritableMap map = innoxMessageToWritableMap(message);
+            WritableMap map = inboxMessageToWritableMap(message);
             if (map != null) {
                 writableArray.pushMap(map);
             }
