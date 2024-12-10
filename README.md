@@ -233,7 +233,7 @@ public void onCreate() {
 
 ```
 
-Please also see additional documentation on URL Handling for [Android](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/sdk-implementation/url-handling.html) and [iOS](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/implementation-urlhandling.html).
+Please also see additional documentation on URL Handling on [https://developer.salesforce.com/docs/marketing/mobilepush/guide/handle-urls-custom-keys.html](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/sdk-implementation/url-handling.html)
 
 ## API Reference <a name="reference"></a>
 
