@@ -27,6 +27,7 @@ package com.salesforce.marketingcloud.reactnative;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -56,8 +57,11 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.security.auth.callback.Callback;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
+@SuppressWarnings({ "unused", "WeakerAccess" })
 public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
+    private final String TAG = "~#RNMCSdkModule";
+    private final String SFMC_INIT_TAG = "SFMCSDK-INIT";
+    private InboxMessageManager.InboxResponseListener inboxResponseListener;
 
     public RNSFMCSdkModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -80,8 +84,8 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
             @Override
             void execute(SFMCSdk sdk) {
                 try {
-                    log("~#RNMCSdkModule", "SDK State: " + sdk.getSdkState().toString(2));
-                } catch (Exception e) {
+                    log(TAG, "SDK State: " + sdk.getSdkState().toString(2));
+                } catch (Exception ignored) {
                     // NO-OP
                 }
             }
@@ -169,7 +173,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void addTag(final String tag) {
+    public void addTag(@NonNull final String tag) {
         handlePushAction(new MCPushAction() {
             @Override
             void execute(PushModuleInterface sdk) {
@@ -179,7 +183,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void removeTag(final String tag) {
+    public void removeTag(@NonNull final String tag) {
         handlePushAction(new MCPushAction() {
             @Override
             void execute(PushModuleInterface sdk) {
@@ -199,7 +203,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setContactKey(final String contactKey) {
+    public void setContactKey(@NonNull final String contactKey) {
         handleIdentityAction(new SFMCIdentityAction() {
             @Override
             void execute(Identity identity) {
@@ -226,7 +230,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setAttribute(final String key, final String value) {
+    public void setAttribute(@NonNull final String key, @NonNull final String value) {
         handleIdentityAction(new SFMCIdentityAction() {
             @Override
             void execute(Identity identity) {
@@ -236,7 +240,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void clearAttribute(final String key) {
+    public void clearAttribute(@NonNull final String key) {
         handleIdentityAction(new SFMCIdentityAction() {
             @Override
             void execute(Identity identity) {
@@ -246,7 +250,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void track(final ReadableMap event) {
+    public void track(@NonNull final ReadableMap event) {
         Event sfmcEvent = EventUtility.toEvent(event);
         SFMCSdk.track(sfmcEvent);
     }
@@ -304,8 +308,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             void execute(PushModuleInterface sdk) {
-                // TODO: Implement get all Inbox Messages
-                promise.resolve(null);
+                promise.resolve(InboxUtils.inboxMessagesToWritableArray(sdk.getInboxMessageManager().getMessages()));
             }
         });
     }
@@ -315,8 +318,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get Unread Inbox Messages
-                promise.resolve(true);
+                promise.resolve(InboxUtils.inboxMessagesToWritableArray(sdk.getInboxMessageManager().getReadMessages()));
             }
         });
     }
@@ -326,8 +328,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get Unread Inbox Messages
-                promise.resolve(true);
+                promise.resolve(InboxUtils.inboxMessagesToWritableArray(sdk.getInboxMessageManager().getUnreadMessages()));
             }
         });
     }
@@ -337,28 +338,27 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get deleted Inbox Messages
-                promise.resolve(true);
+                promise.resolve(InboxUtils.inboxMessagesToWritableArray(sdk.getInboxMessageManager().getDeletedMessages()));
             }
         });
     }
 
     @ReactMethod
-    public void setMessageRead(final String messageId) {
+    public void setMessageRead(@NonNull final String messageId) {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement mark  message read
+                sdk.getInboxMessageManager().setMessageRead(messageId);
             }
         });
     }
 
     @ReactMethod
-    public void deleteMessage(final String messageId) {
+    public void deleteMessage(@NonNull final String messageId) {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement delete  message 
+                sdk.getInboxMessageManager().deleteMessage(messageId);
             }
         });
     }
@@ -368,8 +368,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get messages count
-                promise.resolve(true);
+                promise.resolve(sdk.getInboxMessageManager().getMessageCount());
             }
         });
     }
@@ -379,8 +378,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get read messages count
-                promise.resolve(true);
+                promise.resolve(sdk.getInboxMessageManager().getReadMessageCount());
             }
         });
     }
@@ -390,8 +388,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get Unread messages count
-                promise.resolve(true);
+                promise.resolve(sdk.getInboxMessageManager().getUnreadMessageCount());
             }
         });
     }
@@ -401,8 +398,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement get deleted messages count
-                promise.resolve(true);
+                promise.resolve(sdk.getInboxMessageManager().getDeletedMessageCount());
             }
         });
     }
@@ -412,7 +408,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement mark all messages read
+                sdk.getInboxMessageManager().markAllMessagesRead();
             }
         });
     }
@@ -422,7 +418,7 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement mark all messages deleted
+                sdk.getInboxMessageManager().markAllMessagesDeleted();
             }
         });
     }
@@ -432,19 +428,25 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement refresh inbox
-                promise.resolve(true);
+                sdk.getInboxMessageManager().refreshInbox(new InboxMessageManager.InboxRefreshListener() {
+                    @Override
+                    public void onRefreshComplete(boolean successful) {
+                        promise.resolve(successful);
+                    }
+                });
             }
         });
     }
 
     @ReactMethod
-    public void registerInboxResponseListener(Callback listenerCallback) {
+    public void registerInboxResponseListener(final Promise promise) {
+        inboxResponseListener = listener();
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement registerInboxResponseListener
-                promise.resolve(true);
+                sdk.getInboxMessageManager()
+                        .registerInboxResponseListener(inboxResponseListener);
+                promise.resolve("Success");
             }
         });
     }
@@ -454,8 +456,9 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
         handlePushAction(new MCPushAction() {
             @Override
             public void execute(PushModuleInterface sdk) {
-                // TODO: Implement unregisterInboxResponseListener
-                promise.resolve(true);
+                if(inboxResponseListener != null){
+                    sdk.getInboxMessageManager().unregisterInboxResponseListener(inboxResponseListener);
+                }
             }
         });
     }
@@ -525,8 +528,8 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
 
         @Override
         void err() {
-            promise.reject("SFMCSDK-INIT",
-                "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
+            promise.reject(SFMC_INIT_TAG,
+                    "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
         }
 
         abstract void execute(SFMCSdk sdk, @NonNull Promise promise);
@@ -552,8 +555,8 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
 
         @Override
         void err() {
-            promise.reject("SFMCSDK-INIT",
-                "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
+            promise.reject(SFMC_INIT_TAG,
+                    "The MarketingCloudSdk#init method must be called in the Application's onCreate.");
         }
 
         abstract void execute(PushModuleInterface sdk, @NonNull Promise promise);
@@ -579,10 +582,30 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
 
         @Override
         void err() {
-            promise.reject("SFMCSDK-INIT",
-                "The SFMCSdk#configure method must be called in the Application's onCreate.");
+            promise.reject(SFMC_INIT_TAG,
+                    "The SFMCSdk#configure method must be called in the Application's onCreate.");
         }
 
         abstract void execute(Identity sdk, @NonNull Promise promise);
+    }
+
+    private InboxMessageManager.InboxResponseListener listener(){
+        return new InboxMessageManager.InboxResponseListener() {
+            @Override
+            public void onInboxMessagesChanged(@NonNull List<InboxMessage> messages) {
+                try {
+                    WritableArray writableArray = InboxUtils.inboxMessagesToWritableArray(messages);
+                    sendEvent("onInboxMessagesChanged", writableArray);
+                } catch (Exception e) {
+                    log(TAG, e.getMessage());
+                }
+            }
+        };
+    }
+
+    private void sendEvent(String eventName, WritableArray messages) {
+        getReactApplicationContext()
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, messages);
     }
 }
