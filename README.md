@@ -273,7 +273,7 @@ SDK.
     enabled.  
 **See**
 
-- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/com.salesforce.marketingcloud.messages.push/-push-message-manager/is-push-enabled.html)
+- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/8.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.push/-push-message-manager/is-push-enabled.html)
 - [iOS Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/8.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)pushEnabled)
 
 <a name="MCReactModule.enablePush"></a>
@@ -444,7 +444,7 @@ Disables verbose logging within the native Marketing Cloud SDK.
 **Kind**: static method of [<code>MCReactModule</code>](#MCReactModule)  
 **See**
 
-- [Android Docs](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/trouble-shooting/loginterface.html)
+- [Android Docs](https://developer.salesforce.com/docs/marketing/mobilepush/guide/troubleshooting-android.html#check-the-sdks-log-output)
 - [iOS Docs](https://developer.salesforce.com/docs/marketing/mobilepush/guide/troubleshooting-ios.html#check-the-sdks-log-output)
 
 <a name="MCReactModule.logSdkState"></a>
