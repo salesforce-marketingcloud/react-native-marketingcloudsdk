@@ -85,8 +85,8 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
             void execute(SFMCSdk sdk) {
                 try {
                     log(TAG, "SDK State: " + sdk.getSdkState().toString(2));
-                } catch (Exception e) {
-                    // ignored
+                } catch (Exception ignored) {
+                    // NO-OP
                 }
             }
         });
