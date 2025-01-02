@@ -408,32 +408,7 @@ const Logging = ( {navigation}: any) => {
   };
 
   const handleMessages = async () => {
-    let messages = await MCReactModule.getMessages();
-    console.log('messages', messages);
-
-    let readMessages = await MCReactModule.getReadMessages();
-    console.log('Read Messages', readMessages);
-
-    let unreadMessages = await MCReactModule.getUnreadMessages();
-    console.log('Unread Messages', unreadMessages);
-
-    let deletedMessages = await MCReactModule.getDeletedMessages();
-    console.log('Deleted Messages', deletedMessages);
-
-    let messageCount = await MCReactModule.getMessageCount();
-    console.log('Messages Count', messageCount);
-
-    let readMessageCount = await MCReactModule.getReadMessageCount();
-    console.log('Read Messages Count', readMessageCount);
-
-    let unreadMessageCount = await MCReactModule.getUnreadMessageCount();
-    console.log('Unread Messages Count', unreadMessageCount);
-
-    let deleteMessageCount = await MCReactModule.getDeletedMessageCount();
-    console.log('Delete Messages Count', deleteMessageCount);
-
     navigation.navigate('MessageScreen');
-
   };
 
   return (

@@ -31,8 +31,14 @@
 #import <React/RCTBridgeModule.h>
 #endif
 #import <os/log.h>
+#if __has_include("RCTEventEmitter.h")
+#import "RCTEventEmitter.h"
+#else
+#import <React/RCTEventEmitter.h>
+#endif
 
-@interface RNSFMCSdk : NSObject <RCTBridgeModule>
+@interface RNSFMCSdk : RCTEventEmitter <RCTBridgeModule>
+@property(nonatomic, weak) RCTBridge *bridge; // Ensure this is declared only once
 @property(nonatomic, strong) os_log_t logger;
 
 @end

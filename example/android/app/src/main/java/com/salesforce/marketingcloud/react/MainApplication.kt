@@ -70,7 +70,7 @@ class MainApplication : Application(), ReactApplication, UrlHandler,
               setInboxEnabled(true)
               setNotificationCustomizationOptions(
                 NotificationCustomizationOptions.create(
-                  R.mipmap.ic_launcher,
+                  R.drawable.ic_stat_salesforce_react_example,
                   this@MainApplication,
                   this@MainApplication,
                 ),
