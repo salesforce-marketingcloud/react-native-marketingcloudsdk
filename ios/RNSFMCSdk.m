@@ -27,19 +27,17 @@
 
 #import "RNSFMCSdk.h"
 #import <MarketingCloudSDK/MarketingCloudSDK.h>
-#import <SFMCSDK/SFMCSDK.h>
 #import "RCTConvert+SFMCEvent.h"
+#import "InboxUtility.h"
 
 const int LOG_LENGTH = 800;
 
 @implementation RNSFMCSdk
 
 - (instancetype)init {
-    self = [super init];
-    if (self) {
-        // Add default tag.
-        [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-          (void)[mp addTag:@"React"];
+    if (self = [super init]) {
+        [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+            [mp addTag:@"React"];
         }];
     }
     return self;
@@ -55,69 +53,63 @@ const int LOG_LENGTH = 800;
 
 RCT_EXPORT_MODULE()
 
-- (void)log:(NSString*)msg {
-    if (self.logger == nil) {
+#pragma mark - Logging
+
+- (void)log:(NSString *)msg {
+    if (!self.logger) {
         self.logger = os_log_create("com.salesforce.marketingcloudsdk", "ReactNative");
     }
     os_log_info(self.logger, "%{public}@", msg);
 }
 
-- (void)splitLog:(NSString*)msg {
+- (void)splitLog:(NSString *)msg {
     NSInteger length = msg.length;
     for (int i = 0; i < length; i += LOG_LENGTH) {
-        NSInteger rangeLength = MIN(length - i, LOG_LENGTH);
-        [self log:[msg substringWithRange:NSMakeRange((NSUInteger)i, (NSUInteger)rangeLength)]];
+        [self log:[msg substringWithRange:NSMakeRange(i, MIN(LOG_LENGTH, length - i))]];
     }
 }
 
-RCT_EXPORT_METHOD(logSdkState) { [self splitLog:[SFMCSdk state]]; }
-
-RCT_EXPORT_METHOD(getSystemToken
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      NSString* deviceToken = [mp deviceToken];
-      resolve(deviceToken);
-    }];
+RCT_EXPORT_METHOD(logSdkState) {
+    [self splitLog:[SFMCSdk state]];
 }
 
+#pragma mark - Push & Logging
+
 RCT_EXPORT_METHOD(enableLogging) {
-    [SFMCSdk setLoggerWithLogLevel:SFMCSdkLogLevelDebug
-                      logOutputter:[[SFMCSdkLogOutputter alloc] init]];
+    [SFMCSdk setLoggerWithLogLevel:SFMCSdkLogLevelDebug logOutputter:[[SFMCSdkLogOutputter alloc] init]];
 }
 
 RCT_EXPORT_METHOD(disableLogging) {
-    [SFMCSdk setLoggerWithLogLevel:SFMCSdkLogLevelFault
-                      logOutputter:[[SFMCSdkLogOutputter alloc] init]];
+    [SFMCSdk setLoggerWithLogLevel:SFMCSdkLogLevelFault logOutputter:[[SFMCSdkLogOutputter alloc] init]];
 }
 
 RCT_EXPORT_METHOD(enablePush) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      [mp setPushEnabled:YES];
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        [mp setPushEnabled:YES];
     }];
 }
 
 RCT_EXPORT_METHOD(disablePush) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      [mp setPushEnabled:NO];
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        [mp setPushEnabled:NO];
     }];
 }
 
-RCT_EXPORT_METHOD(isPushEnabled
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      BOOL status = [mp pushEnabled];
-      resolve(@(status));
+RCT_EXPORT_METHOD(isPushEnabled : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve(@([mp pushEnabled]));
     }];
 }
 
-RCT_EXPORT_METHOD(getDeviceId
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      NSString* deviceId = [mp deviceIdentifier];
-      resolve(deviceId);
+RCT_EXPORT_METHOD(getSystemToken : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve([mp deviceToken]);
+    }];
+}
+
+RCT_EXPORT_METHOD(getDeviceId : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve([mp deviceIdentifier]);
     }];
 }
 
@@ -125,163 +117,200 @@ RCT_EXPORT_METHOD(track : (NSDictionary* _Nonnull)eventJson) {
     [SFMCSdk trackWithEvent:[RCTConvert SFMCEvent:eventJson]];
 }
 
-RCT_EXPORT_METHOD(setContactKey : (NSString* _Nonnull)contactKey) {
+
+#pragma mark - Contact & Attributes
+
+RCT_EXPORT_METHOD(setContactKey : (NSString *)contactKey) {
     [[SFMCSdk identity] setProfileId:contactKey];
 }
 
-RCT_EXPORT_METHOD(getContactKey
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      NSString* contactKey = [mp contactKey];
-      resolve(contactKey);
+RCT_EXPORT_METHOD(getContactKey : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve([mp contactKey]);
     }];
 }
 
-RCT_EXPORT_METHOD(addTag : (NSString* _Nonnull)tag) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      [mp addTag:tag];
-    }];
-}
-
-RCT_EXPORT_METHOD(removeTag : (NSString* _Nonnull)tag) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      [mp removeTag:tag];
-    }];
-}
-
-RCT_EXPORT_METHOD(getTags
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      NSArray* tags = [[mp tags] allObjects];
-      resolve(tags);
-    }];
-}
-
-RCT_EXPORT_METHOD(setAttribute : (NSString* _Nonnull)name value : (NSString* _Nonnull)value) {
+RCT_EXPORT_METHOD(setAttribute : (NSString *)name value:(NSString *)value) {
     [[SFMCSdk identity] setProfileAttributes:@{name : value}];
 }
 
-RCT_EXPORT_METHOD(clearAttribute : (NSString* _Nonnull)name) {
+RCT_EXPORT_METHOD(clearAttribute : (NSString *)name) {
     [[SFMCSdk identity] clearProfileAttributeWithKey:name];
 }
 
-RCT_EXPORT_METHOD(getAttributes
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      NSDictionary* attributes = [mp attributes];
-      resolve((attributes != nil) ? attributes : @[]);
+RCT_EXPORT_METHOD(getAttributes : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve([mp attributes] ?: @[]);
     }];
 }
+
+#pragma mark - Tags
+
+RCT_EXPORT_METHOD(addTag : (NSString *)tag) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        [mp addTag:tag];
+    }];
+}
+
+RCT_EXPORT_METHOD(removeTag : (NSString *)tag) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        [mp removeTag:tag];
+    }];
+}
+
+RCT_EXPORT_METHOD(getTags : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve([[mp tags] allObjects]);
+    }];
+}
+
+#pragma mark - Analytics
 
 RCT_EXPORT_METHOD(setAnalyticsEnabled : (BOOL)analyticsEnabled) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      [mp setAnalyticsEnabled:analyticsEnabled];
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        [mp setAnalyticsEnabled:analyticsEnabled];
     }];
 }
 
-RCT_EXPORT_METHOD(isAnalyticsEnabled
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      BOOL isEnabled = [mp isAnalyticsEnabled];
-      resolve(@(isEnabled));
+RCT_EXPORT_METHOD(isAnalyticsEnabled : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve(@([mp isAnalyticsEnabled]));
     }];
 }
 
-// PI Analytics Enablement
 RCT_EXPORT_METHOD(setPiAnalyticsEnabled : (BOOL)analyticsEnabled) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      [mp setPiAnalyticsEnabled:analyticsEnabled];
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        [mp setPiAnalyticsEnabled:analyticsEnabled];
     }];
 }
 
-RCT_EXPORT_METHOD(isPiAnalyticsEnabled
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-      BOOL isEnabled = [mp isPiAnalyticsEnabled];
-      resolve(@(isEnabled));
+RCT_EXPORT_METHOD(isPiAnalyticsEnabled : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve(@([mp isPiAnalyticsEnabled]));
     }];
 }
 
-RCT_EXPORT_METHOD(getMessages
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    // TODO: Implement get all Inbox Messages
+#pragma mark - Inbox Messages
+
+- (void)processAndResolveMessages:(NSArray<NSDictionary *> *)messages resolver:(RCTPromiseResolveBlock)resolve {
+    if (messages.count == 0) {
+        resolve(@[]);
+        return;
+    }
+    InboxUtility *utility = [[InboxUtility alloc] init];
+    resolve([utility processInboxMessages:messages]);
 }
 
-RCT_EXPORT_METHOD(getReadMessages
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    // TODO: Implement get read Inbox Messages
+RCT_EXPORT_METHOD(getMessages : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        [self processAndResolveMessages:[mp getAllMessages] resolver:resolve];
+    }];
 }
 
-RCT_EXPORT_METHOD(getUnreadMessages
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    // TODO: Implement get Unread Inbox Messages
+RCT_EXPORT_METHOD(getReadMessages : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        [self processAndResolveMessages:[mp getReadMessages] resolver:resolve];
+    }];
 }
 
-RCT_EXPORT_METHOD(getDeletedMessages
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    // TODO: Implement get deleted Inbox Messages
+RCT_EXPORT_METHOD(getUnreadMessages : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        [self processAndResolveMessages:[mp getUnreadMessages] resolver:resolve];
+    }];
 }
 
-RCT_EXPORT_METHOD(setMessageRead : (NSString* _Nonnull)messageId) {
-    // TODO: Implement mark  message read
+RCT_EXPORT_METHOD(getDeletedMessages : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        [self processAndResolveMessages:[mp getDeletedMessages] resolver:resolve];
+    }];
 }
 
-RCT_EXPORT_METHOD(deleteMessage : (NSString* _Nonnull)messageId) {
-    // TODO: Implement delete  message
+RCT_EXPORT_METHOD(getMessageCount : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve(@([mp getAllMessagesCount]));
+    }];
 }
 
-RCT_EXPORT_METHOD(getMessageCount
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    // TODO: Implement get messages count
+RCT_EXPORT_METHOD(getReadMessageCount : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve(@([mp getReadMessagesCount]));
+    }];
 }
 
-RCT_EXPORT_METHOD(getReadMessageCount
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    // TODO: Implement get read messages count
+RCT_EXPORT_METHOD(getUnreadMessageCount : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve(@([mp getUnreadMessagesCount]));
+    }];
 }
 
-RCT_EXPORT_METHOD(getUnreadMessageCount
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    // TODO: Implement get Unread messages count
+RCT_EXPORT_METHOD(getDeletedMessageCount : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve(@([mp getDeletedMessagesCount]));
+    }];
 }
 
-RCT_EXPORT_METHOD(getDeletedMessageCount
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    // TODO: Implement get deleted messages count
+RCT_EXPORT_METHOD(setMessageRead : (NSString* _Nonnull)messageId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve(@([mp markMessageWithIdReadWithMessageId:messageId]));
+    }];
 }
 
-RCT_EXPORT_METHOD(markAllMessagesRead) {
-    // TODO: Implement mark all messages read
+RCT_EXPORT_METHOD(deleteMessage : (NSString* _Nonnull)messageId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve(@([mp markMessageWithIdDeletedWithMessageId:messageId]));
+    }];
 }
 
-RCT_EXPORT_METHOD(markAllMessagesDeleted) {
-    // TODO: Implement mark all messages deleted
+
+RCT_EXPORT_METHOD(markAllMessagesRead : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve(@([mp markAllMessagesRead]));
+    }];
 }
 
-RCT_EXPORT_METHOD(refreshInbox
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    // TODO: Implement refresh inbox
+RCT_EXPORT_METHOD(markAllMessagesDeleted : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve(@([mp markAllMessagesDeleted]));
+    }];
 }
 
-RCT_EXPORT_METHOD(registerInboxResponseListener:(RCTResponseSenderBlock)callback) {
-    // TODO: Implement registerInboxResponseListener
+RCT_EXPORT_METHOD(refreshInbox : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [SFMCSdk requestPushSdk:^(id<PushInterface> mp) {
+        resolve(@([mp refreshMessages]));
+    }];
+}
+
+#pragma mark - Event Listeners
+
+RCT_EXPORT_METHOD(registerInboxResponseListener : (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onInboxResponseReceived:)
+                                                 name:@"SFMCInboxMessagesMessageResponseSucceededNotification"
+                                               object:nil];
+    resolve(@(YES));
 }
 
 RCT_EXPORT_METHOD(unregisterInboxResponseListener) {
-    // TODO: Implement unregisterInboxResponseListener 
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SFMCInboxMessagesMessageResponseSucceededNotification" object:nil];
 }
+
+- (void)onInboxResponseReceived:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    if (![userInfo isKindOfClass:[NSDictionary class]]) return;
+    NSDictionary *responsePayload = userInfo[@"responsePayload"];
+    NSArray<NSDictionary *> *messages = responsePayload[@"messages"];
+    if (![messages isKindOfClass:[NSArray class]]) return;
+    InboxUtility *utility = [[InboxUtility alloc] init];
+    [self sendEventWithName:@"onInboxMessagesChanged" body:[utility processInboxMessages:messages]];
+}
+
+- (NSArray<NSString *> *)supportedEvents {
+    return @[@"onInboxMessagesChanged"];
+}
+
 @end
+

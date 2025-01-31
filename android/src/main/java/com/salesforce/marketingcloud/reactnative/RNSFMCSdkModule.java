@@ -462,6 +462,16 @@ public class RNSFMCSdkModule extends ReactContextBaseJavaModule {
             }
         });
     }
+    
+    @ReactMethod
+    public void addListener(String eventName) {
+        // No-op for now, but required to satisfy the NativeEventEmitter requirements
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        // No-op for now, but required to satisfy the NativeEventEmitter requirements
+    }
 
     private void handleAction(final SFMCAction action) {
         SFMCSdk.requestSdk(new SFMCSdkReadyListener() {

@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, NativeEventEmitter, NativeModules, Linking } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MCReactModule from 'react-native-marketingcloudsdk';
+
+const { RNSFMCSdk } = NativeModules;
+const eventEmitter = new NativeEventEmitter(RNSFMCSdk);
 
 interface InboxMessage {
   id: string;
@@ -13,72 +17,9 @@ interface InboxMessage {
   deleted: boolean;
 }
 
-const dummyInboxMessages: InboxMessage[] = [
-  {
-    id: '1',
-    subject: 'Welcome to Our Service!',
-    message: 'Your account has been successfully created.',
-    url: 'https://example.com/welcome',
-    sendDateUtc: '2023-12-01T10:00:00Z',
-    read: false,
-    deleted: false,
-  },
-  {
-    id: '2',
-    subject: 'New Feature Announcement',
-    message: 'Check out our latest feature now available in the app!',
-    url: 'https://example.com/features',
-    sendDateUtc: '2023-12-02T15:30:00Z',
-    read: true,
-    deleted: false,
-  },
-  {
-    id: '3',
-    subject: 'Important Security Update',
-    message: 'Please update your password to ensure your account remains secure.',
-    url: 'https://example.com/security-update',
-    sendDateUtc: '2023-11-25T08:45:00Z',
-    read: false,
-    deleted: false,
-  },
-  {
-    id: '4',
-    subject: 'Account Deactivation Reminder',
-    message: 'Your account will be deactivated if not used within 30 days.',
-    url: 'https://example.com/deactivation',
-    sendDateUtc: '2023-11-20T09:20:00Z',
-    read: true,
-    deleted: true,
-  },
-  {
-    id: '5',
-    subject: 'Exclusive Offer for You',
-    message: 'Enjoy 50% off on your next purchase!',
-    url: 'https://example.com/offers',
-    sendDateUtc: '2023-12-03T12:00:00Z',
-    read: false,
-    deleted: false,
-  },
-];
-
-
-const sdk = {
-  getMessages: () => dummyInboxMessages,
-  deleteAllMessages: async () => console.log('All messages deleted'),
-  handleMarkAsRead: async () => console.log('Message marked read'),
-  handleDeleteMessage: async () => console.log('Message marked deleted'),
-  markAllMessagesRead: async (): InboxMessage[] => {
-    return dummyInboxMessages.map((message) => ({
-      ...message,
-      read: 1,
-    }));
-  },
-};
-
 const MessageScreen = ({ navigation }: { navigation: any }) => {
   const [selectedTab, setSelectedTab] = useState('all');
   const [messages, setMessages] = useState<InboxMessage[]>([]);
-  const [filteredMessages, setFilteredMessages] = useState<InboxMessage[]>([]);
   const [messageCounts, setMessageCounts] = useState({
     all: 0,
     read: 0,
@@ -86,128 +27,160 @@ const MessageScreen = ({ navigation }: { navigation: any }) => {
     deleted: 0,
   });
 
-  const filterMessages = (type: string) => {
-    let filtered = messages;
-    if (type === 'read') filtered = messages.filter((msg) => msg.read);
-    if (type === 'unread') filtered = messages.filter((msg) => !msg.read);
-    if (type === 'deleted') filtered = messages.filter((msg) => msg.deleted);
-    console.log(type, 'Filtered Messages: ', filtered);
-    setFilteredMessages(filtered || []);
-    setSelectedTab(type);
+  const messageFetchers = {
+    all: () => MCReactModule.getMessages(),
+    read: () => MCReactModule.getReadMessages(),
+    unread: () => MCReactModule.getUnreadMessages(),
+    deleted: () => MCReactModule.getDeletedMessages(),
   };
+
+  const updateMessageCounts = useCallback(async () => {
+    try {
+      const counts = await Promise.all([
+        MCReactModule.getMessageCount(),
+        MCReactModule.getReadMessageCount(),
+        MCReactModule.getUnreadMessageCount(),
+        MCReactModule.getDeletedMessageCount(),
+      ]);
+      setMessageCounts({
+        all: counts[0],
+        read: counts[1],
+        unread: counts[2],
+        deleted: counts[3],
+      });
+    } catch (error) {
+      console.error('Failed to fetch message counts:', error);
+    }
+  }, []);
+
+  const fetchMessages = useCallback(async (type: string) => {
+    try {
+      const fetcher = messageFetchers[type];
+      if (!fetcher) {
+        throw new Error(`Invalid message type: ${type}`);
+      }
+      const fetchedMessages = await fetcher();
+      setMessages(fetchedMessages);
+    } catch (error) {
+      console.error(`Failed to fetch ${type} messages:`, error);
+    }
+  }, []);
+
+  const handleAction = useCallback(
+    async (action: Function, messageId?: string) => {
+      try {
+        if (messageId) {
+          await action(messageId);
+        } else {
+          await action();
+        }
+        await updateMessageCounts();
+        await fetchMessages(selectedTab); // Refresh messages for the selected tab
+      } catch (error) {
+        console.error('Action failed:', error);
+      }
+    },
+    [selectedTab, updateMessageCounts, fetchMessages]
+  );
+
+  const handleInboxMessageChanged = async (_messages) => {
+    await updateMessageCounts();
+    await fetchMessages(selectedTab);
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={styles.headerIcons}>
           <TouchableOpacity
-            onPress={() => handleDeleteAll()}
-            style={{ marginRight: 10 }}>
+            onPress={() => handleAction(MCReactModule.markAllMessagesDeleted)}
+            style={{ marginRight: 10 }}
+          >
             <Icon name="delete-sweep" size={24} color="white" />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => handleMarkAllRead()}
-            style={{ marginRight: 10 }}>
+            onPress={() => handleAction(MCReactModule.markAllMessagesRead)}
+            style={{ marginRight: 10 }}
+          >
             <Icon name="email-check" size={24} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleAction(MCReactModule.refreshInbox)}
+            style={{ marginRight: 10 }}
+          >
+            <Icon name="refresh" size={24} color="white" />
           </TouchableOpacity>
         </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, selectedTab, handleAction]);
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const allMessages = await sdk.getMessages();
-        const readMessages = allMessages.filter((msg: InboxMessage) => msg.read);
-        const unreadMessages = allMessages.filter((msg: InboxMessage) => !msg.read);
-        const deletedMessages = allMessages.filter((msg: InboxMessage) => msg.deleted);
+    (async () => {
+      MCReactModule.registerInboxResponseListener();
+      const subscription = eventEmitter.addListener('onInboxMessagesChanged', handleInboxMessageChanged);
 
-        setMessages(allMessages);
-        setFilteredMessages(allMessages);
-        setMessageCounts({
-          all: allMessages.length,
-          read: readMessages.length,
-          unread: unreadMessages.length,
-          deleted: deletedMessages.length,
-        });
-      } catch (error) {
-        console.error('Failed to fetch messages:', error);
-      }
-    };
+      await updateMessageCounts();
+      await fetchMessages('all');
 
-    fetchMessages();
+      return () => {
+        subscription.remove(); // Cleanup listener when the component unmounts
+      };
+    })();
   }, []);
 
-  const handleDeleteAll = async () => {
-    await sdk.deleteAllMessages();
+  const openUrl = async (url) => {
+    if (!url) {
+      console.warn('No URL provided for this message');
+      return;
+    }
+    const encodedUrl = encodeURI(url);
+    Linking.openURL(encodedUrl).catch((err) => console.error('Error in openURL:', err));
   };
 
-  const handleMarkAllRead = async () => {
-    await sdk.markAllMessagesRead();
-  };
-
-  const handleMarkAsRead = async (messageId) => {
-    await sdk.markMessagesRead(messageId);
-  };
-
-  const handleDeleteMessage = async (messageId) => {
-    await sdk.deleteMessage(messageId);
-  };
-
-  // InboxMessage card
   const renderMessageCard = ({ item }: { item: InboxMessage }) => {
     if (!item) return null;
-  
+
     return (
-      <Card style={styles.card}>
-        <Card.Content>
-          {/* Card Header */}
-          <View style={styles.cardHeader}>
-            <Icon name="email-outline" size={24} color={item.read ? 'green' : 'red'} />
-            <Title style={styles.cardTitle}>{item.subject || 'No Subject'}</Title>
-          </View>
-  
-          {/* Message Body */}
-          <Paragraph style={styles.messageText}>
-            {item.message || 'No message available.'}
-          </Paragraph>
-  
-          {/* Footer */}
-          <View style={styles.cardFooter}>
-            <Icon name="clock-outline" size={18} color="gray" />
-            <Text style={styles.dateText}>
-              {item.sendDateUtc || 'Unknown date'}
-            </Text>
-          </View>
-        </Card.Content>
-  
-        {/* Actions */}
-        <Card.Actions style={styles.cardActions}>
-          <TouchableOpacity onPress={() => handleMarkAsRead(item.id)}>
-            <Icon
-              name="email-check-outline"
-              size={24}
-              color={item.read ? 'green' : 'gray'}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleDeleteMessage(item.id)}>
-            <Icon name="delete-outline" size={24} color="gray" />
-          </TouchableOpacity>
-        </Card.Actions>
-      </Card>
+      <TouchableOpacity onPress={() => openUrl(item.url)}>
+        <Card style={styles.card}>
+          <Card.Content>
+            <View style={styles.cardHeader}>
+              <Icon name="email-outline" size={24} color={item.read ? 'green' : 'red'} />
+              <Title style={styles.cardTitle}>{item.subject || 'No Subject'}</Title>
+            </View>
+            <Paragraph style={styles.messageText}>
+              {item.alert || 'No message available.'}
+            </Paragraph>
+            <View style={styles.cardFooter}>
+              <Icon name="clock-outline" size={18} color="gray" />
+              <Text style={styles.dateText}>{item.sendDateUtc || 'Unknown date'}</Text>
+            </View>
+          </Card.Content>
+          <Card.Actions style={styles.cardActions}>
+            <TouchableOpacity onPress={() => handleAction(MCReactModule.setMessageRead, item.id)}>
+              <Icon name="email-check-outline" size={24} color={item.read ? 'green' : 'gray'} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleAction(MCReactModule.deleteMessage, item.id)}>
+              <Icon name="delete-outline" size={24} color="gray" />
+            </TouchableOpacity>
+          </Card.Actions>
+        </Card>
+      </TouchableOpacity>
     );
   };
-  
 
   return (
     <View style={styles.container}>
-      {/* Tabs */}
       <View style={styles.tabs}>
         {['all', 'read', 'unread', 'deleted'].map((type) => (
           <TouchableOpacity
             key={type}
             style={[styles.tab, selectedTab === type && styles.activeTab]}
-            onPress={() => filterMessages(type)}
+            onPress={() => {
+              setSelectedTab(type);
+              fetchMessages(type);
+            }}
           >
             <Text style={[styles.tabText, selectedTab === type && styles.activeTabText]}>
               {type.charAt(0).toUpperCase() + type.slice(1)} ({messageCounts[type] || 0})
@@ -215,14 +188,18 @@ const MessageScreen = ({ navigation }: { navigation: any }) => {
           </TouchableOpacity>
         ))}
       </View>
-
-      {/* Message List */}
-      <FlatList
-        data={filteredMessages}
-        renderItem={renderMessageCard}
-        keyExtractor={(item, index) => item?.id || index.toString()}
-        contentContainerStyle={styles.listContainer}
-      />
+      {messages.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No messages available</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={messages}
+          renderItem={renderMessageCard}
+          keyExtractor={(item) => item?.id}
+          contentContainerStyle={styles.listContainer}
+        />
+      )}
     </View>
   );
 };
@@ -288,6 +265,18 @@ const styles = StyleSheet.create({
   headerIcons: {
     flexDirection: 'row',
     marginRight: 10,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f9',
+  },
+  emptyText: {
+    fontSize: 18,
+    color: 'gray',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
