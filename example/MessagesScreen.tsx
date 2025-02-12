@@ -129,11 +129,12 @@ const MessageScreen = ({ navigation }: { navigation: any }) => {
     })();
   }, []);
 
-  const openUrl = async (url) => {
+  const openInboxMessage = async (messageId, url) => {
     if (!url) {
       console.warn('No URL provided for this message');
       return;
     }
+    handleAction(MCReactModule.setMessageRead, messageId);
     const encodedUrl = encodeURI(url);
     Linking.openURL(encodedUrl).catch((err) => console.error('Error in openURL:', err));
   };
@@ -142,7 +143,7 @@ const MessageScreen = ({ navigation }: { navigation: any }) => {
     if (!item) return null;
 
     return (
-      <TouchableOpacity onPress={() => openUrl(item.url)}>
+      <TouchableOpacity onPress={() => openInboxMessage(item.id, item.url)}>
         <Card style={styles.card}>
           <Card.Content>
             <View style={styles.cardHeader}>
