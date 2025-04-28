@@ -73,10 +73,7 @@
 }
 
 - (void)convertNotificationMessageObjectInMessage:(NSMutableDictionary *)message {
-    id notificationMessageObject = message[@"notificationMessage"];
-    if (!notificationMessageObject || notificationMessageObject == [NSNull null]) {
-        notificationMessageObject = @{};
-    }
+    id notificationMessageObject = message[@"notificationMessage"] ?: @{};
     NSString* notificationString = [self convertDictionaryToJSONString: notificationMessageObject];
     if ([notificationString length] > 0) {
         message[@"notificationMessage"] = notificationString;
