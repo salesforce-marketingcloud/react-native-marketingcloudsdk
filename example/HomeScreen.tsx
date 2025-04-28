@@ -402,9 +402,9 @@ const Logging = ( {navigation}: any) => {
   };
 
   const handleTrack = async () => {
-    let event = new CustomEvent('ScreenViewed', {ScreenName: 'HomeScreen'});
+    let event = new CustomEvent('Purchase', {Total: 1234});
     MCReactModule.track(event);
-    Toast.show('ScreenViewed Tracked for HomeScreen');
+    Toast.show('Purchase event Tracked');
   };
 
   const handleMessages = async () => {
