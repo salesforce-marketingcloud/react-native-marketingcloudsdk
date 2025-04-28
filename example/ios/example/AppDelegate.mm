@@ -39,10 +39,10 @@
   self.initialProps = @{};
 
   // Configure the SFMC sdk ...
-  PushConfigBuilder *pushConfigBuilder = [[PushConfigBuilder alloc] initWithAppId:@"{MC_APP_ID}"];
+   PushConfigBuilder *pushConfigBuilder = [[PushConfigBuilder alloc] initWithAppId:@"{MC_APP_ID}"];
   [pushConfigBuilder setAccessToken:@"{MC_ACCESS_TOKEN}"];
   [pushConfigBuilder setMarketingCloudServerUrl:[NSURL URLWithString:@"{MC_APP_SERVER_URL}"]];
-    [pushConfigBuilder setAnalyticsEnabled:YES];
+  [pushConfigBuilder setAnalyticsEnabled:YES];
   [pushConfigBuilder setInboxEnabled:YES];
 
   [SFMCSdk initializeSdk:[[[SFMCSdkConfigBuilder new] setPushWithConfig:[pushConfigBuilder build] onCompletion:^(SFMCSdkOperationResult result) {
