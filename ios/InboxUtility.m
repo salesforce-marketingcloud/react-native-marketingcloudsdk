@@ -10,6 +10,7 @@
         [self convertDatesInMessage:updatedMessage];
         [self convertFlagsInMessage:updatedMessage];
         [self convertCustomObjectInMessage:updatedMessage];
+        [self convertNotificationMessageObjectInMessage:updatedMessage];
         [updatedMessages addObject:updatedMessage];
     }
 
@@ -30,6 +31,7 @@
 - (void)convertDatesInMessage:(NSMutableDictionary *)message {
     [self convertDateField:@"startDateUtc" inMessage:message];
     [self convertDateField:@"sendDateUtc" inMessage:message];
+    [self convertDateField:@"endDateUtc" inMessage:message];
 }
 
 - (void)convertDateField:(NSString *)field inMessage:(NSMutableDictionary *)message {
@@ -67,6 +69,17 @@
     } else {
         NSLog(@"Custom data is not a valid NSDictionary object");
         message[@"custom"] = @"";
+    }
+}
+
+- (void)convertNotificationMessageObjectInMessage:(NSMutableDictionary *)message {
+    NSDictionary* notificationMessageObject = message[@"notificationMessage"] ?: @{};
+    NSString* notificationString = [self convertDictionaryToJSONString: notificationMessageObject];
+    if ([notificationString length] > 0) {
+        message[@"notificationMessage"] = notificationString;
+    } else {
+        NSLog(@"Notification Message data is not a valid NSDictionary object");
+        message[@"notificationMessage"] = @"";
     }
 }
 

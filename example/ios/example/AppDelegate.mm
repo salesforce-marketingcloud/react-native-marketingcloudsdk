@@ -119,7 +119,7 @@
              withCompletionHandler:(void (^)(void))completionHandler {
     // tell the MarketingCloudSDK about the notification
     [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-        [mp setNotificationRequest:response.notification.request];
+        [mp setNotificationResponse:response];
     }];
     if (completionHandler != nil) {
         completionHandler();
