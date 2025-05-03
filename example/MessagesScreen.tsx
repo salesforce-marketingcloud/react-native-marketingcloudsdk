@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, NativeEventEmitter, NativeModules, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, NativeEventEmitter, NativeModules, Linking, Modal, ScrollView } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MCReactModule from 'react-native-marketingcloudsdk';
@@ -11,15 +11,20 @@ interface InboxMessage {
   id: string;
   subject: string | null;
   alert: string | null;
-  url: string;
+  url: string | null;
   sendDateUtc: string | null;
+  endDateUtc: string | null;
   read: boolean;
   deleted: boolean;
+  inboxMessage: string | null;
+  inboxSubtitle: string | null;
 }
 
 const MessageScreen = ({ navigation }: { navigation: any }) => {
   const [selectedTab, setSelectedTab] = useState('all');
   const [messages, setMessages] = useState<InboxMessage[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState<InboxMessage | null>(null);
   const [messageCounts, setMessageCounts] = useState({
     all: 0,
     read: 0,
@@ -88,6 +93,10 @@ const MessageScreen = ({ navigation }: { navigation: any }) => {
     await fetchMessages(selectedTab);
   };
 
+  function interfaceToString(message: InboxMessage): string {
+    return JSON.stringify(message, null, 2);
+  }
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -142,8 +151,17 @@ const MessageScreen = ({ navigation }: { navigation: any }) => {
   const renderMessageCard = ({ item }: { item: InboxMessage }) => {
     if (!item) return null;
 
+    const openModal = () => {
+      setSelectedMessage(item);
+      setModalVisible(true);
+    };
+
     return (
-      <TouchableOpacity onPress={() => openInboxMessage(item.id, item.url)}>
+      <TouchableOpacity
+        onPress={() => openInboxMessage(item.id, item.url)}
+        onLongPress={openModal}
+        delayLongPress={500}
+      >
         <Card style={styles.card}>
           <Card.Content>
             <View style={styles.cardHeader}>
@@ -153,9 +171,19 @@ const MessageScreen = ({ navigation }: { navigation: any }) => {
             <Paragraph style={styles.messageText}>
               {item.alert || 'No message available.'}
             </Paragraph>
+            {item.inboxSubtitle && (
+              <Paragraph style={styles.messageText}>{item.inboxSubtitle}</Paragraph>
+            )}
+            {item.inboxMessage && (
+              <Paragraph style={styles.messageText}>{item.inboxMessage}</Paragraph>
+            )}
             <View style={styles.cardFooter}>
               <Icon name="clock-outline" size={18} color="gray" />
               <Text style={styles.dateText}>{item.sendDateUtc || 'Unknown date'}</Text>
+            </View>
+            <View style={styles.cardFooter}>
+              <Icon name="clock-outline" size={18} color="gray" />
+              <Text style={styles.dateText}>{item.endDateUtc || 'Unknown date'}</Text>
             </View>
           </Card.Content>
           <Card.Actions style={styles.cardActions}>
@@ -170,7 +198,6 @@ const MessageScreen = ({ navigation }: { navigation: any }) => {
       </TouchableOpacity>
     );
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.tabs}>
@@ -201,6 +228,23 @@ const MessageScreen = ({ navigation }: { navigation: any }) => {
           contentContainerStyle={styles.listContainer}
         />
       )}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+              <Text style={styles.modalText}>{selectedMessage ? interfaceToString(selectedMessage) : ''}</Text>
+            </ScrollView>
+            <TouchableOpacity style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(false)}>
+              <Text style={styles.textStyle}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -279,6 +323,52 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 40,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#2196F3",
+    marginVertical: 5,
+    minWidth: 100,
+  },
+  buttonClose: {
+    backgroundColor: "#FF6347",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
 
 export default MessageScreen;
