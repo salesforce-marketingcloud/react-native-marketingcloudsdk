@@ -198,6 +198,7 @@ const MessageScreen = ({ navigation }: { navigation: any }) => {
       </TouchableOpacity>
     );
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.tabs}>
@@ -346,7 +347,8 @@ const styles = StyleSheet.create({
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: "center",
+    color: "black"
   },
   button: {
     borderRadius: 20,
