@@ -27,7 +27,8 @@
 
 
 #import <UserNotifications/UserNotifications.h>
+#import <MCExtensionSDK/MCExtensionSDK.h>
 
-@interface NotificationService : UNNotificationServiceExtension
+@interface NotificationService : SFMCNotificationService
 
 @end

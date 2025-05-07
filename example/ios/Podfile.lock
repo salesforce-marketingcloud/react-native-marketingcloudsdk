@@ -7,6 +7,7 @@ PODS:
   - hermes-engine (0.75.2):
     - hermes-engine/Pre-built (= 0.75.2)
   - hermes-engine/Pre-built (0.75.2)
+  - MarketingCloud-ExtensionSDK (1.0.0)
   - MarketingCloud-SFMCSdk (2.0.0)
   - MarketingCloudSDK (9.0.0):
     - MarketingCloud-SFMCSdk (~> 2.0.0)
@@ -1702,6 +1703,7 @@ DEPENDENCIES:
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - MarketingCloud-ExtensionSDK
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
@@ -1771,6 +1773,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - MarketingCloud-ExtensionSDK
     - MarketingCloud-SFMCSdk
     - MarketingCloudSDK
     - SocketRocket
@@ -1925,6 +1928,7 @@ SPEC CHECKSUMS:
   fmt: fba3f76dce0a579b8a00c10efb99d016c9a89f02
   glog: 8900d64fbc89e45789c092882055a7220ca10327
   hermes-engine: 3b6e0717ca847e2fc90a201e59db36caf04dee88
+  MarketingCloud-ExtensionSDK: 30340b9c3d84630e12b9359432c0321305102496
   MarketingCloud-SFMCSdk: 4ed34150db375d66c170c4674fefb362ada26b77
   MarketingCloudSDK: e31f72ee0f6d67a3f2647e421e87ac9dba4d3ff7
   RCT-Folly: 00aecee3abe8d1c7209265f4204836a6c23eb5c1
@@ -1993,6 +1997,6 @@ SPEC CHECKSUMS:
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 1bd80f21d177a4d25fab5042d182bee739a1b60f
 
-PODFILE CHECKSUM: 71a689932e49f453bd6454dd189b45915dda66a0
+PODFILE CHECKSUM: 27cfb8c72d6a3c5a0594595a042f9dc09d1e6668
 
 COCOAPODS: 1.16.2
