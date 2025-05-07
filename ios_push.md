@@ -188,6 +188,8 @@
     3. Click **Target**
     4. Select Notification Service Extension
     5. Name and save the new extension
+  
+ 
     >The Notification Target must be signed with the same Xcode Managed Profile as the main project.
     
     This service extension checks for a “_mediaUrl” element in request.content.userInfo. If found, the extension attempts to download the media from the URL , creates a thumbnail-size version, and then adds the attachment. The service extension also checks for a ““_mediaAlt” element in request.content.userInfo. If found, the service extension uses the element for the body text if there are any problems downloading or creating the media attachment.
