@@ -14,7 +14,7 @@
     @interface AppDelegate : RCTAppDelegate<UNUserNotificationCenterDelegate, SFMCSdkURLHandlingDelegate>
     ```
 
-2.  Extend the SDK configuration code outlined in [Configure the SDK](./README.md#2-configure-the-sdk-in-your-appdelegatem-class) to add support for push registration.
+3.  Extend the SDK configuration code outlined in [Configure the SDK](./README.md#2-configure-the-sdk-in-your-appdelegatem-class) to add support for push registration.
 
     ```objc
 
@@ -97,7 +97,7 @@
                  withCompletionHandler:(void (^)(void))completionHandler {
         // tell the MarketingCloudSDK about the notification
         [SFMCSdk requestPushSdk:^(id<PushInterface> _Nonnull mp) {
-            [mp setNotificationRequest:response.notification.request];
+            [mp setNotificationResponse:response];
         }];
         if (completionHandler != nil) {
             completionHandler();
@@ -140,18 +140,61 @@
 
     @end
     ```
+4. **Integrate the MobilePush Extension SDK:** The MobilePush SDK version 9.0.0 introduces two push notification features — Push Delivery events and support for Carousel template. To function properly, these features require iOS [Service Extension](https://developer.apple.com/documentation/usernotifications/unnotificationserviceextension) and [Content Extension](https://developer.apple.com/documentation/usernotificationsui/unnotificationcontentextension) added as additional targets in the main app. Then, integrate the MobilePush iOS Extension SDK MCExtensionSDK.
 
-3. **Enable Rich Notifications:** Rich notifications include images, videos, titles and subtitles from the MobilePush app, and mutable content. Mutable content can include personalization in the title, subtitle, or body of your message. 
+
+    >Implementing the **Service Extension** is required to enable **Push Delivery events**.    
+    >Implementing both the **Service Extension** and **Content Extension** is required to support **Carousel template-based Push Notifications**.
+    
+    #### 1. Configure the Service Extension 
+    This section will guide you through setting up and configuring the Notification Service Extension for use with the MobilePush iOS Extension SDK.
+
+     - [Add a Service Extension Target](https://developer.salesforce.com/docs/marketing/mobilepush/guide/ios-extension-sdk-integration.html#add-a-service-extension-target)
+
+     - Integrate the Extension SDK with the Service Extension
+       **Integrate the SDK with CocoaPods**: To add the SDK as a dependency in your app's Podfile, follow the instructions for [Adding pods to an Xcode project](https://guides.cocoapods.org/using/using-cocoapods.html) on the CocoaPods documentation site.  
+
+       ![image](/Users/sunny.agarwal/Desktop/Screenshot 2025-05-07 at 5.58.14 PM.png)
+
+       After the installation process, open the `.xcworkspace` file created by CocoaPods using Xcode.  
+       **__Avoid opening .xcodeproj directly. Opening a project file instead of a workspace can lead to errors.__**
+
+     - [Inherit from SFMCNotificationService](https://developer.salesforce.com/docs/marketing/mobilepush/guide/ios-extension-sdk-integration.html#inherit-from-sfmcnotificationservice)
+
+     - [Additional Configuration](https://developer.salesforce.com/docs/marketing/mobilepush/guide/ios-extension-sdk-integration.html#additional-configuration-options)
+     
+    #### 2. Configure the Content Extension 
+    This section will guide you through setting up and configuring the Notification Content Extension for use with the MobilePush iOS Extension SDK.
+    - [Add a Content Extension Target](https://developer.salesforce.com/docs/marketing/mobilepush/guide/ios-extension-sdk-integration.html#add-a-content-extension-target)
+
+    - Integrate the Extension SDK with Your Content Extension
+      The process for integrating the MCExtensionSDK into your Content Extension mirrors the steps taken for your Service Extension. For detailed instructions, see [Integrate the Extension SDK with the Service Extension](integrate-the-extension-sdk-with-the-service-extension).
+
+    - [Inherit from SFMCNotificationViewController](https://developer.salesforce.com/docs/marketing/mobilepush/guide/ios-extension-sdk-integration.html#inherit-from-sfmcnotificationviewcontroller)
+
+    - [Project and Info.plist Configuration](https://developer.salesforce.com/docs/marketing/mobilepush/guide/ios-extension-sdk-integration.html#project-and-infoplist-configuration)
+
+    - [Additional Configuration](https://developer.salesforce.com/docs/marketing/mobilepush/guide/ios-extension-sdk-integration.html#additional-configuration)
+
+    #### 3. [Enable App Groups Capability](https://developer.salesforce.com/docs/marketing/mobilepush/guide/ios-extension-sdk-integration.html#enable-app-groups-capability) 
+    
+5. **Enable Rich Notifications:** Rich notifications include images, videos, titles and subtitles from the MobilePush app, and mutable content. Mutable content can include personalization in the title, subtitle, or body of your message. 
+    
+    **Create a Notification Service Extension**
+    
+    Skip the setup steps if you've already integrated Notification Service Extension during the [MobilePush Extension SDK integration](#4-integrate-the-mobilepush-extension-sdk) and refer the [sample code for integration with Extension SDK](#with-Extension-SDK-Integration).
     1. In Xcode, click **File**
     2. Click **New**
     3. Click **Target**
     4. Select Notification Service Extension
     5. Name and save the new extension
-
+    >The Notification Target must be signed with the same Xcode Managed Profile as the main project.
+    
     This service extension checks for a “_mediaUrl” element in request.content.userInfo. If found, the extension attempts to download the media from the URL , creates a thumbnail-size version, and then adds the attachment. The service extension also checks for a ““_mediaAlt” element in request.content.userInfo. If found, the service extension uses the element for the body text if there are any problems downloading or creating the media attachment.
 
     A service extension can timeout when it is unable to download. In this code sample, the service extension delivers the original content with the body text changed to the value in “_mediaAlt”.
 
+    #### **<ins>Without Extension SDK Integration</ins>**
     ```objc
     #import <CoreGraphics/CoreGraphics.h>
     #import "NotificationService.h"
@@ -306,5 +349,91 @@
         self.contentHandler(self.modifiedNotificationContent);
     }
 
+    @end
+    ```
+    
+    #### **<ins>With Extension SDK Integration</ins>**
+    ```objc
+    #import "NotificationService.h"
+    @implementation NotificationService
+    // Provide SFNotificationServiceConfig configuration
+    - (SFMCNotificationServiceConfig *)sfmcProvideConfig {
+        SFMCExtensionSdkLogLevel logLevel = SFMCExtensionSdkLogLevelNone;
+    #if DEBUG
+        logLevel = SFMCExtensionSdkLogLevelDebug;
+    #endif
+        return [[SFMCNotificationServiceConfig alloc] initWithLogLevel: logLevel];
+    }
+    // Custom processing when notification is received
+    -(void)sfmcDidReceiveRequest:(UNNotificationRequest *)request mutableContent:(UNMutableNotificationContent *)mutableContent withContentHandler:(void (^)(NSDictionary * _Nullable))contentHandler {
+        
+        [self addMediaToContent:mutableContent completion:^{
+            contentHandler(nil);
+        }];
+    }
+    // Download and attach media
+    - (void)addMediaToContent:(UNMutableNotificationContent *)mutableContent
+                   completion:(void (^)(void))completion {
+        
+        NSString *mediaUrlString = mutableContent.userInfo[@"_mediaUrl"];
+        if (mediaUrlString == nil || mediaUrlString.length == 0) {
+            completion();
+            return;
+        }
+        
+        NSURL *mediaUrl = [NSURL URLWithString:mediaUrlString];
+        if (!mediaUrl) {
+            completion();
+            return;
+        }
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        
+        NSURLSessionDownloadTask *downloadTask = [session downloadTaskWithURL:mediaUrl
+                                                            completionHandler:^(NSURL * _Nullable location,
+                                                                                NSURLResponse * _Nullable response,
+                                                                                NSError * _Nullable error) {
+            if (error) {
+                completion();
+                return;
+            }
+            
+            if (!location || ![response isKindOfClass:[NSHTTPURLResponse class]]) {
+                completion();
+                return;
+            }
+            
+            NSInteger statusCode = ((NSHTTPURLResponse *)response).statusCode;
+            if (statusCode < 200 || statusCode > 299) {
+                completion();
+                return;
+            }
+            
+            NSString *fileName = mediaUrl.lastPathComponent;
+            NSString *destinationPath = [[location.path stringByAppendingString:fileName] copy];
+            NSURL *localMediaUrl = [NSURL fileURLWithPath:destinationPath];
+            
+            [[NSFileManager defaultManager] removeItemAtURL:localMediaUrl error:nil];
+            
+            NSError *fileError;
+            [[NSFileManager defaultManager] moveItemAtURL:location toURL:localMediaUrl error:&fileError];
+            if (fileError) {
+                completion();
+                return;
+            }
+            
+            UNNotificationAttachment *attachment = [UNNotificationAttachment attachmentWithIdentifier:@"SomeAttachmentId"
+                                                                                                  URL:localMediaUrl
+                                                                                              options:nil
+                                                                                                error:nil];
+            if (attachment) {
+                mutableContent.attachments = @[attachment];
+            }
+            
+            completion();
+        }];
+        
+        [downloadTask resume];
+    }
     @end
     ```
