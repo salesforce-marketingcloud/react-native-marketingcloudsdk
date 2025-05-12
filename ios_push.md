@@ -151,8 +151,7 @@
 
      - [Add a Service Extension Target](https://developer.salesforce.com/docs/marketing/mobilepush/guide/ios-extension-sdk-integration.html#add-a-service-extension-target)
 
-     - Integrate the Extension SDK with the Service Extension
-       **Integrate the SDK with CocoaPods**: To add the SDK as a dependency in your app's Podfile, follow the instructions for [Adding pods to an Xcode project](https://guides.cocoapods.org/using/using-cocoapods.html) on the CocoaPods documentation site.  
+     - Integrate the Extension SDK with the Service Extension: Add the SDK as a dependency in your app's Podfile, follow the instructions for [Adding pods to an Xcode project](https://guides.cocoapods.org/using/using-cocoapods.html) on the CocoaPods documentation site.
 
        <img width="834" alt="Screenshot 2025-05-07 at 7 28 35 PM" src="https://git.soma.salesforce.com/sunny-agarwal/sdk-reactnative-plugin/assets/59256/66b45840-aeea-463b-809d-1eaf1b4f2488">
 
@@ -167,8 +166,7 @@
     This section will guide you through setting up and configuring the Notification Content Extension for use with the MobilePush iOS Extension SDK.
     - [Add a Content Extension Target](https://developer.salesforce.com/docs/marketing/mobilepush/guide/ios-extension-sdk-integration.html#add-a-content-extension-target)
 
-    - Integrate the Extension SDK with Your Content Extension
-      The process for integrating the MCExtensionSDK into your Content Extension mirrors the steps taken for your Service Extension. For detailed instructions, see [Integrate the Extension SDK with the Service Extension](integrate-the-extension-sdk-with-the-service-extension).
+    - Integrate the Extension SDK with your Content Extension: The process for integrating the MCExtensionSDK into your Content Extension mirrors the steps taken for integration with your Service Extension.
 
     - [Inherit from SFMCNotificationViewController](https://developer.salesforce.com/docs/marketing/mobilepush/guide/ios-extension-sdk-integration.html#inherit-from-sfmcnotificationviewcontroller)
 
@@ -182,7 +180,7 @@
     
     **Create a Notification Service Extension**
     
-    Skip the setup steps if you've already integrated Notification Service Extension during the [MobilePush Extension SDK integration](#4-integrate-the-mobilepush-extension-sdk) and refer to the [sample code for integration with Extension SDK](#with-Extension-SDK-Integration).
+    Skip the setup steps if you've already integrated Notification Service Extension during the [MobilePush Extension SDK integration](#4-integrate-the-mobilepush-extension-sdk:) and refer to the [sample code for integration with Extension SDK](#with-Extension-SDK-Integration).
 
     1. In Xcode, click **File**
     2. Click **New**
