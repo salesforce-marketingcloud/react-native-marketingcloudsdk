@@ -166,7 +166,7 @@
     This section will guide you through setting up and configuring the Notification Content Extension for use with the MobilePush iOS Extension SDK.
     - [Add a Content Extension Target](https://developer.salesforce.com/docs/marketing/mobilepush/guide/ios-extension-sdk-integration.html#add-a-content-extension-target)
 
-    - Integrate the Extension SDK with your Content Extension: The process for integrating the MCExtensionSDK into your Content Extension mirrors the steps taken for integration with your Service Extension.
+    - Integrate the Extension SDK with the Content Extension: The process for integrating the MCExtensionSDK into your Content Extension mirrors the steps taken for integration with your Service Extension.
 
     - [Inherit from SFMCNotificationViewController](https://developer.salesforce.com/docs/marketing/mobilepush/guide/ios-extension-sdk-integration.html#inherit-from-sfmcnotificationviewcontroller)
 
