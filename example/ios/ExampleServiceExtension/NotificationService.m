@@ -36,7 +36,7 @@
 #if DEBUG
     logLevel = SFMCExtensionSdkLogLevelDebug;
 #endif
-    return [[SFMCNotificationServiceConfig alloc] initWithLogLevel: logLevel];
+  return [[SFMCNotificationServiceConfig alloc] initWithLogLevel: logLevel shouldShowCarouselThumbnail:YES];
 }
 
 // Custom processing when notification is received
