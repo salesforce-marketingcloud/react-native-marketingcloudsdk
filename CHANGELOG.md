@@ -1,5 +1,9 @@
 Change Log
 ==========
+### Version 9.0.0
+
+* Support for the v9.0 versions of the Android and iOS Marketing Cloud SDK.
+
 ### Version 8.1.1
 
 * Fix for URL handler not working in iOS when application is in a killed state
