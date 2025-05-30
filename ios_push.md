@@ -2,7 +2,7 @@
 
 1. Enable push notifications in your target’s Capabilities settings in Xcode.
 
-    ![push enablement](https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/assets/SDKConfigure6.png)
+    ![push enablement](/assets/SDKConfigure6.png)
 
 2. Set your AppDelegate class to adhere to the `UNUserNotificationCenterDelegate` protocol.
     ```objc
@@ -153,7 +153,7 @@
 
      - Integrate the Extension SDK with the Service Extension: Add the SDK as a dependency in your app's Podfile, follow the instructions for [Adding pods to an Xcode project](https://guides.cocoapods.org/using/using-cocoapods.html) on the CocoaPods documentation site.
 
-       <img width="834" alt="Screenshot 2025-05-07 at 7 28 35 PM" src="https://git.soma.salesforce.com/sunny-agarwal/sdk-reactnative-plugin/assets/59256/66b45840-aeea-463b-809d-1eaf1b4f2488">
+       ![podfile changes](/assets/SDKPodfile.png)
 
        After the installation process, open the `.xcworkspace` file created by CocoaPods using Xcode.  
        **__Avoid opening .xcodeproj directly. Opening a project file instead of a workspace can lead to errors.__**
