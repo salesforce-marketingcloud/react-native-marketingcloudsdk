@@ -148,6 +148,8 @@
     NSDictionary *SFMCSdkEventType =  @{
         @"engagement": [SFMCSdkCustomEvent class],
         @"system": [SFMCSdkSystemEvent class],
+        @"identity": [SFMCSdkIdentityEvent class]
+
     };
     NSString *eventName = [RCTConvert NSString:json[@"category"]];
     return SFMCSdkEventType[eventName];
