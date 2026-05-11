@@ -33,6 +33,51 @@ export default MCReactModule;
 
 import { Event } from "./event";
 
+export interface InboxMessageMedia {
+  altText?: string | null;
+  url?: string | null;
+}
+
+export interface InboxNotificationMessage {
+  id: string;
+  alert: string;
+  sound: string;
+  type: string;
+  trigger: string;
+  soundName?: string | null;
+  title?: string | null;
+  subtitle?: string | null;
+  url?: string | null;
+  mediaUrl?: string | null;
+  mediaAltText?: string | null;
+  customKeys?: Record<string, string>;
+  custom?: string | null;
+  payload?: Record<string, string>;
+}
+
+export interface InboxMessage {
+  id: string;
+  subject?: string | null;
+  title?: string | null;
+  alert?: string | null;
+  sound?: string | null;
+  read: boolean;
+  deleted: boolean;
+  media?: InboxMessageMedia | null;
+  startDateUtc?: string | null;
+  sendDateUtc?: string | null;
+  endDateUtc?: string | null;
+  custom?: string | null;
+  keys?: Record<string, string>;
+  calculatedType?: string | null;
+  messageType?: string | null;
+  url?: string | null;
+  subtitle?: string | null;
+  inboxMessage?: string | null;
+  inboxSubtitle?: string | null;
+  notificationMessage?: InboxNotificationMessage | string;
+}
+
 declare class MCReactModule {
   /**
    * The current state of the pushEnabled flag in the native Marketing Cloud
@@ -151,7 +196,7 @@ declare class MCReactModule {
    * This method helps to track events, which could result in actions such as an InApp Message being displayed.
    *
    * @param {CustomEvent | EngagementEvent | IdentityEvent | SystemEvent | CartEvent | OrderEvent | CatalogObjectEvent} event - The event to be tracked.
-   * 
+   *
    * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/event-tracking/event-tracking-event-tracking.html |Android Docs}
    * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/event-tracking/event-tracking-event-tracking.html |iOS Docs}
    */
@@ -191,6 +236,127 @@ declare class MCReactModule {
    * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/sdk-implementation/runtime-toggles.html|iOS Docs}
    */
   static isPiAnalyticsEnabled(): Promise<boolean>;
+
+  /**
+   * Retrieves the list of active, read and unread, non-deleted inbox messages.
+   * @returns {Promise<InboxMessage[]>} A promise to the list of active inbox messages.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-messages.html |Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/9.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getAllMessages |iOS Docs}
+   */
+  static getMessages(): Promise<InboxMessage[]>;
+
+  /**
+   * Retrieves the list of active, read, non-deleted inbox messages.
+   * @returns {Promise<InboxMessage[]>} A promise to the list of read inbox messages.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-read-messages.html |Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/9.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getReadMessages |iOS Docs}
+   */
+  static getReadMessages(): Promise<InboxMessage[]>;
+
+  /**
+   * Retrieves the list of active, unread, non-deleted inbox messages.
+   * @returns {Promise<InboxMessage[]>} A promise to the list of unread inbox messages.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-unread-messages.html |Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/9.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getUnreadMessages |iOS Docs}
+   */
+  static getUnreadMessages(): Promise<InboxMessage[]>;
+
+  /**
+   * Retrieves the list of active, deleted inbox messages.
+   * @returns {Promise<InboxMessage[]>} A promise to the list of deleted inbox messages.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-deleted-messages.html |Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/9.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getDeletedMessages |iOS Docs}
+   */
+  static getDeletedMessages(): Promise<InboxMessage[]>;
+
+  /**
+   * Marks an inbox message as read in local storage.
+   * @param {string} id - The InboxMessage id of the message to mark as read.
+   * @returns {Promise<boolean>|void} A promise to the success state on iOS, or void on Android.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/set-message-read.html |Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/9.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)markMessageWithIdReadWithMessageId: |iOS Docs}
+   */
+  static setMessageRead(id: string): Promise<boolean> | void;
+
+  /**
+   * Marks an inbox message as deleted in local storage.
+   * @param {string} id - The InboxMessage id of the message to mark as deleted.
+   * @returns {Promise<boolean>|void} A promise to the success state on iOS, or void on Android.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/delete-message.html |Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/9.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)markMessageWithIdDeletedWithMessageId: |iOS Docs}
+   */
+  static deleteMessage(id: string): Promise<boolean> | void;
+
+  /**
+   * Retrieves the total number of non-deleted inbox messages.
+   * @returns {Promise<number>} A promise to the total number of non-deleted inbox messages.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-message-count.html |Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/9.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getAllMessagesCount |iOS Docs}
+   */
+  static getMessageCount(): Promise<number>;
+
+  /**
+   * Retrieves the total number of read, non-deleted inbox messages.
+   * @returns {Promise<number>} A promise to the total number of read inbox messages.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-read-message-count.html |Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/9.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getReadMessagesCount |iOS Docs}
+   */
+  static getReadMessageCount(): Promise<number>;
+
+  /**
+   * Retrieves the total number of unread, non-deleted inbox messages.
+   * @returns {Promise<number>} A promise to the total number of unread inbox messages.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-unread-message-count.html |Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/9.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getUnreadMessagesCount |iOS Docs}
+   */
+  static getUnreadMessageCount(): Promise<number>;
+
+  /**
+   * Retrieves the total number of deleted inbox messages.
+   * @returns {Promise<number>} A promise to the total number of deleted inbox messages.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/get-deleted-message-count.html |Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/9.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)getDeletedMessagesCount |iOS Docs}
+   */
+  static getDeletedMessageCount(): Promise<number>;
+
+  /**
+   * Marks all active, unread inbox messages as read.
+   * @returns {Promise<boolean>|void} A promise to the success state on iOS, or void on Android.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/mark-all-messages-read.html |Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/9.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)markAllMessagesRead |iOS Docs}
+   */
+  static markAllMessagesRead(): Promise<boolean> | void;
+
+  /**
+   * Marks all active inbox messages as deleted.
+   * @returns {Promise<boolean>|void} A promise to the success state on iOS, or void on Android.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/mark-all-messages-deleted.html |Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/9.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)markAllMessagesDeleted |iOS Docs}
+   */
+  static markAllMessagesDeleted(): Promise<boolean> | void;
+
+  /**
+   * Registers the native inbox response listener.
+   * @returns {Promise<boolean|string>} A promise to the registration result payload.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/register-inbox-response-listener.html |Android Docs}
+   * @see  {@link https://developer.salesforce.com/docs/marketing/mobilepush/guide/implement-inbox-messaging-ios.html |iOS Docs}
+   */
+  static registerInboxResponseListener(): Promise<boolean | string>;
+
+  /**
+   * Unregisters the native inbox response listener.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/unregister-inbox-response-listener.html |Android Docs}
+   * @see  {@link https://developer.salesforce.com/docs/marketing/mobilepush/guide/implement-inbox-messaging-ios.html |iOS Docs}
+   */
+  static unregisterInboxResponseListener(): void;
+
+  /**
+   * Requests an updated list of inbox messages from Marketing Cloud servers.
+   * @returns {Promise<boolean>} A promise to the refresh result.
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/javadocs/MarketingCloudSdk/9.0/-marketing%20-cloud%20-s-d-k/com.salesforce.marketingcloud.messages.inbox/-inbox-message-manager/refresh-inbox.html |Android Docs}
+   * @see  {@link https://salesforce-marketingcloud.github.io/MarketingCloudSDK-iOS/appledocs/MarketingCloudSdk/9.0/Classes/PushModule.html#/c:@M@MarketingCloudSDK@objc(cs)SFMCSdkPushModule(im)refreshMessages |iOS Docs}
+   */
+  static refreshInbox(): Promise<boolean>;
 }
 
 export * from "./event";
